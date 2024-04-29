@@ -6,23 +6,53 @@ on:
   pull_request:
     branches: [ "main" ]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
       run: |
         npm install
-        npm build
+
+    - name: Upload
+      uses: actions/upload-pages-artifact@v3
+      with:
+        name: 'github-pages'
+        path: ./public
+        
+  deployment:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+      
+    steps:
+    
+    - name: Configure Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
