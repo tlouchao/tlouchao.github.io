@@ -1,0 +1,17 @@
+{
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "lit-element": "^4.0.5"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@web/dev-server": "^0.4.4",
+    "rollup": "^4.17.0",
+    "rollup-plugin-copy": "^3.5.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "start": "wds --node-resolve --open public/ --watch"
+  }
+}
