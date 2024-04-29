@@ -1,5 +1,5 @@
-
 import resolve from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
 import copy from 'rollup-plugin-copy';
 
 export default {
@@ -12,6 +12,7 @@ export default {
         resolve({
             exportConditions: ['development']     
         }),
+        terser(),
         // Copy any static assets to build directory
         copy({
             targets: [
