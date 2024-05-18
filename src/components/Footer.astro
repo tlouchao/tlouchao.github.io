@@ -3,26 +3,25 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Built by <a href="https://github.com/withastro/astro" target="_blank">tlouchao</a> 🚀 Astro and Lit 🔥 All rights reserved
+	&copy; {today.getFullYear()} Built by <a href="https://github.com/withastro/astro" target="_blank">tlouchao</a> 🚀 Astro and Lit 🔥 All rights reserved.
 </footer>
 <style>
 	footer {
 		padding: 2em 1em 6em 1em;
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		/*color: rgb(var(--gray));*/
 		text-align: center;
 	}
-	.social-links {
-		display: flex;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
+	a:link {
+		color: rgb(var(--cerulean));
+    }
+	a:visited {
+		color: rgb(var(--cerulean));
 	}
-	.social-links a {
-		text-decoration: none;
-		color: rgb(var(--gray));
+	a:hover {
+		color: rgb(var(--magenta));
 	}
-	.social-links a:hover {
-		color: rgb(var(--gray-dark));
+	a:active {
+		color: rgb(var(--magenta));
 	}
 </style>

@@ -6,10 +6,18 @@ import { SITE_TITLE } from '../consts';
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
+		<div class="nav-right">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
+			<button>
+				<span class="sr-only">Toggle Theme</span>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+					><path
+						d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+					></path>
+				</svg>
+			</button>
 		</div>
 	</nav>
 </header>
@@ -29,8 +37,15 @@ import { SITE_TITLE } from '../consts';
 	h2 a.active {
 		text-decoration: none;
 	}
+	.nav-right {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
 	nav {
 		display: flex;
+		flex-direction: row;
+		text-align: center;
 		align-items: center;
 		justify-content: space-between;
 	}
@@ -44,13 +59,18 @@ import { SITE_TITLE } from '../consts';
 		text-decoration: none;
 		border-bottom-color: var(--accent);
 	}
-	.social-links,
-	.social-links a {
-		display: flex;
+	button {
+		padding: 0em 1em;
+		cursor: pointer;
+		background-color: transparent;
+		background-image: none;
+		transition: 0.2s ease;
+
+	}
+	button:hover {
+		background-color: rgb(var(--gray-light));
+		transition: 0.2s ease;
 	}
 	@media (max-width: 720px) {
-		.social-links {
-			display: none;
-		}
 	}
 </style>
