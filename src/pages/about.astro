@@ -1,21 +1,11 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
 import Layout from '../layouts/PageLayout.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 const yesArr = Array(100).fill('Check that the vertical scroll bar appears');
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} image='./husky.jpg' />
-	</head>
-	<body>
-		<Layout>
-			{yesArr.map((yes : String) => (
-				<p>{yes}</p>
-			))}
-		</Layout>
-	</body>
-</html>
+<Layout>
+	{yesArr.map((yes : String) => (
+		<p>{yes}</p>
+	))}
+</Layout>
