@@ -1,21 +1,66 @@
 :root {
-	--color-primary: #fff;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 6px 18px rgba(var(--gray), 33%),
-		0 8px 24px rgba(var(--gray), 33%);
-	--cerulean: 0, 60, 255;
-	--magenta: 180, 0, 255;
+	--black: rgb(15, 18, 25);
+	--gray: rgb(65, 70, 75);
+	--gray-light: rgb(210, 215, 220);
+	--gray-dark: rgb(40, 45, 50);
+	--header-box-shadow: 0 2px 8px rgba(15, 18, 25, 25%);
+
+	--blue: rgb(0, 60, 255);
+	--purple: rgb(180, 0, 255);
+	--dark-purple: rgb(100, 0, 150);
+
+	/* body, header, footer */
+	--color-primary: white;
+	--color-secondary: var(--black);
+	--color-nav: white;
+	--color-nav-link: var(--black);
+	--color-footer: var(--gray-light);
+
+	/* links */
+	--anchor-link: var(--blue);
+	--anchor-active: var(--purple);
+	--button-active: white;
 }
 .theme-dark {
-	--color-primary: #333;
+
+	/* body, header, footer */
+	--color-primary: var(--gray-dark);
+	--color-secondary: lime;
+	--color-nav: var(--gray); 
+	--color-nav-link: greenyellow;
+	--color-footer: var(--dark-purple);
+
+	/* links */
+	--anchor-link: cyan;
+	--anchor-active: magenta;
+	--button-active: magenta;
 }
 body {
+	padding: 0;
+	margin: 0;
 	background-color: var(--color-primary);
+	color: var(--color-secondary);
+	min-height: 100vh;
 }
+main {
+	margin: 1em;
+}
+nav {
+	padding: 0.5em;
+}
+a:link {
+	color: var(--anchor-link);
+}
+a:visited {
+	color: var(--anchor-link);
+}
+a:active {
+	color: var(--anchor-active);
+}
+a:hover {
+	color: var(--anchor-active);
+}
+
 button {
 	font-family: inherit;
 	font-feature-settings: inherit;
@@ -25,16 +70,13 @@ button {
 	line-height: inherit;
 	letter-spacing: inherit;
 	color: inherit;
+	cursor: pointer;
 	margin: 0;
 	padding: 0;
 	border: none;
 	border-radius: 16px;
-	cursor: pointer;
 }
 .sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
 	position: absolute !important;
 	height: 1px;
 	width: 1px;

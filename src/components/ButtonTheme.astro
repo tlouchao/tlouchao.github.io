@@ -16,14 +16,18 @@ const { label } = Astro.props;
 	button {
 		padding: 1em 1em;
 		cursor: pointer;
-		background-color: rgb(var(--gray-light));
-		background-image: none;
-		transition: 0.2s ease;
+		transition: 0.25s ease;
 
 	}
-	button:hover {
-		background-color: rgb(var(--cerulean));
-		transition: 0.2s ease;
+    button[aria-pressed='false'] {
+		background-color: goldenrod;
+	}
+    button[aria-pressed='true'] {
+		background-color: purple;
+	}
+    button:hover {
+        color: var(--button-active);
+		background-color: var(--gray-dark);
 	}
 </style>
 
