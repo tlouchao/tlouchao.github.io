@@ -40,7 +40,7 @@ body {
 	margin: 0;
 	background-color: var(--color-primary);
 	color: var(--color-secondary);
-	min-height: 100vh;
+	height: 100%;
 }
 main {
 	margin: 1em;
