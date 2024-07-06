@@ -1,6 +1,5 @@
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
+	--color-primary: #fff;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;
@@ -11,11 +10,11 @@
 	--cerulean: 0, 60, 255;
 	--magenta: 180, 0, 255;
 }
-.theme {
-	--color-primary: #fff;
-}
 .theme-dark {
 	--color-primary: #333;
+}
+body {
+	background-color: var(--color-primary);
 }
 button {
 	font-family: inherit;
@@ -29,7 +28,7 @@ button {
 	margin: 0;
 	padding: 0;
 	border: none;
-	border-radius: 25%;
+	border-radius: 16px;
 	cursor: pointer;
 }
 .sr-only {

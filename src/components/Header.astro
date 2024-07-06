@@ -1,23 +1,17 @@
 ---
 import HeaderLink from './HeaderLink.astro';
+import ButtonTheme from './ButtonTheme.astro';
 import { SITE_TITLE } from '../consts';
 ---
 
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="nav-right">
+		<div class="nav-left">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
-			<button>
-				<span class="sr-only">Toggle Theme</span>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-					><path
-						d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
-					></path>
-				</svg>
-			</button>
+			<ButtonTheme label="Moon"></ButtonTheme>
 		</div>
 	</nav>
 </header>
@@ -33,11 +27,10 @@ import { SITE_TITLE } from '../consts';
 		font-size: 1em;
 	}
 
-	h2 a,
-	h2 a.active {
+	h2 a, h2 a.active {
 		text-decoration: none;
 	}
-	.nav-right {
+	.nav-left {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -58,18 +51,6 @@ import { SITE_TITLE } from '../consts';
 	nav a.active {
 		text-decoration: none;
 		border-bottom-color: var(--accent);
-	}
-	button {
-		padding: 0em 1em;
-		cursor: pointer;
-		background-color: transparent;
-		background-image: none;
-		transition: 0.2s ease;
-
-	}
-	button:hover {
-		background-color: rgb(var(--gray-light));
-		transition: 0.2s ease;
 	}
 	@media (max-width: 720px) {
 	}
