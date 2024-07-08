@@ -1,0 +1,47 @@
+---
+import NavLink from './NavLink.astro';
+import ButtonTheme from './ButtonTheme.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<aside>
+	<nav>
+		<div id="nav-left">
+			<a href="/">
+				<img src="secretary-bird-sq.jpg" aria-label="Navbar Icon" />
+			</a>
+		</div>
+		<div id="nav-right">
+			<NavLink href="/">Home</NavLink>
+			<NavLink href="/blog">Blog</NavLink>
+			<NavLink href="/gallery">Gallery</NavLink>
+			<ButtonTheme label="Moon"></ButtonTheme>
+		</div>
+	</nav>
+</aside>
+
+<style>
+	nav {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: fixed;
+        top: 0;
+		background-color: var(--color-nav);
+	}
+	#nav-left {
+		img {
+			width: 128px;
+			border-radius: 50%;
+			border-style: none;
+		}
+		h2 {
+			text-decoration: none;
+		}
+	}
+	#nav-right {
+		display: inherit;
+		flex-direction: inherit;
+		align-items: inherit;
+	}
+</style>

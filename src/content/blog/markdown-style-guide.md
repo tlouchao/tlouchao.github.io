@@ -39,7 +39,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 ### Output
 
-![blog placeholder](/husky-gallery-outdoors.jpg)
+![blog placeholder](/husky.jpg)
 
 ## Blockquotes
 

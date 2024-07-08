@@ -1,34 +1,47 @@
 :root {
-	--black: rgb(15, 18, 25);
-	--gray: rgb(65, 70, 75);
-	--gray-light: rgb(210, 215, 220);
-	--gray-dark: rgb(40, 45, 50);
+	--black: rgb(15, 18, 20);
+	--black-warm: rgb(20, 18, 15);
+	--white: rgb(255, 250, 245);
+	--white-warm: rgb(245, 240, 235);
+	--grey-cool: rgb(65, 70, 75);
+	--grey-cool-light: rgb(210, 215, 220);
+	--grey-cool-dark: rgb(40, 45, 50);
+	--grey-warm: rgb(175, 170, 165);
+	--grey-warm-light: rgb(210, 205, 200);
+	--grey-warm-dark: rgb(50, 45, 40);
 	--header-box-shadow: 0 2px 8px rgba(15, 18, 25, 25%);
 
 	--blue: rgb(0, 60, 255);
 	--purple: rgb(180, 0, 255);
-	--dark-purple: rgb(100, 0, 150);
+	--purple-dark: rgb(100, 0, 150);
 
 	/* body, header, footer */
-	--color-primary: white;
-	--color-secondary: var(--black);
-	--color-nav: white;
-	--color-nav-link: var(--black);
-	--color-footer: var(--gray-light);
+	--color-primary: var(--white-warm);
+	--color-secondary: var(--black-warm);
+	--color-nav: var(--grey-warm-light);
+	--color-nav-link: var(--black-warm);
+	--color-footer: var(--grey-warm);
 
 	/* links */
 	--anchor-link: var(--blue);
 	--anchor-active: var(--purple);
 	--button-active: white;
+
+    /* fonts */
+	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
+	font-weight: 300;
+	font-size: medium;
+	line-height: 1.5;
 }
+
 .theme-dark {
 
 	/* body, header, footer */
-	--color-primary: var(--gray-dark);
-	--color-secondary: lime;
-	--color-nav: var(--gray); 
+	--color-primary: var(--grey-cool-dark);
+	--color-secondary: var(--white);
+	--color-nav: var(--grey-cool); 
 	--color-nav-link: greenyellow;
-	--color-footer: var(--dark-purple);
+	--color-footer: var(--purple-dark);
 
 	/* links */
 	--anchor-link: cyan;
@@ -44,6 +57,10 @@ body {
 }
 main {
 	margin: 1em;
+}
+h1, h2, h3, h4, h4, h5, h6 {
+	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
+	font-weight: 700;
 }
 nav {
 	padding: 0.5em;
@@ -63,8 +80,6 @@ a:hover {
 
 button {
 	font-family: inherit;
-	font-feature-settings: inherit;
-	font-variation-settings: inherit;
 	font-size: 100%;
 	font-weight: inherit;
 	line-height: inherit;
@@ -89,4 +104,36 @@ button {
 	clip-path: inset(50%);
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto/Roboto-Medium.ttf') format('truetype');
+	font-weight: 500 normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto/Roboto-Light.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Rodin';
+	src: url('/fonts/Rodin-Pro-M.otf');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
 }
