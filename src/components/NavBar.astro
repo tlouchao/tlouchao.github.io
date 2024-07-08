@@ -22,26 +22,49 @@ import { SITE_TITLE } from '../consts';
 
 <style>
 	nav {
+		/* Flexbox */
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		justify-content: start;
+		padding: 1em 0em;
+		gap: 1em;
+
+		/* Position and Size */
+		width: auto;
+		height: 100%;
 		position: fixed;
         top: 0;
+
+		/* Color */
 		background-color: var(--color-nav);
 	}
 	#nav-left {
+		caret-color: transparent;
+		font-size: 0;
+		align-self: center;
 		img {
 			width: 128px;
 			border-radius: 50%;
 			border-style: none;
-		}
-		h2 {
-			text-decoration: none;
 		}
 	}
 	#nav-right {
 		display: inherit;
 		flex-direction: inherit;
 		align-items: inherit;
+	}
+	@media (max-width: 992px) {
+		nav {
+			flex-direction: row;
+			align-items: stretch;
+			justify-content: space-between;
+			padding: 0 0 0 1em; /* top, right, bottom, left */
+			width: 100%;
+			height: auto;
+		}
+		#nav-left {
+			img { width: 32px; }
+		}
 	}
 </style>

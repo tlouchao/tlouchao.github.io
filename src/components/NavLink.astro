@@ -10,25 +10,64 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + subpath?.[0];
 ---
 
-<div class="nav-item">
+<nav-item class="nav-item">
 	<a href={href} class:list={[{ active: isActive }]}>
 		<slot />
 	</a>
-</div>
+</nav-item>
 
 <style>
 	.nav-item {
+		display: flex;
 		padding: 0.75em;
 		min-width: 180px;
 		max-width: 270px;
+		justify-content: center;
 		text-align: center;
+	}
+	
+	.nav-item:active {
+		color: var(--anchor-active);
+	}
+	.nav-item:hover {
+		cursor: pointer;
+		background-color: var(--color-nav-item);
 	}
 
 	a {
+		display: flex;
+		color: var(--color-nav-link);
 		text-decoration: none;
 	}
 	a.active {
 		font-weight: bolder;
 		text-decoration: underline;
 	}
+	@media (max-width: 992px) {
+		.nav-item {
+			min-width: auto;
+		}
+		a {
+			align-self: center;
+		}
+	}
 </style>
+
+<script>
+    class NavItem extends HTMLElement {
+        constructor() {
+            super();
+
+            this.addEventListener('click', () => handleClick());
+            
+            const handleClick = () => {
+                // forward click event to anchor tag
+                let anchor = this.querySelector('a');
+				anchor!.click();
+            }
+        }
+    }
+
+    // Tell the browser to use our NavItem class for <nav-item> elements.
+    customElements.define('nav-item', NavItem);
+</script>
