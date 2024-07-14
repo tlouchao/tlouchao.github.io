@@ -17,6 +17,8 @@ const isActive = href === pathname || href === '/' + subpath?.[0];
 </nav-item>
 
 <style>
+
+	/* Navigation Item */
 	.nav-item {
 		display: flex;
 		padding: 0.75em;
@@ -34,6 +36,7 @@ const isActive = href === pathname || href === '/' + subpath?.[0];
 		background-color: var(--color-nav-item);
 	}
 
+	/* Anchor */
 	a {
 		display: flex;
 		color: var(--color-nav-link);
@@ -43,12 +46,15 @@ const isActive = href === pathname || href === '/' + subpath?.[0];
 		font-weight: bolder;
 		text-decoration: underline;
 	}
+
 	@media (max-width: 992px) {
-		.nav-item {
+		.nav-item { 
 			min-width: auto;
+			max-width: auto;
 		}
-		a {
-			align-self: center;
+		a { 
+			display: flex;
+			align-self: center; 
 		}
 	}
 </style>
