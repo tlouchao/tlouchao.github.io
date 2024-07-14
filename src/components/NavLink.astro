@@ -17,15 +17,12 @@ const isActive = href === pathname || href === '/' + subpath?.[0];
 </nav-item>
 
 <style>
-
 	/* Navigation Item */
 	.nav-item {
 		display: flex;
 		padding: 0.75em;
-		min-width: 180px;
-		max-width: 270px;
-		justify-content: center;
 		text-align: center;
+		justify-content: center;
 	}
 	
 	.nav-item:active {
@@ -39,6 +36,7 @@ const isActive = href === pathname || href === '/' + subpath?.[0];
 	/* Anchor */
 	a {
 		display: flex;
+		align-self: center;
 		color: var(--color-nav-link);
 		text-decoration: none;
 	}
@@ -47,14 +45,9 @@ const isActive = href === pathname || href === '/' + subpath?.[0];
 		text-decoration: underline;
 	}
 
-	@media (max-width: 992px) {
-		.nav-item { 
-			min-width: auto;
-			max-width: auto;
-		}
-		a { 
-			display: flex;
-			align-self: center; 
+	@media (min-width: 768px) {
+		.nav-item {
+			min-width: 150px
 		}
 	}
 </style>

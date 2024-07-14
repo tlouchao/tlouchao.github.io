@@ -2,20 +2,24 @@
 import NavLink from './NavLink.astro';
 import ButtonTheme from './ButtonTheme.astro';
 ---
-
-<nav>
-	<div id="nav-left">
-		<a href="/">
-			<img src="secretary-bird-sq.jpg" aria-label="Navbar Icon" />
-		</a>
-	</div>
-	<div id="nav-right">
-		<NavLink href="/">Home</NavLink>
-		<NavLink href="/blog">Blog</NavLink>
-		<NavLink href="/gallery">Gallery</NavLink>
-		<ButtonTheme label="Moon"></ButtonTheme>
-	</div>
-</nav>
+<aside>
+	<nav>
+		<div id="nav-left">
+			<a href="/">
+				<img src="secretary-bird-sq.jpg" aria-label="Navbar Icon" />
+			</a>
+			<a href="/">
+				<span>Tiffany Chao</span>
+			</a>
+		</div>
+		<div id="nav-right">
+			<NavLink href="/">Home</NavLink>
+			<NavLink href="/blog">Blog</NavLink>
+			<NavLink href="/gallery">Gallery</NavLink>
+			<ButtonTheme label="Moon"></ButtonTheme>
+		</div>
+	</nav>
+</aside>
 
 <style>
 	
@@ -37,22 +41,39 @@ import ButtonTheme from './ButtonTheme.astro';
 		top: 0;
 	}
 	#nav-left {
-		font-size: 0;
-		align-self: center;
-		img { 
+		display: inherit;
+		flex-direction: inherit;
+		align-items: center;
+		gap: 1em;
+		a {
+			width: fit-content;
+			text-decoration: none;
+		}
+		img {
 			width: 32px;
 			border-radius: 50%;
 			border-style: none;
+		 }
+		 span {
+			display:inline-block;
+			min-width: 192px;
+			font-family: 'Emulogic';
+			color: var(--color-nav-link);
 		 }
 	}
 	#nav-right {
 		display: inherit;
 		flex-direction: inherit;
-		align-items: inherit;
+		align-items: center;
+	}
+
+	@media (min-width: 600px) {
+		#nav-right { /* todo: hamburger expand and collapse */
+		}
 	}
 
 	/* DESKTOP */
-	@media (min-width: 992px) {
+	@media (min-width: 768px) {
 		nav {
 			flex-direction: column;
 			align-items: center;
@@ -61,14 +82,18 @@ import ButtonTheme from './ButtonTheme.astro';
 
 			/* Position and Size */
 			width: auto;
-			height: auto;
-			position: static;
+			height: 100%;
+			
 		}
-
 		#nav-left {
+			gap: 0em;
 			img {
 				width: 128px;
 			}
+			span {
+				display: none;
+			}
+		 }
 		}
 	}
 </style>

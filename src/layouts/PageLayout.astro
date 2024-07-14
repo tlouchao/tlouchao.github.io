@@ -1,11 +1,11 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import NavBar from '../components/NavBar.astro';
-import Header from '../components/Header.astro';
+import HeaderImage from '../components/HeaderImage.astro';
 import Footer from '../components/Footer.astro';
 
 import { ViewTransitions } from "astro:transitions";
-import { SITE_TITLE, SITE_DESCRIPTION, MQ_MOBILE_WIDTH} from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
 ---
 
 <!doctype html>
@@ -15,10 +15,10 @@ import { SITE_TITLE, SITE_DESCRIPTION, MQ_MOBILE_WIDTH} from '../consts';
 		<ViewTransitions />
 	</head>
 	<body class="theme-dark">
+        <NavBar />
         <div id="nav-layout">
-            <NavBar />
             <div id="page-layout">
-                <img src='./blog-placeholder-1.jpg' />
+                <HeaderImage src='./blog-placeholder-1.jpg' />
                 <main>
                     <slot />
                 </main>
@@ -29,9 +29,9 @@ import { SITE_TITLE, SITE_DESCRIPTION, MQ_MOBILE_WIDTH} from '../consts';
 </html>
 
 <style>
+    /* MOBILE */
     #nav-layout {
-        display: flex;
-        flex-direction: column;
+        padding-left: 0;
     }
     #page-layout {
         display: grid;
@@ -40,9 +40,9 @@ import { SITE_TITLE, SITE_DESCRIPTION, MQ_MOBILE_WIDTH} from '../consts';
         min-height: 100vh;
     }
     /* DESKTOP */
-	@media (min-width: 992px) {
+	@media (min-width: 768px) {
         #nav-layout {
-            flex-direction: row;
+            padding-left: calc(150px + 1.5em); /* Navbar offset */
         }
     }
     
