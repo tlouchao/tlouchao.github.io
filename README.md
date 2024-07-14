@@ -8,7 +8,7 @@ Clone this repository and install its dependencies:
     npm install
 
 ## Preview
-- `npm run astro dev` to build the application.
+- `npm run dev` to start the local dev server.
 - Navigate to http://localhost:4321/public/ to view the application.
 
 # Astro Starter Kit: Blog
