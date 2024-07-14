@@ -1,3 +1,16 @@
+# tlouchao.github.io
+
+## Setup
+Clone this repository and install its dependencies:
+
+    git clone https://github.com/tlouchao/tlouchao.github.io.git
+    cd tlouchao.github.io
+    npm install
+
+## Preview
+- `npm run astro dev` to build the application.
+- Navigate to http://localhost:4321/public/ to view the application.
+
 # Astro Starter Kit: Blog
 
 ```sh
