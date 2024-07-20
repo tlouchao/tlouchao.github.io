@@ -3,40 +3,26 @@ import NavArrow from './svg/NavArrow.astro'
 
 interface Props {
   href: string;
+  label?: string;
   isToggle?: boolean;
-  isCollapsed?: boolean;
+  isExpand?: boolean;
 }
 
-const { href, isToggle, isCollapsed } = Astro.props;
+const { href, label = undefined, isToggle = false, isExpand = false } = Astro.props;
 
 const { pathname } = Astro.url;
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + subpath?.[0];
-const classActive = { active: isActive };
-
-let toggle : boolean = (isToggle) ? isToggle : false;
-let collapsed : boolean = (isCollapsed) ? isCollapsed : true;
-let classListButton : any[] = []; 
-let classListArrow : any[] = [];
-
-if (toggle) {
-    if (collapsed) {
-        classListButton.push({'aria-expanded': false});
-        classListArrow.push('arrow-collapse');
-    } else {
-        classListButton.push({'aria-expanded': true});
-        classListArrow.push('arrow-expand');
-    }
-} 
+const matches = pathname.match(/[^\/]+/g);
+const subpath = matches ? matches?.[0] : '';
+// const isActive = href === pathname || href === '/' + subpath;
 ---
-<nav-menuitem class="nav-menuitem" aria-label={subpath}>
-    <button class:list={classListButton}>
+<nav-menuitem class="nav-menuitem" data-toggle={isToggle} data-expand={isExpand}>
+    <button aria-label={label} aria-expanded={isExpand}>
         
         <!-- Show arrow if toggle button is enabled -->
-        {toggle ? <NavArrow class:list={classListArrow} /> : <div />}
+        {isToggle ? <NavArrow /> : <div />}
         
         <!-- Hyperlink -->
-        <a href={href} class:list={classActive}>
+        <a href={href}>
             <slot />
         </a>
 
@@ -82,18 +68,38 @@ if (toggle) {
 </style>
 
 <script>
+import Utils from "../scripts/utils";
 
     class NavMenuItem extends HTMLElement {
         constructor() {
             super();
-
-            this.addEventListener('click', () => handleClick());
             
-            const handleClick = () => {
-                // forward click event to anchor tag
-                let anchor = this.querySelector('a');
-				anchor!.click();
+            const button = this.querySelector('button');
+            const svg = this.querySelector('svg')
+            const anchor = this.querySelector('a');
+            
+            const handleClick = (evt : MouseEvent) => {
+                if (Utils.getDataAttr(this, "toggle")) {
+
+                    // prevent href navigation / refresh
+                    evt.preventDefault();
+
+                    // get and invert the attribute
+                    let isExpand = Utils.getDataAttr(this, "expand");
+                    isExpand = !isExpand;
+
+                    // set the attribute
+                    Utils.setDataAttr(this, "expand", isExpand);
+                    Utils.setDataAttr(svg!, "expand", isExpand);
+                    Utils.setAriaAttr(button!, "aria-expanded", isExpand);
+
+                } else {
+                    // forward click event to anchor tag
+				    anchor?.click();
+                }
             }
+
+            button!.addEventListener('click', (evt : MouseEvent) => handleClick(evt));
         }
     }
 

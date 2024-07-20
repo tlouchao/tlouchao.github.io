@@ -14,9 +14,9 @@ import ButtonTheme from './ButtonTheme.astro';
 			</a>
 		</div>
 		<div id="nav-right">
-			<NavMenuItem href="/">Home</NavMenuItem>
-			<NavMenuItem href="/blog">Blog</NavMenuItem>
-			<NavMenuItem href="/gallery" isToggle={true}>Gallery</NavLink>
+			<NavMenuItem href="/" label="Home" isToggle={false}>Home</NavMenuItem>
+			<NavMenuItem href="/blog" label="Blog" isToggle={false}>Blog</NavMenuItem>
+			<NavMenuItem href="/gallery" label="Gallery" isToggle={true}>Gallery</NavMenuItem>
 			<ButtonTheme label="Moon"></ButtonTheme>
 		</div>
 	</nav>
@@ -97,7 +97,6 @@ import ButtonTheme from './ButtonTheme.astro';
 			span {
 				display: none;
 			}
-		 }
 		}
 	}
 </style>
