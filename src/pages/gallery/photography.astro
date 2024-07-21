@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/PageLayout.astro';
+
+const yesArr = Array(100).fill('This page is found under the gallery directory');
+const url = Astro.url;
+---
+
+<Layout>
+    <p>{url.pathname}</p>
+	{yesArr.map((yes : String) => (
+		<p>{yes}</p>
+	))}
+</Layout>

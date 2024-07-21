@@ -10,27 +10,47 @@ interface Props {
 
 const { href, label = undefined, isToggle = false, isExpand = false } = Astro.props;
 
+// get routes under href; workaround for Astro.glob string literal
+const files = await Astro.glob("../pages/**/*.astro");
+const ffiles = files.filter(file => file.url?.includes(href));
+
 const { pathname } = Astro.url;
 const matches = pathname.match(/[^\/]+/g);
 const subpath = matches ? matches?.[0] : '';
-// const isActive = href === pathname || href === '/' + subpath;
+
+const isCurrent = href === pathname || href === '/' + subpath;
 ---
-<nav-menuitem class="nav-menuitem" data-toggle={isToggle} data-expand={isExpand}>
-    <button aria-label={label} aria-expanded={isExpand}>
-        
-        <!-- Show arrow if toggle button is enabled -->
-        {isToggle ? <NavArrow /> : <div />}
-        
-        <!-- Hyperlink -->
+<nav-item data-toggle={isToggle} 
+          data-expand={isExpand}>
+    <button aria-label={label} 
+            aria-expanded={isExpand} 
+            aria-current={isCurrent} 
+            aria-controls="">
+        <NavArrow isToggle={isToggle} />
         <a href={href}>
             <slot />
         </a>
-
     </button>
-</nav-menuitem>
+    <!--
+    {ffiles.map((component) => (
+        <div>
+          {component.url}
+        </div>
+      ))}
+    -->
+    <div class="sub-items">
+        <div>
+            <p>Sub item</p>
+        </div>
+    </div>
+</nav-item>
 
 <style>
 	/* Navigation Item */
+    nav-item {
+        display: flex;
+        flex-direction: column;
+    }
     button {
         display: flex;
         width: 100%;
@@ -38,42 +58,51 @@ const subpath = matches ? matches?.[0] : '';
         padding: 0.5em;
         border: none;
         border-bottom: gray;
-        background-color: black;
+        background-color: var(--color-nav-item);
     }
     button:hover {
         cursor: pointer;
-		background-color: var(--color-nav-item);
+		background-color: var(--color-nav-item-hover);
     }
     button:active {
         color: var(--anchor-active);
     }
-	/* Anchor */
-	a {
+	button a {
 		color: var(--color-nav-link);
 		text-decoration: none;
 	}
+    button + div {
+        display: none;
+        visibility: hidden;
+    }
+    button[aria-expanded="true"] + div {
+        display: block;
+        visibility: visible;
+    }
 
 	@media (min-width: 768px) {
+        nav-item {
+            min-width: 180px;
+        }
         button {
             display: grid;
             grid-template-columns: 20px auto;
         }
-        a {
+        button a {
 		    text-align: left;
 	    }
-		.nav-menuitem {
-			min-width: 180px;
-		}
 	}
 </style>
 
 <script>
 import Utils from "../scripts/utils";
 
-    class NavMenuItem extends HTMLElement {
+    class NavItem extends HTMLElement {
         constructor() {
             super();
-            
+
+            let href = "/gallery";
+          
             const button = this.querySelector('button');
             const svg = this.querySelector('svg')
             const anchor = this.querySelector('a');
@@ -91,7 +120,7 @@ import Utils from "../scripts/utils";
                     // set the attribute
                     Utils.setDataAttr(this, "expand", isExpand);
                     Utils.setDataAttr(svg!, "expand", isExpand);
-                    Utils.setAriaAttr(button!, "aria-expanded", isExpand);
+                    Utils.setBoolAttr(button!, "aria-expanded", isExpand);
 
                 } else {
                     // forward click event to anchor tag
@@ -104,5 +133,5 @@ import Utils from "../scripts/utils";
     }
 
     // Tell the browser to use our NavItem class for <nav-item> elements.
-    customElements.define('nav-menuitem', NavMenuItem);
+    customElements.define('nav-item', NavItem);
 </script>

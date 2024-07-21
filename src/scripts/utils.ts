@@ -6,8 +6,8 @@ const setDataAttr = function(elem: HTMLElement | SVGSVGElement, attrName : strin
     let dummy = (attrVal) ? elem.dataset[attrName] = '': delete elem.dataset[attrName];
 }
 
-const setAriaAttr = function(elem: HTMLElement, attrName: string, attrVal : boolean) : void {
-    elem!.setAttribute(attrName, Boolean(attrVal).toString());
+const setBoolAttr = function(elem: HTMLElement, attrName: string, attrVal : boolean) : void {
+    elem.setAttribute(attrName, Boolean(attrVal).toString());
 }
 
-export default { getDataAttr, setDataAttr, setAriaAttr };
+export default { getDataAttr, setDataAttr, setBoolAttr };

@@ -7,4 +7,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
 	site: 'https://example.com',
 	integrations: [lit(), mdx(), sitemap()],
+	redirects: {
+		'/gallery': '/',
+		'/gallery/photography': '/photography',
+	}
 });

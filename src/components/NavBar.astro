@@ -1,6 +1,5 @@
 ---
-import NavLink from './NavLink.astro';
-import NavMenuItem from './NavMenuItem.astro';
+import NavItem from './NavItem.astro';
 import ButtonTheme from './ButtonTheme.astro';
 ---
 <aside>
@@ -14,9 +13,9 @@ import ButtonTheme from './ButtonTheme.astro';
 			</a>
 		</div>
 		<div id="nav-right">
-			<NavMenuItem href="/" label="Home" isToggle={false}>Home</NavMenuItem>
-			<NavMenuItem href="/blog" label="Blog" isToggle={false}>Blog</NavMenuItem>
-			<NavMenuItem href="/gallery" label="Gallery" isToggle={true}>Gallery</NavMenuItem>
+			<NavItem href="/" label="Home">Home</NavItem>
+			<NavItem href="/gallery" label="Photography">Photography</NavItem>
+			<NavItem href="/gallery" label="Gallery" isToggle> Gallery</NavItem>
 			<ButtonTheme label="Moon"></ButtonTheme>
 		</div>
 	</nav>
@@ -60,6 +59,7 @@ import ButtonTheme from './ButtonTheme.astro';
 		 }
 		 span {
 			display:inline-block;
+			visibility: visible;
 			min-width: 192px;
 			font-family: 'Emulogic';
 			color: var(--color-nav-link);
@@ -95,7 +95,7 @@ import ButtonTheme from './ButtonTheme.astro';
 				width: 128px;
 			}
 			span {
-				display: none;
+				visibility: hidden;
 			}
 		}
 	}

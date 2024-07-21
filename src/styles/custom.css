@@ -20,6 +20,7 @@
 	--color-secondary: var(--black-warm);
 	--color-nav: var(--grey-warm-light);
 	--color-nav-item: var(--grey-warm);
+	--color-nav-item-hover: var(--white-warm);
 	--color-nav-link: var(--black-warm);
 	--color-footer: var(--grey-warm);
 
@@ -44,8 +45,9 @@
 	/* body, header, footer */
 	--color-primary: var(--grey-cool-dark);
 	--color-secondary: var(--white);
-	--color-nav: var(--grey-cool); 
-	--color-nav-item: green;
+	--color-nav: var(--grey-cool);
+	--color-nav-item: var(--grey-cool-dark);
+	--color-nav-item-hover: green;
 	--color-nav-link: greenyellow;
 	--color-footer: var(--purple-dark);
 
