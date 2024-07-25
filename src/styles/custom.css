@@ -87,6 +87,16 @@ a:active {
 a:hover {
 	color: var(--anchor-active);
 }
+button {
+	background: none;
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: inherit;
+}
 .sr-only {
 	position: absolute !important;
 	height: 1px;

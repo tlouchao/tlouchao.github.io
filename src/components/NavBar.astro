@@ -13,9 +13,9 @@ import ButtonTheme from './ButtonTheme.astro';
 			</a>
 		</div>
 		<div id="nav-right">
-			<NavItem href="/" label="Home">Home</NavItem>
-			<NavItem href="/gallery" label="Photography">Photography</NavItem>
-			<NavItem href="/gallery" label="Gallery" isToggle> Gallery</NavItem>
+			<NavItem href="/" label="Home"></NavItem>
+			<NavItem href="/blog"></NavItem>
+			<NavItem href="/gallery" isToggle></NavItem>
 			<ButtonTheme label="Moon"></ButtonTheme>
 		</div>
 	</nav>
@@ -31,7 +31,7 @@ import ButtonTheme from './ButtonTheme.astro';
 		justify-content: space-between;
 		padding: 0 0 0 1em; /* top, right, bottom, left */
 		gap: 1em;
-		z-index: 3;
+		z-index: 1;
 		background-color: var(--color-nav);
 
 		/* Position and Size */
@@ -85,7 +85,7 @@ import ButtonTheme from './ButtonTheme.astro';
 			padding: 1em 0 1em 0; /* top, right, bottom, left */
 
 			/* Position and Size */
-			width: auto;
+			width: min(20%, 240px);
 			height: 100%;
 			
 		}
@@ -97,6 +97,9 @@ import ButtonTheme from './ButtonTheme.astro';
 			span {
 				visibility: hidden;
 			}
+		}
+		#nav-right {
+			width: 100%;
 		}
 	}
 </style>

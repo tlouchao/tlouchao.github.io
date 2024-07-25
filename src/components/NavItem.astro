@@ -1,4 +1,5 @@
 ---
+import { Debug } from 'astro:components';
 import NavArrow from './svg/NavArrow.astro'
 
 interface Props {
@@ -8,16 +9,31 @@ interface Props {
   isExpand?: boolean;
 }
 
-const { href, label = undefined, isToggle = false, isExpand = false } = Astro.props;
+let { href, label = undefined, isToggle = false, isExpand = false } = Astro.props;
+
+// Helper function to capitalize button labels
+const getLabel = function(href: string | undefined) : string {
+    let ret = href?.split('/').pop();
+    ret = (ret == undefined) ? '' : ret;
+    ret = ret.charAt(0).toUpperCase() + ret.slice(1);
+    return ret;
+}
+
+// Create capitalized label
+if (label == undefined) {
+    label = getLabel(href);
+} else if (label == '/') {
+    label = "Home";
+}
 
 // get routes under href; workaround for Astro.glob string literal
-const files = await Astro.glob("../pages/**/*.astro");
-const ffiles = files.filter(file => file.url?.includes(href));
+let files = await Astro.glob("../pages/**/*.astro");
+let ffiles = files.filter(file => file.url?.includes(href));
+let subitems = ffiles.map(file => ({href: file.url, label: getLabel(file.url)}));
 
 const { pathname } = Astro.url;
 const matches = pathname.match(/[^\/]+/g);
 const subpath = matches ? matches?.[0] : '';
-
 const isCurrent = href === pathname || href === '/' + subpath;
 ---
 <nav-item data-toggle={isToggle} 
@@ -28,20 +44,18 @@ const isCurrent = href === pathname || href === '/' + subpath;
             aria-controls="">
         <NavArrow isToggle={isToggle} />
         <a href={href}>
-            <slot />
+            {label}
         </a>
     </button>
-    <!--
-    {ffiles.map((component) => (
-        <div>
-          {component.url}
-        </div>
-      ))}
-    -->
-    <div class="sub-items">
-        <div>
-            <p>Sub item</p>
-        </div>
+    <div class="sub-item">
+        {subitems.map((s) => (
+            <button>
+                <NavArrow />
+                <a href={s.href}>
+                    {s.label}
+                </a>
+            </button>
+        ))}
     </div>
 </nav-item>
 
@@ -53,11 +67,10 @@ const isCurrent = href === pathname || href === '/' + subpath;
     }
     button {
         display: flex;
+        align-items: center;
         width: 100%;
         height: 100%;
         padding: 0.5em;
-        border: none;
-        border-bottom: gray;
         background-color: var(--color-nav-item);
     }
     button:hover {
@@ -75,22 +88,42 @@ const isCurrent = href === pathname || href === '/' + subpath;
         display: none;
         visibility: hidden;
     }
-    button[aria-expanded="true"] + div {
+    button[aria-expanded="true"] + .sub-item {
         display: block;
         visibility: visible;
+    }
+    .sub-item button {
+        background-color: black;
+    }
+    .sub-item button:hover {
+        cursor: pointer;
+		background-color: var(--color-nav-item-hover);
+    }
+    .sub-item button:active {
+        color: var(--anchor-active);
+    }
+    .sub-item button a {
+        color: lime;
+        text-decoration: none;
     }
 
 	@media (min-width: 768px) {
         nav-item {
-            min-width: 180px;
+            width: 100%;
         }
         button {
             display: grid;
+            height: auto;
             grid-template-columns: 20px auto;
+            border-bottom: gray;
         }
         button a {
 		    text-align: left;
 	    }
+        .sub-item button {
+            display: grid;
+            grid-template-columns: 36px auto;
+        }
 	}
 </style>
 
@@ -100,6 +133,9 @@ import Utils from "../scripts/utils";
     class NavItem extends HTMLElement {
         constructor() {
             super();
+
+            // TODO: store expand/collapse state in nanostores
+            // TODO: Also forward button click to anchor for sub-items
 
             let href = "/gallery";
           
