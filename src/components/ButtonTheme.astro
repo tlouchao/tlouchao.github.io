@@ -34,34 +34,30 @@ const { label } = Astro.props;
 </style>
 
 <script>
-    import { setThemeDark, themeDark } from '../scripts/theme.js'
+    import { $themeDark } from '../scripts/stores/theme.js'
+    
     class ButtonTheme extends HTMLElement {
+
+        button : HTMLButtonElement | null;
+
         constructor() {
-            super();
+            super(); 
+            this.button = this.querySelector('button');
+            this.button?.addEventListener('click', this.handleClick);
+            this.setButtonTheme();
+        }
 
-            // get the button HTML element
-            const buttonTheme = this.querySelector('button');
+        handleClick = () => {
+            $themeDark.set(!$themeDark.get());
+            this.setButtonTheme();
+        }
 
-            // initialize the button
-            setThemeDark();
-            let dark = themeDark.get();
-            buttonTheme!.setAttribute('aria-pressed', String(dark));
-
-            buttonTheme!.addEventListener('click', () => handleClick());
-            
-            const handleClick = () => {
-                // set the state to be read by other components
-                themeDark.set(!themeDark.get());
-                
-                // add/remove class
-                setThemeDark();
-                let dark = themeDark.get();
-                buttonTheme!.setAttribute('aria-pressed', String(dark));
-            }
+        setButtonTheme = () => {
+            this.button?.setAttribute('aria-pressed', String($themeDark.get()));
         }
     }
 
     // Tell the browser to use our ButtonTheme class for <button-theme> elements.
     customElements.define('button-theme', ButtonTheme);
-    document.addEventListener('astro:after-swap', setThemeDark);
+
 </script>

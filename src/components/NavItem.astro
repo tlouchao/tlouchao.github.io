@@ -71,7 +71,8 @@ const isCurrent = href === pathname || href === '/' + subpath;
     }
     button[aria-current="true"] {
         font-weight: bold;
-        color: var(--color-nav-current);
+        color: var(--color-nav-link-current);
+        background-color: var(--color-nav-item-current);
     }
     button {
         display: flex;
@@ -105,6 +106,7 @@ const isCurrent = href === pathname || href === '/' + subpath;
     }
     .sub-item button a {
         color: var(--color-nav-sub-link);
+        font-weight: lighter;
     }
     .sub-item button:hover > a {
         color: inherit;
