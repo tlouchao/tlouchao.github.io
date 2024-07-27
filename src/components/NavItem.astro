@@ -1,7 +1,6 @@
 ---
-import { Debug } from 'astro:components';
-import NavArrow from '../icons/NavArrow.astro'
 import { Icon } from 'astro-icon/components'
+import { getLabel as uGetLabel } from "../scripts/utils";
 
 interface Props {
   href: string;
@@ -12,54 +11,52 @@ interface Props {
 
 let { href, label = undefined, isToggle = false, isExpand = false } = Astro.props;
 
-// Helper function to capitalize button labels
-const getLabel = function(href: string | undefined) : string {
-    let ret = href?.split('/').pop();
-    ret = (ret == undefined) ? '' : ret;
-    ret = ret.charAt(0).toUpperCase() + ret.slice(1);
-    return ret;
-}
-
 // Create capitalized label
 if (label == undefined) {
-    label = getLabel(href);
-} else if (label == '/') {
-    label = "Home";
+    label = (href == "/") ? "Home" : uGetLabel(href);
 }
+
+const { pathname } = Astro.url;
+const isCurrent = href === pathname;
+const ariaControls = label.toLowerCase() + '-items';
 
 // get routes under href; workaround for Astro.glob string literal
 let files = await Astro.glob("../pages/**/*.astro");
 let ffiles = files.filter(file => file.url?.includes(href));
-let subitems = ffiles.map(file => ({href: file.url, label: getLabel(file.url)}));
+let subitems = ffiles.map(file => (
+    {href: file.url, 
+     label: uGetLabel(file.url),
+     isCurrent: file.url === pathname,
+    }
+));
 
-const { pathname } = Astro.url;
-const matches = pathname.match(/[^\/]+/g);
-const subpath = matches ? matches?.[0] : '';
-const isCurrent = href === pathname || href === '/' + subpath;
 ---
 <nav-item data-toggle={isToggle} 
-          data-expand={isExpand}>
-    <button aria-label={label} 
-            aria-expanded={isExpand} 
-            aria-current={isCurrent} 
-            aria-controls="">
+          data-expand={isToggle ? isExpand : undefined}>
+    <button role={isToggle ? "button" : undefined}
+            aria-controls={isToggle ? ariaControls : undefined} 
+            aria-expanded={isToggle ? isExpand : undefined} 
+            aria-label={label} 
+            aria-current={isCurrent}>
         <Icon name="arrow" />
         <a href={href}>
             {label}
         </a>
     </button>
     {isToggle &&
-        <div class="sub-item">
-            {subitems.map((s) => (
+        <div class="sub-items" id={ariaControls}>
+            {subitems.map(s => (
                 <nav-item>
-                    <button aria-label={s.label}>
+                    <button aria-label={s.label}
+                            aria-current={s.isCurrent}>
                         <Icon name="arrow" />
                         <a href={s.href}>
                             {s.label}
                         </a>
                     </button>
                 </nav-item>
-            ))}
+                ))
+            }
         </div>
     }
 </nav-item>
@@ -100,22 +97,29 @@ const isCurrent = href === pathname || href === '/' + subpath;
 		color: inherit;
 		text-decoration: none;
 	}
-    button[aria-expanded="true"] + .sub-item {
-        display: block;
-        visibility: visible;
-    }
-    .sub-item {
+    .sub-items {
         display: none;
         visibility: hidden;
     }
-    .sub-item button a {
+    
+    button[aria-expanded="true"] + .sub-items {
+        display: block;
+        visibility: visible;
+    }
+
+    .sub-items button[aria-current="true"] {
+        font-weight: bold;
+        color: var(--color-nav-link-current);
+        background-color: var(--color-nav-item-current);
+    }
+    .sub-items button a {
         color: var(--color-nav-sub-link);
         font-weight: lighter;
     }
-    .sub-item button:hover > a {
+    .sub-items button:hover > a {
         color: inherit;
     }
-    .sub-item button:active > a {
+    .sub-items button:active > a {
         color: inherit;
     }
 	@media (min-width: 768px) {
@@ -144,7 +148,7 @@ const isCurrent = href === pathname || href === '/' + subpath;
         button a {
 		    text-align: left;
 	    }  
-        .sub-item button {
+        .sub-items button {
             grid-template-columns: 36px auto;
         }
 	}
@@ -152,39 +156,52 @@ const isCurrent = href === pathname || href === '/' + subpath;
 
 <script>
 import Utils from "../scripts/utils";
+import { $expand } from '../scripts/stores/expand.js'
 
     class NavItem extends HTMLElement {
+
+        button : HTMLButtonElement | null;
+        anchor : HTMLAnchorElement | null;
+
         constructor() {
             super();
+            this.button = this.querySelector('button');
+            this.anchor = this.querySelector('a');
 
-            // TODO: store expand/collapse state in nanostores
-          
-            const button = this.querySelector('button');
-            const svg = this.querySelector('svg')
-            const anchor = this.querySelector('a');
-            
-            const handleClick = (evt : MouseEvent) => {
-                if (Utils.getDataAttr(this, "toggle")) {
+            let expand = $expand.get()["gallery"];
+            this.setExpand(expand);
 
-                    // prevent href navigation / refresh
-                    evt.preventDefault();
+            this.button?.addEventListener('click', evt => this.handleClick(evt));
+        }
+        
+        handleClick = (evt : MouseEvent) => {
 
-                    // get and invert the attribute
-                    let isExpand = Utils.getDataAttr(this, "expand");
-                    isExpand = !isExpand;
+            if (Utils.getDataAttr(this, "toggle")) {
 
-                    // set the attribute
-                    Utils.setDataAttr(this, "expand", isExpand);
-                    Utils.setDataAttr(svg!, "expand", isExpand);
-                    Utils.setBoolAttr(button!, "aria-expanded", isExpand);
+                // prevent href navigation / refresh
+                evt.preventDefault();
 
-                } else {
-                    // forward click event to anchor tag
-				    anchor?.click();
+                // get and invert
+                let key = this.button?.getAttribute("aria-label")?.toLowerCase();
+                if (key) {
+                    let expand = !$expand.get()[key];
+                    $expand.setKey(key, expand);
+
+                    // set attribute on elements
+                    this.setExpand(expand);
                 }
-            }
 
-            button!.addEventListener('click', (evt : MouseEvent) => handleClick(evt));
+            } else {              
+                // forward click event to anchor tag
+                this.anchor?.click();
+            }
+        }
+
+        setExpand = (expand : boolean) => {
+            if (this.dataset["toggle"] != undefined) {
+                Utils.setDataAttr(this, "expand", expand);
+                Utils.setBoolAttr(this.button, "aria-expanded", expand);
+            }
         }
     }
 
