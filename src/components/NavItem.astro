@@ -1,6 +1,7 @@
 ---
 import { Debug } from 'astro:components';
-import NavArrow from './svg/NavArrow.astro'
+import NavArrow from '../icons/NavArrow.astro'
+import { Icon } from 'astro-icon/components'
 
 interface Props {
   href: string;
@@ -42,7 +43,7 @@ const isCurrent = href === pathname || href === '/' + subpath;
             aria-expanded={isExpand} 
             aria-current={isCurrent} 
             aria-controls="">
-        <NavArrow isToggle={isToggle} />
+        <Icon name="arrow" />
         <a href={href}>
             {label}
         </a>
@@ -51,8 +52,8 @@ const isCurrent = href === pathname || href === '/' + subpath;
         <div class="sub-item">
             {subitems.map((s) => (
                 <nav-item>
-                    <button>
-                        <NavArrow />
+                    <button aria-label={s.label}>
+                        <Icon name="arrow" />
                         <a href={s.href}>
                             {s.label}
                         </a>
@@ -68,6 +69,9 @@ const isCurrent = href === pathname || href === '/' + subpath;
     nav-item {
         display: flex;
         flex-direction: column;
+    }
+    [data-icon="arrow"] {
+        display: none;
     }
     button[aria-current="true"] {
         font-weight: bold;
@@ -96,13 +100,13 @@ const isCurrent = href === pathname || href === '/' + subpath;
 		color: inherit;
 		text-decoration: none;
 	}
-    button + div {
-        display: none;
-        visibility: hidden;
-    }
     button[aria-expanded="true"] + .sub-item {
         display: block;
         visibility: visible;
+    }
+    .sub-item {
+        display: none;
+        visibility: hidden;
     }
     .sub-item button a {
         color: var(--color-nav-sub-link);
@@ -118,6 +122,19 @@ const isCurrent = href === pathname || href === '/' + subpath;
         nav-item {
             width: 100%;
         }
+        [data-icon="arrow"] {
+            display: inherit;
+			visibility: hidden;
+			color: inherit;
+        }
+        nav-item[data-toggle] > button > [data-icon="arrow"] {
+            visibility: visible;
+            transform: rotate(90deg);
+        }
+        nav-item[data-toggle][data-expand] > button > [data-icon="arrow"] {
+            visibility: visible;
+            transform: rotate(180deg);
+        }
         button {
             display: grid;
             height: auto;
@@ -126,9 +143,8 @@ const isCurrent = href === pathname || href === '/' + subpath;
         }
         button a {
 		    text-align: left;
-	    }
+	    }  
         .sub-item button {
-            display: grid;
             grid-template-columns: 36px auto;
         }
 	}
