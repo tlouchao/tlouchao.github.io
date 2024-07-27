@@ -13,21 +13,28 @@
 
 	--blue: rgb(0, 60, 255);
 	--purple: rgb(180, 0, 255);
+	--purple-light: rgb(255, 180, 255);
 	--purple-dark: rgb(66, 0, 100);
 
 	/* body, header, footer */
 	--color-primary: var(--white-warm);
 	--color-secondary: var(--black-warm);
+	--color-footer: var(--grey-warm);
+
+	/* navbar */
 	--color-nav: var(--grey-warm-light);
 	--color-nav-item: var(--grey-warm);
 	--color-nav-item-hover: var(--white-warm);
+	--color-nav-item-active: var(--white-warm);
 	--color-nav-link: var(--black-warm);
-	--color-footer: var(--grey-warm);
+	--color-nav-link-hover: var(--color-secondary);
+	--color-nav-link-active: var(--color-secondary);
+	--color-nav-sub-link: var(--grey-warm-dark);
+	--color-nav-current: var(--white-warm);
 
 	/* links */
 	--anchor-link: var(--blue);
 	--anchor-active: var(--purple);
-	--button-active: white;
 
     /* fonts */
 	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
@@ -45,16 +52,22 @@
 	/* body, header, footer */
 	--color-primary: var(--grey-cool-dark);
 	--color-secondary: var(--white);
+	--color-footer: var(--purple-dark);
+
+	/* navbar */
 	--color-nav: var(--grey-cool);
 	--color-nav-item: var(--grey-cool-dark);
-	--color-nav-item-hover: green;
-	--color-nav-link: greenyellow;
-	--color-footer: var(--purple-dark);
+	--color-nav-item-hover: darkmagenta;
+	--color-nav-item-active: darkviolet;
+	--color-nav-link: turquoise;
+	--color-nav-link-hover: magenta;
+	--color-nav-link-active: lightcyan;
+	--color-nav-sub-link: chartreuse;
+	--color-nav-current: lightcyan;
 
 	/* links */
 	--anchor-link: cyan;
 	--anchor-active: magenta;
-	--button-active: magenta;
 }
 body {
 	padding: 0;

@@ -47,16 +47,20 @@ const isCurrent = href === pathname || href === '/' + subpath;
             {label}
         </a>
     </button>
-    <div class="sub-item">
-        {subitems.map((s) => (
-            <button>
-                <NavArrow />
-                <a href={s.href}>
-                    {s.label}
-                </a>
-            </button>
-        ))}
-    </div>
+    {isToggle &&
+        <div class="sub-item">
+            {subitems.map((s) => (
+                <nav-item>
+                    <button>
+                        <NavArrow />
+                        <a href={s.href}>
+                            {s.label}
+                        </a>
+                    </button>
+                </nav-item>
+            ))}
+        </div>
+    }
 </nav-item>
 
 <style>
@@ -65,23 +69,30 @@ const isCurrent = href === pathname || href === '/' + subpath;
         display: flex;
         flex-direction: column;
     }
+    button[aria-current="true"] {
+        font-weight: bold;
+        color: var(--color-nav-current);
+    }
     button {
         display: flex;
         align-items: center;
         width: 100%;
         height: 100%;
-        padding: 0.5em;
+        padding: 0.35em;
+        color: var(--color-nav-link);
         background-color: var(--color-nav-item);
     }
     button:hover {
         cursor: pointer;
+        color: var(--color-nav-link-hover);
 		background-color: var(--color-nav-item-hover);
     }
     button:active {
-        color: var(--anchor-active);
+        color: var(--color-nav-link-active);
+        background-color: var(--color-nav-item-active);
     }
 	button a {
-		color: var(--color-nav-link);
+		color: inherit;
 		text-decoration: none;
 	}
     button + div {
@@ -92,21 +103,15 @@ const isCurrent = href === pathname || href === '/' + subpath;
         display: block;
         visibility: visible;
     }
-    .sub-item button {
-        background-color: black;
-    }
-    .sub-item button:hover {
-        cursor: pointer;
-		background-color: var(--color-nav-item-hover);
-    }
-    .sub-item button:active {
-        color: var(--anchor-active);
-    }
     .sub-item button a {
-        color: lime;
-        text-decoration: none;
+        color: var(--color-nav-sub-link);
     }
-
+    .sub-item button:hover > a {
+        color: inherit;
+    }
+    .sub-item button:active > a {
+        color: inherit;
+    }
 	@media (min-width: 768px) {
         nav-item {
             width: 100%;
@@ -115,7 +120,7 @@ const isCurrent = href === pathname || href === '/' + subpath;
             display: grid;
             height: auto;
             grid-template-columns: 20px auto;
-            border-bottom: gray;
+            border-bottom: 1px solid var(--color-nav);
         }
         button a {
 		    text-align: left;
@@ -135,9 +140,6 @@ import Utils from "../scripts/utils";
             super();
 
             // TODO: store expand/collapse state in nanostores
-            // TODO: Also forward button click to anchor for sub-items
-
-            let href = "/gallery";
           
             const button = this.querySelector('button');
             const svg = this.querySelector('svg')
