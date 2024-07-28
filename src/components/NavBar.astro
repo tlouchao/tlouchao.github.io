@@ -53,16 +53,18 @@ import ButtonTheme from './ButtonTheme.astro';
 			text-decoration: none;
 		}
 		img {
-			width: 24px;
+			width: 28px;
 			border-radius: 50%;
 			border-style: none;
 		 }
 		 span {
-			display:inline-block;
-			visibility: visible;
-			min-width: 192px;
-			font-family: 'Emulogic';
-			color: var(--color-nav-link);
+			display: inline-flex;
+			color: var(--color-nav-label);
+			font-family: var(--nav-label-font-family);
+			font-size: xx-large;
+			line-height: 0;
+			min-width: 135px; /* font-size and font-family dependent */
+			transform: translateY(6.4px); /* how to use vertical-align? */
 		 }
 	}
 	#nav-right {
@@ -90,13 +92,16 @@ import ButtonTheme from './ButtonTheme.astro';
 			
 		}
 		#nav-left {
-			gap: 0em;
 			img {
-				width: 128px;
+				width: 140px;
 			}
 			span {
-				display: none;
-				visibility: hidden;
+				text-align: center;
+				font-size: x-large;
+				line-height: 1;
+				min-width: 0;
+				max-width: 64px; /* font-size and font-family dependent */
+				transform: translateY(3.2px); /* how to use vertical-align? */
 			}
 		}
 		#nav-right {

@@ -35,6 +35,11 @@
 	--color-nav-link-current: var(--color-secondary);
 	--color-nav-sub-link: maroon;
 
+	/* navlabel */
+	--color-nav-label: var(--goldenrod-dark);
+	--nav-label-font-family: 'Bebas';
+	--nav-label-font-size: xx-large;
+
 	/* links */
 	--anchor-link: var(--blue);
 	--anchor-active: var(--violet);
@@ -69,6 +74,9 @@
 	--color-nav-link-current: lightcyan;
 	--color-nav-sub-link: chartreuse;
 
+	/* navlabel */
+	--color-nav-label: magenta;
+
 	/* links */
 	--anchor-link: cyan;
 	--anchor-active: magenta;
@@ -90,7 +98,7 @@ nav {
 }
 h1, h2, h3, h4, h4, h5, h6 {
 	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
-	font-weight: 700;
+	font-weight: 500;
 }
 a:link {
 	color: var(--anchor-link);
@@ -130,6 +138,22 @@ button {
 }
 
 @font-face {
+	font-family: 'Emulogic';
+	src: url('/fonts/Emulogic/Emulogic.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Bebas';
+	src: url('/fonts/BebasNeue/BebasNeue-Regular.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
 	font-family: 'Roboto';
 	src: url('/fonts/Roboto/Roboto-Medium.ttf') format('truetype');
 	font-weight: 500;
@@ -165,14 +189,6 @@ button {
 	font-family: 'Rodin';
 	src: url('/fonts/Rodin-Pro-L.otf');
 	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Emulogic';
-	src: url('/fonts/Emulogic/Emulogic.ttf') format('truetype');
-	font-weight: 500;
 	font-style: normal;
 	font-display: swap;
 }

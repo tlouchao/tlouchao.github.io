@@ -128,14 +128,13 @@ let subitems = ffiles.map(file => (
     .sub-items button {
         padding-left: 1em;
     }
-    .sub-items button[aria-current="true"] {
-        font-weight: bold;
-        color: var(--color-nav-link-current);
-        background-color: var(--color-nav-item-current);
-    }
     .sub-items button a {
         color: var(--color-nav-sub-link);
         font-weight: lighter;
+    }
+    .sub-items button[aria-current="true"] a {
+        color: inherit;
+        font-weight: bolder;
     }
     .sub-items button:hover > a {
         color: inherit;
