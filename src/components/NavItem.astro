@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components'
-import { getLabel as uGetLabel } from "../scripts/utils";
+import { getLabel as uGetLabel } from '../scripts/utils';
 
 interface Props {
   href: string;
@@ -68,7 +68,20 @@ let subitems = ffiles.map(file => (
         flex-direction: column;
     }
     [data-icon="arrow"] {
+        margin-left: -0.5em;
         display: none;
+        visibility: hidden;
+        color: inherit;
+    }
+    nav-item[data-toggle] > button > [data-icon="arrow"] {
+        display: inherit;
+        visibility: visible;
+        transform: rotate(90deg);
+    }
+    nav-item[data-toggle][data-expand] > button > [data-icon="arrow"] {
+        display: inherit;
+        visibility: visible;
+        transform: rotate(180deg);
     }
     button[aria-current="true"] {
         font-weight: bold;
@@ -79,10 +92,11 @@ let subitems = ffiles.map(file => (
         display: flex;
         align-items: center;
         width: 100%;
-        height: 100%;
-        padding: 0.35em;
+        height: 40px;
+        padding: 0.5em;
         color: var(--color-nav-link);
         background-color: var(--color-nav-item);
+        border-left: 1px solid var(--color-nav);
     }
     button:hover {
         cursor: pointer;
@@ -97,7 +111,12 @@ let subitems = ffiles.map(file => (
 		color: inherit;
 		text-decoration: none;
 	}
+    a {
+	    line-height: 1;
+    }
     .sub-items {
+        position: fixed;
+        top: 40px;
         display: none;
         visibility: hidden;
     }
@@ -106,7 +125,9 @@ let subitems = ffiles.map(file => (
         display: block;
         visibility: visible;
     }
-
+    .sub-items button {
+        padding-left: 1em;
+    }
     .sub-items button[aria-current="true"] {
         font-weight: bold;
         color: var(--color-nav-link-current);
@@ -128,48 +149,47 @@ let subitems = ffiles.map(file => (
         }
         [data-icon="arrow"] {
             display: inherit;
-			visibility: hidden;
-			color: inherit;
-        }
-        nav-item[data-toggle] > button > [data-icon="arrow"] {
-            visibility: visible;
-            transform: rotate(90deg);
-        }
-        nav-item[data-toggle][data-expand] > button > [data-icon="arrow"] {
-            visibility: visible;
-            transform: rotate(180deg);
         }
         button {
             display: grid;
             height: auto;
-            grid-template-columns: 20px auto;
+            grid-template-columns: 12px auto;
             border-bottom: 1px solid var(--color-nav);
         }
         button a {
 		    text-align: left;
-	    }  
+	    }
+        .sub-items {
+            position: static;
+            top: none;
+        }
         .sub-items button {
-            grid-template-columns: 36px auto;
+            padding-left: 0.5em;
+            grid-template-columns: 24px auto;
         }
 	}
 </style>
 
 <script>
-import Utils from "../scripts/utils";
-import { $expand } from '../scripts/stores/expand.js'
+import Utils from '../scripts/utils';
+import { $expand } from '../scripts/stores/expand';
 
     class NavItem extends HTMLElement {
 
         button : HTMLButtonElement | null;
         anchor : HTMLAnchorElement | null;
+        label : string | undefined;
 
         constructor() {
             super();
             this.button = this.querySelector('button');
             this.anchor = this.querySelector('a');
+            this.label = this.button?.getAttribute("aria-label")?.toLowerCase();
 
-            let expand = $expand.get()["gallery"];
-            this.setExpand(expand);
+            if (this.label) {
+                let expand = $expand.get()[this.label];
+                this.setExpand(expand);
+            }
 
             this.button?.addEventListener('click', evt => this.handleClick(evt));
         }
@@ -182,10 +202,9 @@ import { $expand } from '../scripts/stores/expand.js'
                 evt.preventDefault();
 
                 // get and invert
-                let key = this.button?.getAttribute("aria-label")?.toLowerCase();
-                if (key) {
-                    let expand = !$expand.get()[key];
-                    $expand.setKey(key, expand);
+                if (this.label) {
+                    let expand = !$expand.get()[this.label];
+                    $expand.setKey(this.label, expand);
 
                     // set attribute on elements
                     this.setExpand(expand);

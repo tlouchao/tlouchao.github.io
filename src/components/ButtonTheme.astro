@@ -16,7 +16,7 @@ const { label } = Astro.props;
 	button {
         border: none;
         border-radius: 16px;
-		/*padding: 1em;*/
+		padding: 0.5em;
 		cursor: pointer;
 		transition: 0.25s ease;
 
@@ -35,7 +35,7 @@ const { label } = Astro.props;
 
 <script>
     import { $themeDark } from '../scripts/stores/theme.js'
-    
+
     class ButtonTheme extends HTMLElement {
 
         button : HTMLButtonElement | null;
