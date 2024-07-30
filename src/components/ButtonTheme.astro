@@ -1,49 +1,63 @@
 ---
-interface Props {
-	label: String;
-}
-
-const { label } = Astro.props;
+import { Icon } from 'astro-icon/components'
 ---
 <button-theme>
+    <span class="sr-only">Toggle Theme</span>
     <button>
-        <span class="sr-only">Toggle Theme</span>
-        <span>{label}</span>
+        <Icon name="moon-duotone" />
+        <Icon name="sun-duotone" />
     </button>
 </button-theme>
 
 <style>
+    button-theme {
+        display: inherit;
+        flex-direction: inherit;
+    }
 	button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5em;
+        width: var(--nav-wh);
+        height: var(--nav-wh);
         border: none;
         border-radius: 16px;
-		padding: 0.5em;
 		cursor: pointer;
-		transition: 0.25s ease;
-
-	}
-    button[aria-pressed='false'] {
-		background-color: goldenrod;
-	}
-    button[aria-pressed='true'] {
-		background-color: purple;
+		transition: 0.2s ease;
+        color: var(--color-nav-label);
 	}
     button:hover {
-        color: var(--button-active);
-		background-color: var(--gray-dark);
+        background-color: var(--color-nav-item);
 	}
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+    svg:nth-child(1) {
+        display: inherit;
+    }
+    svg:nth-child(2) {
+        display: none;
+    }
+    /* DESKTOP */
+	@media (min-width: 768px) {
+    }
 </style>
 
 <script>
     import { $themeDark } from '../scripts/stores/theme.js'
 
     class ButtonTheme extends HTMLElement {
-
         button : HTMLButtonElement | null;
-
+        svg: SVGSVGElement | null;
         constructor() {
-            super(); 
+            super();
+            
             this.button = this.querySelector('button');
             this.button?.addEventListener('click', this.handleClick);
+            this.svg = this.querySelector('svg'); // get the first SVG
+            
             this.setButtonTheme();
         }
 
@@ -53,7 +67,17 @@ const { label } = Astro.props;
         }
 
         setButtonTheme = () => {
-            this.button?.setAttribute('aria-pressed', String($themeDark.get()));
+            let dark = $themeDark.get();
+            if (this.button) {
+                this.button.setAttribute('aria-pressed', String(dark));
+            }
+            if (dark) {
+                this.svg?.setAttribute("style", "display: inherit;");
+                this.svg?.nextElementSibling?.setAttribute("style", "display: none;");
+            } else {
+                this.svg?.setAttribute("style", "display: none;");
+                this.svg?.nextElementSibling?.setAttribute("style", "display: inherit;");
+            }
         }
     }
 

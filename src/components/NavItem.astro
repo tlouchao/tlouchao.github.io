@@ -66,6 +66,7 @@ let subitems = ffiles.map(file => (
     nav-item {
         display: flex;
         flex-direction: column;
+        height: inherit;
     }
     [data-icon="arrow"] {
         margin-left: -0.5em;
@@ -92,7 +93,7 @@ let subitems = ffiles.map(file => (
         display: flex;
         align-items: center;
         width: 100%;
-        height: 40px;
+        height: 100%;
         padding: 0.5em;
         color: var(--color-nav-link);
         background-color: var(--color-nav-item);
@@ -133,7 +134,7 @@ let subitems = ffiles.map(file => (
         font-weight: lighter;
     }
     .sub-items button[aria-current="true"] a {
-        color: inherit;
+        color: var(--color-nav-sub-link-current);
         font-weight: bolder;
     }
     .sub-items button:hover > a {

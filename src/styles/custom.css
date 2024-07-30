@@ -24,6 +24,7 @@
 	--color-footer: var(--grey-warm);
 
 	/* navbar */
+	--nav-wh: 40px;
 	--color-nav: var(--grey-warm-light);
 	--color-nav-item: var(--grey-warm);
 	--color-nav-item-hover: var(--white-warm);
@@ -34,6 +35,7 @@
 	--color-nav-link-active: crimson;
 	--color-nav-link-current: var(--color-secondary);
 	--color-nav-sub-link: maroon;
+	--color-nav-sub-link-current: maroon;
 
 	/* navlabel */
 	--color-nav-label: var(--goldenrod-dark);
@@ -73,6 +75,7 @@
 	--color-nav-link-active: lightcyan;
 	--color-nav-link-current: lightcyan;
 	--color-nav-sub-link: chartreuse;
+	--color-nav-sub-link-current: lightcyan;
 
 	/* navlabel */
 	--color-nav-label: magenta;
@@ -81,6 +84,7 @@
 	--anchor-link: cyan;
 	--anchor-active: magenta;
 }
+
 body {
 	padding: 0;
 	margin: 0;
