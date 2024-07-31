@@ -21,14 +21,14 @@ import { Icon } from 'astro-icon/components'
         padding: 0.5em;
         width: var(--nav-wh);
         height: var(--nav-wh);
-        border: none;
-        border-radius: 16px;
 		cursor: pointer;
-		transition: 0.2s ease;
+        transition: color .25s ease;
+        border-left: 1px solid var(--color-nav);
         color: var(--color-nav-label);
+        background-color: var(--color-nav-item);
 	}
     button:hover {
-        background-color: var(--color-nav-item);
+        color: var(--color-secondary);
 	}
     svg {
         width: 100%;
@@ -42,6 +42,10 @@ import { Icon } from 'astro-icon/components'
     }
     /* DESKTOP */
 	@media (min-width: 768px) {
+        button {
+            border: none;
+            border-radius: 50%;
+        }
     }
 </style>
 

@@ -3,7 +3,7 @@ import NavItem from './NavItem.astro';
 import ButtonTheme from './ButtonTheme.astro';
 ---
 <aside>
-	<nav transition:persist>
+	<nav>
 		<div id="nav-left">
 			<a id="nav-left-icon" href="/">
 				<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />
@@ -74,15 +74,11 @@ import ButtonTheme from './ButtonTheme.astro';
 		display: inherit;
 		flex-direction: inherit;
 		height: 100%;
+		gap: 0;
 		#nav-items {
 			display: inherit;
 			flex-direction: inherit;
 			align-items: stretch;
-		}
-		#button-theme {
-			display: inherit;
-			flex-direction: inherit;
-			align-items: center;
 		}
 	}
 
@@ -119,9 +115,16 @@ import ButtonTheme from './ButtonTheme.astro';
 			}
 		}
 		#nav-right {
+			flex-direction: column-reverse;
+			justify-content: flex-end;
 			width: 100%;
+			gap: 1em;
 			#nav-items {
+				flex-direction: column;
 				width: 100%;
+			}
+			button-theme {
+				align-items: center;
 			}
 		}
 	}

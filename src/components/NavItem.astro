@@ -20,15 +20,25 @@ const { pathname } = Astro.url;
 const isCurrent = href === pathname;
 const ariaControls = label.toLowerCase() + '-items';
 
+if (isCurrent) {
+    console.log("Is top level current: " + href);
+}
+
 // get routes under href; workaround for Astro.glob string literal
 let files = await Astro.glob("../pages/**/*.astro");
 let ffiles = files.filter(file => file.url?.includes(href));
+
 let subitems = ffiles.map(file => (
     {href: file.url, 
      label: uGetLabel(file.url),
      isCurrent: file.url === pathname,
     }
 ));
+
+subitems.forEach(a => {
+    console.log("Href: " + a.href + " Current:" + a.isCurrent);
+});
+console.log('\n')
 
 ---
 <nav-item data-toggle={isToggle} 
@@ -84,11 +94,6 @@ let subitems = ffiles.map(file => (
         visibility: visible;
         transform: rotate(180deg);
     }
-    button[aria-current="true"] {
-        font-weight: bold;
-        color: var(--color-nav-link-current);
-        background-color: var(--color-nav-item-current);
-    }
     button {
         display: flex;
         align-items: center;
@@ -98,6 +103,12 @@ let subitems = ffiles.map(file => (
         color: var(--color-nav-link);
         background-color: var(--color-nav-item);
         border-left: 1px solid var(--color-nav);
+        border-right: 1px solid var(--color-nav);
+    }
+    button[aria-current="true"] {
+        font-weight: bold;
+        color: var(--color-nav-link-current);
+        background-color: var(--color-nav-item-current);
     }
     button:hover {
         cursor: pointer;
@@ -111,23 +122,24 @@ let subitems = ffiles.map(file => (
 	button a {
 		color: inherit;
 		text-decoration: none;
+        line-height: 1;
 	}
-    a {
-	    line-height: 1;
-    }
-    .sub-items {
-        position: fixed;
-        top: 40px;
+    button[aria-expanded="false"] + .sub-items {
+        position: static;
+        top: none;
         display: none;
         visibility: hidden;
     }
-    
     button[aria-expanded="true"] + .sub-items {
+        position: fixed;
+        top: 40px;
         display: block;
         visibility: visible;
     }
     .sub-items button {
         padding-left: 1em;
+        border-top: 1px solid var(--color-nav);
+        border-bottom: 1px solid var(--color-nav);
     }
     .sub-items button a {
         color: var(--color-nav-sub-link);
@@ -154,12 +166,13 @@ let subitems = ffiles.map(file => (
             display: grid;
             height: auto;
             grid-template-columns: 12px auto;
+            border-top: 1px solid var(--color-nav);
             border-bottom: 1px solid var(--color-nav);
         }
         button a {
 		    text-align: left;
 	    }
-        .sub-items {
+        button[aria-expanded="true"] + .sub-items {
             position: static;
             top: none;
         }
