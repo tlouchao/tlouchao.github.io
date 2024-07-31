@@ -31,4 +31,4 @@ export const getLabel = function(href: string | undefined) : string {
 
 // ------------------------------- Export --------------------------------- //
 
-export default { getLabel, getDataAttr, setDataAttr, setBoolAttr };
+export default { getDataAttr, setDataAttr, setBoolAttr };

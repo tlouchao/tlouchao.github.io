@@ -1,3 +1,7 @@
+
+@use 'fonts';
+@use 'mixins';
+
 :root {
 	--black: rgb(15, 18, 20);
 	--black-warm: rgb(20, 18, 15);
@@ -26,6 +30,7 @@
 	/* navbar */
 	--nav-wh: 40px;
 	--color-nav: var(--grey-warm-light);
+	--color-nav-rgba: rgba(210, 215, 220, .5);
 	--color-nav-item: var(--grey-warm);
 	--color-nav-item-hover: var(--white-warm);
 	--color-nav-item-active: var(--white-warm);
@@ -66,6 +71,7 @@
 
 	/* navbar */
 	--color-nav: var(--grey-cool);
+	--color-nav-rgba: rgba(65, 70, 75, .5);
 	--color-nav-item: var(--grey-cool-dark);
 	--color-nav-item-hover: darkmagenta;
 	--color-nav-item-active: darkmagenta;
@@ -91,6 +97,7 @@ body {
 	background-color: var(--color-primary);
 	color: var(--color-secondary);
 	height: 100%;
+	
 }
 main {
 	margin: 1em;
@@ -104,20 +111,13 @@ h1, h2, h3, h4, h4, h5, h6 {
 	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
 	font-weight: 500;
 }
-a:link {
+a:link, a:visited {
 	color: var(--anchor-link);
 }
-a:visited {
-	color: var(--anchor-link);
-}
-a:active {
-	color: var(--anchor-active);
-}
-a:hover {
+a:hover, a:active {
 	color: var(--anchor-active);
 }
 button {
-	background: none;
 	color: inherit;
 	font: inherit;
 	cursor: pointer;
@@ -139,60 +139,4 @@ button {
 	clip-path: inset(50%);
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
-}
-
-@font-face {
-	font-family: 'Emulogic';
-	src: url('/fonts/Emulogic/Emulogic.ttf') format('truetype');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Bebas';
-	src: url('/fonts/BebasNeue/BebasNeue-Regular.ttf') format('truetype');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto/Roboto-Medium.ttf') format('truetype');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto/Roboto-Light.ttf') format('truetype');
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto/Roboto-Bold.ttf') format('truetype');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Rodin';
-	src: url('/fonts/Rodin-Pro-M.otf');
-	font-weight: 500;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'Rodin';
-	src: url('/fonts/Rodin-Pro-L.otf');
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
 }

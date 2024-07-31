@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
 import { getLabel as uGetLabel } from '../scripts/utils';
+import '../styles/components/navitem.scss'
 
 interface Props {
   href: string;
@@ -20,10 +21,6 @@ const { pathname } = Astro.url;
 const isCurrent = href === pathname;
 const ariaControls = label.toLowerCase() + '-items';
 
-if (isCurrent) {
-    console.log("Is top level current: " + href);
-}
-
 // get routes under href; workaround for Astro.glob string literal
 let files = await Astro.glob("../pages/**/*.astro");
 let ffiles = files.filter(file => file.url?.includes(href));
@@ -34,12 +31,6 @@ let subitems = ffiles.map(file => (
      isCurrent: file.url === pathname,
     }
 ));
-
-subitems.forEach(a => {
-    console.log("Href: " + a.href + " Current:" + a.isCurrent);
-});
-console.log('\n')
-
 ---
 <nav-item data-toggle={isToggle} 
           data-expand={isToggle ? isExpand : undefined}>
@@ -70,118 +61,6 @@ console.log('\n')
         </div>
     }
 </nav-item>
-
-<style>
-	/* Navigation Item */
-    nav-item {
-        display: flex;
-        flex-direction: column;
-        height: inherit;
-    }
-    [data-icon="arrow"] {
-        margin-left: -0.5em;
-        display: none;
-        visibility: hidden;
-        color: inherit;
-    }
-    nav-item[data-toggle] > button > [data-icon="arrow"] {
-        display: inherit;
-        visibility: visible;
-        transform: rotate(90deg);
-    }
-    nav-item[data-toggle][data-expand] > button > [data-icon="arrow"] {
-        display: inherit;
-        visibility: visible;
-        transform: rotate(180deg);
-    }
-    button {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        padding: 0.5em;
-        color: var(--color-nav-link);
-        background-color: var(--color-nav-item);
-        border-left: 1px solid var(--color-nav);
-        border-right: 1px solid var(--color-nav);
-    }
-    button[aria-current="true"] {
-        font-weight: bold;
-        color: var(--color-nav-link-current);
-        background-color: var(--color-nav-item-current);
-    }
-    button:hover {
-        cursor: pointer;
-        color: var(--color-nav-link-hover);
-		background-color: var(--color-nav-item-hover);
-    }
-    button:active {
-        color: var(--color-nav-link-active);
-        background-color: var(--color-nav-item-active);
-    }
-	button a {
-		color: inherit;
-		text-decoration: none;
-        line-height: 1;
-	}
-    button[aria-expanded="false"] + .sub-items {
-        position: static;
-        top: none;
-        display: none;
-        visibility: hidden;
-    }
-    button[aria-expanded="true"] + .sub-items {
-        position: fixed;
-        top: 40px;
-        display: block;
-        visibility: visible;
-    }
-    .sub-items button {
-        padding-left: 1em;
-        border-top: 1px solid var(--color-nav);
-        border-bottom: 1px solid var(--color-nav);
-    }
-    .sub-items button a {
-        color: var(--color-nav-sub-link);
-        font-weight: lighter;
-    }
-    .sub-items button[aria-current="true"] a {
-        color: var(--color-nav-sub-link-current);
-        font-weight: bolder;
-    }
-    .sub-items button:hover > a {
-        color: inherit;
-    }
-    .sub-items button:active > a {
-        color: inherit;
-    }
-	@media (min-width: 768px) {
-        nav-item {
-            width: 100%;
-        }
-        [data-icon="arrow"] {
-            display: inherit;
-        }
-        button {
-            display: grid;
-            height: auto;
-            grid-template-columns: 12px auto;
-            border-top: 1px solid var(--color-nav);
-            border-bottom: 1px solid var(--color-nav);
-        }
-        button a {
-		    text-align: left;
-	    }
-        button[aria-expanded="true"] + .sub-items {
-            position: static;
-            top: none;
-        }
-        .sub-items button {
-            padding-left: 0.5em;
-            grid-template-columns: 24px auto;
-        }
-	}
-</style>
 
 <script>
 import Utils from '../scripts/utils';

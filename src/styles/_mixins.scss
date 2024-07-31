@@ -1,0 +1,48 @@
+@mixin flex-row {
+    display: flex;
+	flex-direction: row;
+}
+
+@mixin flex-col {
+    display: flex;
+	flex-direction: column;
+}
+
+@mixin flex-inherit {
+    display: flex;
+	flex-direction: inherit;
+}
+
+@mixin visible-block {
+    display: block;
+    visibility: visible;
+}
+
+@mixin visible {
+    display: inherit;
+    visibility: visible;
+}
+
+@mixin invisible {
+    display: none;
+    visibility: hidden;
+}
+
+@mixin set-color-bgcolor($color: white, $bgcolor: black) {
+    color: $color;
+    background-color: $bgcolor;
+}
+
+@mixin border-top-bottom($color : white) {
+    border-top: 1px solid $color;
+    border-bottom: 1px solid $color;
+    border-left: none;
+    border-right: none;
+}
+
+@mixin border-left-right($color : white) {
+    border-top: none;
+    border-bottom: none;
+    border-left: 1px solid $color;
+    border-right: 1px solid $color;
+}

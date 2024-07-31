@@ -1,0 +1,110 @@
+@use '../mixins';
+
+/* MOBILE */
+[data-icon=arrow] {
+    @include mixins.invisible;
+    margin-left: -0.5em;
+    color: inherit;
+}
+nav-item[data-toggle] > button > [data-icon=arrow] {
+    @include mixins.visible;
+    transform: rotate(90deg);
+}
+nav-item[data-toggle][data-expand] > button > [data-icon=arrow] {
+    @include mixins.visible;
+    transform: rotate(180deg);
+}
+nav-item {
+    @include mixins.flex-col;
+    height: inherit;
+    button {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0.5em;
+        @include mixins.border-left-right(
+            var(--color-nav-rgba));
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link), var(--color-nav-item));
+        a, a:link, a:visited {
+            color: inherit;
+            text-decoration: none;
+            line-height: 1;
+        }
+    }
+    button[aria-current=true] {
+        font-weight: bold;
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link-current), var(--color-nav-item-current));
+        a, a:link, a:visited {
+            color: inherit;
+        }
+    }
+    button:hover {
+        cursor: pointer;
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link-hover), var(--color-nav-item-hover));
+    }
+    button:active {
+        cursor: pointer;
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link-active), var(--color-nav-item-active));
+    }
+    button[aria-expanded=false] + .sub-items {
+        position: static;
+        top: none;
+        @include mixins.invisible;
+    }
+    button[aria-expanded=true] + .sub-items {
+        position: fixed;
+        top: var(--nav-wh);
+        @include mixins.visible-block;
+    }
+    .sub-items {
+        button {
+            padding-left: 1em;
+            @include mixins.border-top-bottom(var(--color-nav-rgba));
+        }
+        button a {
+            color: var(--color-nav-sub-link);
+            font-weight: lighter;
+        }
+        button[aria-current=true] a {
+            color: var(--color-nav-sub-link-current);
+            font-weight: bolder;
+        }
+        button:hover > a, button:active > a {
+            color: inherit;
+        }
+    } /* sub-items */
+} /* nav-item */
+
+/* DESKTOP */
+@media (min-width: 768px) {
+    [data-icon=arrow] {
+        display: inherit;
+    }
+    nav-item {
+        width: 100%;
+        button {
+            display: grid;
+            height: auto;
+            grid-template-columns: 12px auto;
+            @include mixins.border-top-bottom(var(--color-nav-rgba));
+            a {
+                text-align: left;
+            }
+        }
+        button[aria-expanded=true] + .sub-items {
+            position: static;
+            top: none;
+        }
+        .sub-items {
+            button {
+                padding-left: 0.5em;
+                grid-template-columns: 24px auto;
+            }
+        } /* sub-items */
+    } /* nav-item */
+}
