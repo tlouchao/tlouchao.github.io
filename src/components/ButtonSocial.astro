@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    href: string;
+    name: string;
+}
+
+let {href, name}  = Astro.props;
+---
+
+<button-social>
+    <span class="sr-only">{name + " Button"}</span>
+    <button>
+        <a href={href}>
+            <Icon name={name} />
+        </a>
+    </button>
+</button-social>
+
+<style>
+    button {
+        background-color: transparent;
+    }
+</style>
+
+<script>
+    class ButtonSocial extends HTMLElement {
+        constructor() {
+            super();
+        }
+    }
+    // Tell the browser to use our ButtonSocial class for <button-social> elements.
+    customElements.define('button-social', ButtonSocial);
+</script>
+

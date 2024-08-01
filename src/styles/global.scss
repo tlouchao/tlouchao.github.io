@@ -9,9 +9,11 @@
 	--white-warm: rgb(245, 240, 235);
 	--grey-cool: rgb(65, 70, 75);
 	--grey-cool-light: rgb(210, 215, 220);
+	--grey-cool-mddark: rgb(25, 30, 35);
 	--grey-cool-dark: rgb(40, 45, 50);
 	--grey-warm: rgb(175, 170, 165);
 	--grey-warm-light: rgb(210, 205, 200);
+	--grey-warm-mddark: rgb(155, 150, 145);
 	--grey-warm-dark: rgb(50, 45, 40);
 	--header-box-shadow: 0 2px 8px rgba(15, 18, 25, 25%);
 
@@ -39,6 +41,7 @@
 	--color-nav-link-hover: maroon;
 	--color-nav-link-active: crimson;
 	--color-nav-link-current: var(--color-secondary);
+	--color-nav-sub-item: var(--grey-warm-mddark);
 	--color-nav-sub-link: maroon;
 	--color-nav-sub-link-current: maroon;
 
@@ -80,6 +83,7 @@
 	--color-nav-link-hover: magenta;
 	--color-nav-link-active: lightcyan;
 	--color-nav-link-current: lightcyan;
+	--color-nav-sub-item: var(--grey-cool-mddark);
 	--color-nav-sub-link: chartreuse;
 	--color-nav-sub-link-current: lightcyan;
 

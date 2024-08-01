@@ -5,6 +5,7 @@
     @include mixins.invisible;
     margin-left: -0.5em;
     color: inherit;
+    transition: transform .5s ease;
 }
 nav-item[data-toggle] > button > [data-icon=arrow] {
     @include mixins.visible;
@@ -64,18 +65,31 @@ nav-item {
     .sub-items {
         button {
             padding-left: 1em;
-            @include mixins.border-top-bottom(var(--color-nav-rgba));
-        }
-        button a {
-            color: var(--color-nav-sub-link);
             font-weight: lighter;
+            @include mixins.border-top-bottom(
+                var(--color-nav-rgba));
+            @include mixins.set-color-bgcolor(
+            var(--color-nav-sub-link), var(--color-nav-sub-item));
+            a, a:link, a:visited {
+                color: inherit;
+            }
         }
-        button[aria-current=true] a {
-            color: var(--color-nav-sub-link-current);
+
+        button[aria-current=true] {
             font-weight: bolder;
+            @include mixins.set-color-bgcolor(
+                var(--color-nav-sub-link-current), var(--color-nav-item-current));
+            a, a:link, a:visited {
+                color: inherit;
+            }
         }
-        button:hover > a, button:active > a {
-            color: inherit;
+        button:hover {
+            @include mixins.set-color-bgcolor(
+                var(--color-nav-link-hover), var(--color-nav-item-hover));
+        }
+        button:active {
+            @include mixins.set-color-bgcolor(
+                var(--color-nav-link-active), var(--color-nav-item-active));
         }
     } /* sub-items */
 } /* nav-item */

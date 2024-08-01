@@ -1,5 +1,6 @@
 ---
 import NavItem from './NavItem.astro';
+import ButtonSocial from './ButtonSocial.astro';
 import ButtonTheme from './ButtonTheme.astro';
 import "../styles/components/navbar.scss";
 ---
@@ -21,6 +22,28 @@ import "../styles/components/navbar.scss";
 				<NavItem href="/gallery" isToggle></NavItem>
 			</div>
 			<ButtonTheme />
+			<div id="social">
+				<ButtonSocial href="/" name="linkedin" />
+				<ButtonSocial href="/" name="github" />
+				<ButtonSocial href="/" name="rss" />
+			</div>
 		</div>
 	</nav>
 </aside>
+
+<script>
+
+	//TODO: Auto collapse sub items if on mobile device
+	//TODO: On click event outside of sub items, collapse the sub items
+
+	const enableAutoCollapseSubItems = () => {
+		let mql = window.matchMedia("(min-width: 768px)");
+		if (mql.matches) { // desktop, do nothing
+			// console.log("desktop: " + Boolean(mql.matches).toString());
+		}
+	}
+
+	window.addEventListener('load', enableAutoCollapseSubItems)
+	window.addEventListener('resize',  enableAutoCollapseSubItems)
+
+</script>
