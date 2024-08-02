@@ -2,9 +2,10 @@
 import Layout from '../../../layouts/PageLayout.astro';
 
 const pathname = Astro.url.pathname;
+const parr = Array(50).fill("Check the vertical scrollbar behavior");
 ---
 
 <Layout>
-    <p>{pathname}</p>
+    {parr.map(x => <p>{x}</p>)}
 	<p>This page is found under the art subdirectory</p>
 </Layout>

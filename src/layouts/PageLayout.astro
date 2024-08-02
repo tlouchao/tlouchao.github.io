@@ -19,11 +19,13 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
 	<body class="theme-dark">
         <NavBar />
         <div id="nav-layout">
-            <div id="page-layout">
+            <div id="header-layout">
                 <HeaderImage src='/blog-placeholder-1.jpg' />
-                <main>
-                    <slot />
-                </main>
+                <div id="main-layout">
+                    <main>
+                        <slot />
+                    </main>
+                </div>
                 <Footer />
             </div>
         </div>
@@ -34,8 +36,9 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
     /* MOBILE */
     #nav-layout {
         padding-left: 0;
+        padding-right: 0;
     }
-    #page-layout {
+    #header-layout {
         display: grid;
         grid-template-rows: auto 1fr auto;
         width: 100%;
@@ -45,6 +48,15 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
 	@media (min-width: 768px) {
         #nav-layout {
             padding-left: min(25%, 240px); /* Navbar offset */
+        }
+        #main-layout {
+            display: grid;
+            grid-template-columns: auto 0;
+        }
+    }
+    @media (min-width: 992px) {
+        #main-layout {
+            /* TODO: padding-right for current page navigation */
         }
     }
     

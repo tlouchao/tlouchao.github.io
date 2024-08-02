@@ -5,7 +5,7 @@
     @include mixins.invisible;
     margin-left: -0.5em;
     color: inherit;
-    transition: transform .5s ease;
+    transition: transform .125s ease;
 }
 nav-item[data-toggle] > button > [data-icon=arrow] {
     @include mixins.visible;
@@ -106,6 +106,7 @@ nav-item {
             height: auto;
             grid-template-columns: 12px auto;
             @include mixins.border-top-bottom(var(--color-nav-rgba));
+            border-right: 1px solid var(--color-nav-rgba);
             a {
                 text-align: left;
             }

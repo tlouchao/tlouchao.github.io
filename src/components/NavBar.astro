@@ -16,15 +16,16 @@ import "../styles/components/navbar.scss";
 		</div>
 		<div id="nav-right">
 			<div id="nav-items">
-				<NavItem href="/"></NavItem>
 				<NavItem href="/projects"></NavItem>
 				<NavItem href="/blog"></NavItem>
 				<NavItem href="/gallery" isToggle></NavItem>
 			</div>
-			<ButtonTheme />
+			<div id="nav-theme">
+				<ButtonTheme />
+			</div>
 			<div id="nav-social">
 				<ButtonSocial href="/" name="linkedin" />
-				<ButtonSocial href="/" name="github" />
+				<ButtonSocial href="https://github.com/tlouchao" name="github" />
 				<ButtonSocial href="/" name="rss" />
 			</div>
 		</div>
@@ -33,6 +34,7 @@ import "../styles/components/navbar.scss";
 
 <script>
 
+	//TODO: mail-to
 	//TODO: Auto collapse sub items if on mobile device
 	//TODO: On click event outside of sub items, collapse the sub items
 

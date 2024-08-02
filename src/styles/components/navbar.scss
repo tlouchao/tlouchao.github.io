@@ -51,7 +51,9 @@ nav {
     gap: 0;
     #nav-items {
         @include mixins.flex-inherit;
-        align-items: stretch;
+    }
+    #nav-social {
+        order: 3;
     }
 }
 
@@ -64,12 +66,12 @@ nav {
         flex-direction: column;
         align-items: center;
         justify-content: start;
-        padding: 1em 0 1em 0; /* top, right, bottom, left */
+        padding: 1.5em 0 1em 0; /* top, right, bottom, left */
 
         /* Position and Size */
         width: min(25%, 240px);
         height: 100%;
-        
+        overflow-y: auto; 
     }
     #nav-left {
         gap: 0.5em;
@@ -86,16 +88,20 @@ nav {
         }
     }
     #nav-right {
-        flex-direction: column-reverse;
-        justify-content: flex-end;
+        align-items: center;
         width: 100%;
         gap: 1em;
         #nav-items {
-            flex-direction: column;
             width: 100%;
+            order: 2;
+            flex-grow: 1;
         }
-        button-theme {
-            align-items: center;
+        #nav-theme {
+            order: 1;
+        }
+        #nav-social {
+            margin-top: -0.75em;
+            order: 3;
         }
     }
 }
