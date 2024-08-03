@@ -17,14 +17,11 @@ import { Icon } from 'astro-icon/components'
         flex-direction: inherit;
 
         button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
             padding: 0.5em;
             width: var(--nav-wh);
             height: var(--nav-wh);
             cursor: pointer;
-            transition: color .25s ease;
             border-left: 1px solid var(--color-nav-rgba);
             color: var(--color-nav-label);
             background-color: var(--color-nav-item);
@@ -35,17 +32,21 @@ import { Icon } from 'astro-icon/components'
         svg {
             width: 100%;
             height: 100%;
+            transition: all 0.25s ease;
+            transition-property: color, opacity;
         }
         svg:nth-child(1) {
-            display: inherit;
+            opacity: 1;
+            width: 100%;
+            height: 100%;
         }
         svg:nth-child(2) {
-            display: none;
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
         [data-icon="moon-duotone"] {
-            margin-top: 1.8px; /* minor */
-            width: 90%;
-            height: 90%;
+            margin-top: 1px; /* minor */
         }
     } /* button theme */
 
@@ -64,14 +65,18 @@ import { Icon } from 'astro-icon/components'
 
     class ButtonTheme extends HTMLElement {
         button : HTMLButtonElement | null;
-        svg: SVGSVGElement | null;
+        svg0: SVGSVGElement | null;
+        svg1: SVGSVGElement | null;
         constructor() {
             super();
             
             this.button = this.querySelector('button');
             this.button?.addEventListener('click', this.handleClick);
-            this.svg = this.querySelector('svg'); // get the first SVG
             
+            let svgs = this.querySelectorAll('svg');
+            this.svg0 = svgs[0];
+            this.svg1 = svgs[1];
+
             this.setButtonTheme();
         }
 
@@ -86,11 +91,11 @@ import { Icon } from 'astro-icon/components'
                 this.button.setAttribute('aria-pressed', String(dark));
             }
             if (dark) {
-                this.svg?.setAttribute("style", "display: inherit;");
-                this.svg?.nextElementSibling?.setAttribute("style", "display: none;");
+                this.svg0?.setAttribute('style', 'opacity: 1; width: 100%; height: 100%;')
+                this.svg1?.setAttribute('style', 'opacity: 0; width: 0; height: 0;')
             } else {
-                this.svg?.setAttribute("style", "display: none;");
-                this.svg?.nextElementSibling?.setAttribute("style", "display: inherit;");
+                this.svg0?.setAttribute('style', 'opacity: 0; width: 0; height: 0;')
+                this.svg1?.setAttribute('style', 'opacity: 1; width: 100%; height: 100%;')
             }
         }
     }

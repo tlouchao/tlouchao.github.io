@@ -66,7 +66,6 @@ let subitems = ffiles.map(file => (
 import Utils from '../scripts/utils';
 import Exp from '../scripts/stores/expand';
 import { $expand } from '../scripts/stores/expand';
-import { passthroughImageService } from 'astro/config';
 
     class NavItem extends HTMLElement {
 
@@ -151,7 +150,7 @@ import { passthroughImageService } from 'astro/config';
 
             if (Utils.getDataAttr(this, "toggle")) {
                 
-                // ignore nano stores, expand local state will not persist 
+                // ignore nanostores, expand local state will not persist 
                 if (evt.type == Exp.ExpandEvent.ENABLE) {
                     this.enableAutoExpand = true;
 
@@ -178,7 +177,7 @@ import { passthroughImageService } from 'astro/config';
 
                 } else if (evt.type == 'mouseleave' || evt.type == 'blur') {
 
-                    // do nothing if the mouse is still hovering over items
+                    // do nothing if the cursor is still hovering over items
                     if (evt instanceof MouseEvent && evt.relatedTarget instanceof Element) {
                         if (!(this.subitems?.contains(evt.relatedTarget))) {
                             this.setExpand(false);

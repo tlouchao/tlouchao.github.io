@@ -23,9 +23,11 @@ const setBoolAttr = function(elem: HTMLElement | null, attrName: string, attrVal
 // ---------------------- Capitalize Button Label ------------------------- //
 
 export const getLabel = function(href: string | undefined) : string {
+    
     let ret = href?.split('/').pop();
-    ret = (ret == undefined) ? '' : ret;
+    ret = ret ?? '';
     ret = ret.charAt(0).toUpperCase() + ret.slice(1);
+    
     return ret;
 }
 
