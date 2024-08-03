@@ -64,7 +64,9 @@ let subitems = ffiles.map(file => (
 
 <script>
 import Utils from '../scripts/utils';
+import Exp from '../scripts/stores/expand';
 import { $expand } from '../scripts/stores/expand';
+import { passthroughImageService } from 'astro/config';
 
     class NavItem extends HTMLElement {
 
@@ -72,20 +74,58 @@ import { $expand } from '../scripts/stores/expand';
         anchor : HTMLAnchorElement | null;
         label : string | undefined;
 
+        // mobile only
+        subitems : HTMLElement | null = null;
+        enableAutoExpand: boolean = true;
+
         constructor() {
             super();
             this.button = this.querySelector('button');
             this.anchor = this.querySelector('a');
             this.label = this.button?.getAttribute("aria-label")?.toLowerCase();
 
-            if (this.label) {
-                let expand = $expand.get()[this.label];
-                this.setExpand(expand);
-            }
+            if (this.button) {
 
-            this.button?.addEventListener('click', evt => this.handleClick(evt));
+                // get last expand state
+                if (!this.enableAutoExpand) {
+                    let label = this.label ?? '';
+                    let expand = $expand.get()[label];
+                    this.setExpand(expand);
+                }
+                
+                // any button
+                this.button.addEventListener('click', this.handleClick);
+
+                // event listeners for the toggle button
+                if (Utils.getDataAttr(this, "toggle")) {
+
+                    this.button.addEventListener(Exp.ExpandEvent.ENABLE, this.handleAutoExpand);
+                    this.button.addEventListener(Exp.ExpandEvent.DISABLE, this.handleAutoExpand);
+                    this.button.addEventListener('mouseenter', this.handleEnterLeave);
+                    this.button.addEventListener('mouseleave', this.handleEnterLeave);
+                    this.button.addEventListener('focus', this.handleEnterLeave);
+                    this.button.addEventListener('blur', this.handleEnterLeave);
+
+                    // event listeners for sub items
+                    this.subitems = this.querySelector('.sub-items');
+                    this.subitems?.addEventListener('mouseleave', this.handleEnterLeave);
+                    this.subitems?.addEventListener('blur', this.handleEnterLeave);
+
+                    Exp.mql.addEventListener('change', Exp.handleMqlChange(this.button));
+
+                    // on page load, query the screen size
+                    Exp.mql.dispatchEvent(new Event('change'));
+                }
+            }
         }
-        
+
+        setExpand = (expand : boolean) => {
+            if (this.dataset["toggle"] != undefined) {
+                Utils.setDataAttr(this, "expand", expand);
+                Utils.setBoolAttr(this.button, "aria-expanded", expand);
+            }
+        }
+
         handleClick = (evt : MouseEvent) => {
 
             if (Utils.getDataAttr(this, "toggle")) {
@@ -94,13 +134,12 @@ import { $expand } from '../scripts/stores/expand';
                 evt.preventDefault();
 
                 // get and invert
-                if (this.label) {
-                    let expand = !$expand.get()[this.label];
-                    $expand.setKey(this.label, expand);
+                let label = this.label ?? '';
+                let expand = !$expand.get()[label];
+                $expand.setKey(label, expand);
 
-                    // set attribute on elements
-                    this.setExpand(expand);
-                }
+                // set attribute on elements
+                this.setExpand(expand);
 
             } else {              
                 // forward click event to anchor tag
@@ -108,10 +147,44 @@ import { $expand } from '../scripts/stores/expand';
             }
         }
 
-        setExpand = (expand : boolean) => {
-            if (this.dataset["toggle"] != undefined) {
-                Utils.setDataAttr(this, "expand", expand);
-                Utils.setBoolAttr(this.button, "aria-expanded", expand);
+        handleAutoExpand = (evt : Event) => {
+
+            if (Utils.getDataAttr(this, "toggle")) {
+                
+                // ignore nano stores, expand local state will not persist 
+                if (evt.type == Exp.ExpandEvent.ENABLE) {
+                    this.enableAutoExpand = true;
+
+                    // set expand local state
+                    this.setExpand(false);    
+
+                } else if (evt.type == Exp.ExpandEvent.DISABLE) {
+                    this.enableAutoExpand = false;
+
+                    // set expand
+                    let label = this.label ?? '';
+                    let expand = $expand.get()[label];
+                    this.setExpand(expand);
+
+                }
+            } // else do nothing
+        }
+
+        handleEnterLeave = (evt : Event | MouseEvent) => {
+            if (this.enableAutoExpand) {
+
+                if (evt.type == 'mouseenter' || evt.type == 'focus') {
+                    this.setExpand(true);
+
+                } else if (evt.type == 'mouseleave' || evt.type == 'blur') {
+
+                    // do nothing if the mouse is still hovering over items
+                    if (evt instanceof MouseEvent && evt.relatedTarget instanceof Element) {
+                        if (!(this.subitems?.contains(evt.relatedTarget))) {
+                            this.setExpand(false);
+                        }
+                    }
+                }
             }
         }
     }

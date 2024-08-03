@@ -32,6 +32,7 @@
 	/* navbar */
 	--nav-wh: 40px;
 	--color-nav: var(--grey-warm-light);
+	--color-nav-right: var(--grey-warm-mddark);
 	--color-nav-rgba: rgba(210, 215, 220, .5);
 	--color-nav-item: var(--grey-warm);
 	--color-nav-item-hover: var(--white-warm);
@@ -76,6 +77,7 @@
 
 	/* navbar */
 	--color-nav: var(--grey-cool);
+	--color-nav-right: var(--grey-cool-mddark);
 	--color-nav-rgba: rgba(65, 70, 75, .5);
 	--color-nav-item: var(--grey-cool-dark);
 	--color-nav-item-hover: darkmagenta;

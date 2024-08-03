@@ -16,6 +16,7 @@ import "../styles/components/navbar.scss";
 		</div>
 		<div id="nav-right">
 			<div id="nav-items">
+				<NavItem href="/"></NavItem>
 				<NavItem href="/projects"></NavItem>
 				<NavItem href="/blog"></NavItem>
 				<NavItem href="/gallery" isToggle></NavItem>
@@ -33,19 +34,4 @@ import "../styles/components/navbar.scss";
 </aside>
 
 <script>
-
-	//TODO: mail-to
-	//TODO: Auto collapse sub items if on mobile device
-	//TODO: On click event outside of sub items, collapse the sub items
-
-	const enableAutoCollapseSubItems = () => {
-		let mql = window.matchMedia("(min-width: 768px)");
-		if (mql.matches) { // desktop, do nothing
-			// console.log("desktop: " + Boolean(mql.matches).toString());
-		}
-	}
-
-	window.addEventListener('load', enableAutoCollapseSubItems)
-	window.addEventListener('resize',  enableAutoCollapseSubItems)
-
 </script>
