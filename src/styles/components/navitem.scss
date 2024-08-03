@@ -50,7 +50,7 @@ nav-item {
     }
     button[aria-expanded=true] + .sub-items {
         position: fixed;
-        top: var(--nav-wh);
+        top: var(--nav-mobile-wh);
         @include mixins.visible-block;
     }
     .sub-items {

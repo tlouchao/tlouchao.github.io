@@ -30,7 +30,8 @@
 	--color-footer: var(--grey-warm);
 
 	/* navbar */
-	--nav-wh: 40px;
+	--nav-mobile-wh: 40px;
+	--nav-desktop-width: 240px;
 	--color-nav: var(--grey-warm-light);
 	--color-nav-right: var(--grey-warm-mddark);
 	--color-nav-rgba: rgba(210, 215, 220, .5);
@@ -56,6 +57,9 @@
 	/* links */
 	--anchor-link: var(--blue);
 	--anchor-active: var(--violet);
+
+	/* main */
+	--main-width: 1200px;
 
     /* fonts */
 	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;

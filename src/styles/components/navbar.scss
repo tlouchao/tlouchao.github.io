@@ -13,7 +13,7 @@ nav {
 
     /* position and size */
     width: 100%;
-    height: var(--nav-wh);
+    height: var(--nav-mobile-wh);
     position: fixed;
     top: 0;
 }
@@ -69,7 +69,7 @@ nav {
         padding: 1.5em 0 1em 0; /* top, right, bottom, left */
 
         /* Position and Size */
-        width: min(25%, 240px);
+        width: min(25%, var(--nav-desktop-width));
         height: 100%;
         overflow-y: auto; 
     }

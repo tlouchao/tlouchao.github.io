@@ -39,24 +39,21 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
         padding-right: 0;
     }
     #header-layout {
-        display: grid;
-        grid-template-rows: auto 1fr auto;
+        margin-top: var(--nav-mobile-wh);
         width: 100%;
         min-height: 100vh;
     }
     /* DESKTOP */
 	@media (min-width: 768px) {
         #nav-layout {
-            padding-left: min(25%, 240px); /* Navbar offset */
+            padding-left: min(25%, var(--nav-desktop-width)); /* Navbar offset */
+        }
+        #header-layout {
+            margin-top: 0;
         }
         #main-layout {
             display: grid;
-            grid-template-columns: auto 0;
-        }
-    }
-    @media (min-width: 992px) {
-        #main-layout {
-            /* TODO: padding-right for current page navigation */
+            grid-template-columns: min(100%, var(--main-width)) auto;
         }
     }
     
