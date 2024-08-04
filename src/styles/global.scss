@@ -31,7 +31,8 @@
 
 	/* navbar */
 	--nav-mobile-wh: 40px;
-	--nav-desktop-width: 240px;
+	--nav-desktop-width: 180px;
+	--nav-font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
 	--color-nav: var(--grey-warm-light);
 	--color-nav-right: var(--grey-warm-mddark);
 	--color-nav-rgba: rgba(210, 215, 220, .5);
@@ -59,12 +60,13 @@
 	--anchor-active: var(--violet);
 
 	/* main */
-	--main-width: 1200px;
+	--main-min-width: 720px;
+	--main-max-width: 960px;
 
     /* fonts */
-	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
+	font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
 	font-weight: 500;
-	font-size: medium;
+	font-size: 13.5px;
 	line-height: 1.5;
 	caret-color: transparent;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -113,17 +115,14 @@ body {
 	height: 100%;
 	
 }
-main {
-	margin: 1em;
-}
-nav {
+nav, main, header, footer {
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
 	box-sizing: border-box;         /* Opera/IE 8+ */
 }
 h1, h2, h3, h4, h4, h5, h6 {
-	font-family: 'Rodin', 'Roboto', Verdana, sans-serif;
-	font-weight: 500;
+	font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
+	font-weight: 700;
 }
 a:link, a:visited {
 	color: var(--anchor-link);

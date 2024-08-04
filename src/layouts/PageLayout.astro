@@ -6,6 +6,9 @@ import Footer from '../components/Footer.astro';
 
 import { ViewTransitions } from "astro:transitions";
 import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
+
+import '@fontsource/oxygen';
+import '@fontsource/roboto';
 ---
 
 <!doctype html>
@@ -20,11 +23,14 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
         <NavBar />
         <div id="nav-layout">
             <div id="header-layout">
-                <HeaderImage src='/blog-placeholder-1.jpg' />
+                <HeaderImage src='/freljord_splash.jpg' />
                 <div id="main-layout">
                     <main>
                         <slot />
                     </main>
+                    <aside>
+                        <p>Aside div element</p>
+                    </aside>
                 </div>
                 <Footer />
             </div>
@@ -39,21 +45,46 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
         padding-right: 0;
     }
     #header-layout {
+        display: flex;
+        flex-direction: column;
         margin-top: var(--nav-mobile-wh);
         width: 100%;
         min-height: 100vh;
     }
+    #main-layout {
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+        width: 100%;
+    }
+    main {
+        padding: 1em;
+        min-width: min(100%, var(--main-min-width));
+        max-width: min(100%, var(--main-max-width));
+    }
+    aside {
+        display: none;
+    }
     /* DESKTOP */
 	@media (min-width: 768px) {
         #nav-layout {
-            padding-left: min(25%, var(--nav-desktop-width)); /* Navbar offset */
+            padding-left: min(25%, var(--nav-desktop-width));
         }
         #header-layout {
             margin-top: 0;
         }
+    }
+    @media (min-width: 1440px) {
         #main-layout {
             display: grid;
-            grid-template-columns: min(100%, var(--main-width)) auto;
+            grid-template-columns: 3fr 1fr;
+        }
+        main {
+            justify-self: center;
+        }
+        aside {
+            display: block;
+            border: 1px solid black;
         }
     }
     

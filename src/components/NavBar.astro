@@ -4,34 +4,30 @@ import ButtonSocial from './ButtonSocial.astro';
 import ButtonTheme from './ButtonTheme.astro';
 import "../styles/components/navbar.scss";
 ---
-<aside>
-	<nav>
-		<div id="nav-left">
-			<a id="nav-left-icon" href="/">
-				<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />
-			</a>
-			<a id="nav-left-label" href="/">
-				<span>Tiffany Chao</span>
-			</a>
-		</div>
-		<div id="nav-right">
-			<div id="nav-items">
-				<NavItem href="/"></NavItem>
-				<NavItem href="/projects"></NavItem>
-				<NavItem href="/blog"></NavItem>
-				<NavItem href="/gallery" isToggle></NavItem>
-			</div>
-			<div id="nav-theme">
-				<ButtonTheme />
-			</div>
-			<div id="nav-social">
-				<ButtonSocial href="/" name="linkedin" />
-				<ButtonSocial href="https://github.com/tlouchao" name="github" />
-				<ButtonSocial href="/" name="rss" />
-			</div>
-		</div>
-	</nav>
-</aside>
 
-<script>
-</script>
+<nav>
+	<div id="nav-left">
+		<a id="nav-left-icon" href="/">
+			<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />
+		</a>
+		<a id="nav-left-label" href="/">
+			<span>Tiffany Chao</span>
+		</a>
+	</div>
+	<div id="nav-right">
+		<div id="nav-items">
+			<NavItem href="/"></NavItem>
+			<NavItem href="/projects"></NavItem>
+			<NavItem href="/blog"></NavItem>
+			<NavItem href="/gallery" isToggle></NavItem>
+		</div>
+		<div id="nav-theme">
+			<ButtonTheme />
+		</div>
+		<div id="nav-social">
+			<ButtonSocial href="/" name="linkedin" />
+			<ButtonSocial href="https://github.com/tlouchao" name="github" />
+			<ButtonSocial href="/" name="rss" />
+		</div>
+	</div>
+</nav>
