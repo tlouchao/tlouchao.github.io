@@ -22,7 +22,7 @@ const isCurrent = href === pathname;
 const ariaControls = label.toLowerCase() + '-items';
 
 // get routes under href; workaround for Astro.glob string literal
-let files = await Astro.glob("../pages/**/*.astro");
+let files = await Astro.glob("../**/index.astro");
 let ffiles = files.filter(file => file.url?.includes(href));
 
 let subitems = ffiles.map(file => (
