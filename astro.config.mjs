@@ -9,7 +9,6 @@ export default defineConfig({
 	site: 'https://example.com',
 	integrations: [icon(), lit(), mdx(), sitemap()],
 	redirects: {
-		'/': 'projects',
-		'/gallery': '/projects',
+		'/gallery': '/',
 	}
 });
