@@ -7,10 +7,10 @@
 	--black-warm: rgb(20, 18, 15);
 	--white: rgb(255, 250, 245);
 	--white-warm: rgb(245, 240, 235);
-	--grey-cool: rgb(65, 70, 75);
-	--grey-cool-light: rgb(210, 215, 220);
-	--grey-cool-mddark: rgb(25, 30, 35);
-	--grey-cool-dark: rgb(40, 45, 50);
+	--grey-cool: rgb(65, 70, 85);
+	--grey-cool-light: rgb(210, 215, 230);
+	--grey-cool-mddark: rgb(25, 30, 45);
+	--grey-cool-dark: rgb(40, 45, 60);
 	--grey-warm: rgb(175, 170, 165);
 	--grey-warm-light: rgb(210, 205, 200);
 	--grey-warm-mddark: rgb(155, 150, 145);
@@ -31,7 +31,7 @@
 
 	/* navbar */
 	--nav-mobile-wh: 40px;
-	--nav-desktop-width: 180px;
+	--nav-desktop-width: 240px;
 	--nav-font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
 	--color-nav: var(--grey-warm-light);
 	--color-nav-right: var(--grey-warm-mddark);

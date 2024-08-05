@@ -1,10 +1,10 @@
 // -------------------------- Data Attributes ----------------------------- //
 
-const getDataAttr = function(elem: HTMLElement | null, attrName : string) : boolean {
+export const getDataAttr = function(elem: HTMLElement | null, attrName : string) : boolean {
     return elem?.dataset[attrName] != undefined;
 }
 
-const setDataAttr = function(elem: HTMLElement | null, attrName : string, attrVal : boolean) : void {
+export const setDataAttr = function(elem: HTMLElement | null, attrName : string, attrVal : boolean) : void {
     if (elem) {
         if (attrVal) {
             elem.dataset[attrName] = '';
@@ -16,7 +16,7 @@ const setDataAttr = function(elem: HTMLElement | null, attrName : string, attrVa
 
 // -------------------------- Bool Attributes ----------------------------- //
 
-const setBoolAttr = function(elem: HTMLElement | null, attrName: string, attrVal : boolean) : void {
+export const setBoolAttr = function(elem: HTMLElement | null, attrName: string, attrVal : boolean) : void {
     elem?.setAttribute(attrName, Boolean(attrVal).toString());
 }
 
@@ -31,6 +31,25 @@ export const getLabel = function(href: string | undefined) : string {
     return ret;
 }
 
-// ------------------------------- Export --------------------------------- //
+// ---------------------- Capitalize Button Label ------------------------- //
 
-export default { getDataAttr, setDataAttr, setBoolAttr };
+export const setButtonIcon = function(button: HTMLButtonElement | null,
+                                       svg0: SVGSVGElement | null,
+                                       svg1: SVGSVGElement | null,
+                                       doSwap : boolean) : void {
+    
+    button?.setAttribute('aria-pressed', String(doSwap));
+
+    // if svg is hidden, also remove it from document flow using absolute positioning
+    let styleVisible = 'opacity: 1; width: 100%; height: 100%;'
+    let styleHidden = 'opacity: 0; width: 0; height: 0;'
+    styleHidden = styleHidden + ' position: absolute;'
+
+    if (doSwap) {
+        svg0?.setAttribute('style', styleHidden)
+        svg1?.setAttribute('style', styleVisible)
+    } else {
+        svg0?.setAttribute('style', styleVisible)
+        svg1?.setAttribute('style', styleHidden)
+    }
+}

@@ -1,0 +1,53 @@
+---
+import { Icon } from 'astro-icon/components'
+import "../styles/components/navbuttonmenu.scss";
+
+interface Props {
+  ariaControls: string;
+  isExpand?: boolean;
+}
+
+let { ariaControls, isExpand = false } = Astro.props;
+const ariaLabel = "Navbar Menu Button"
+
+---
+<nav-button-menu id="nav-button-menu">
+    <span class="sr-only">{ariaLabel}</span>
+    <button id="nav-button-menu",
+            aria-controls={ariaControls} 
+            aria-expanded={isExpand} 
+            aria-label={ariaLabel}>
+        <Icon name="menu" />
+        <Icon name="close" />
+    </button>
+</nav-button-menu>
+
+<script>
+    import { setBoolAttr, setButtonIcon } from '../scripts/utils.js'
+
+    class NavButtonMenu extends HTMLElement {
+        button : HTMLButtonElement | null;
+        svg0: SVGSVGElement | null;
+        svg1: SVGSVGElement | null;
+        isExpand: boolean = false;
+        constructor() {
+            super();
+            this.button = this.querySelector('button');
+            this.button?.addEventListener('click', this.handleClick);
+
+            let svgs = this.querySelectorAll('svg');
+            this.svg0 = svgs[0];
+            this.svg1 = svgs[1];
+
+            setButtonIcon(this.button, this.svg0, this.svg1, this.isExpand)
+        }
+
+        handleClick = () => {
+            this.isExpand = !this.isExpand;
+            setBoolAttr(this.button, "aria-expanded", this.isExpand);
+            setButtonIcon(this.button, this.svg0, this.svg1, this.isExpand)
+        }
+    }
+    // Tell the browser to use our NavButtonMenuu class for <nav-button-menu> elements.
+    customElements.define('nav-button-menu', NavButtonMenu);
+</script>

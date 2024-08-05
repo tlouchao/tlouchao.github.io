@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components'
-import { getLabel as uGetLabel } from '../scripts/utils';
+import { getLabel } from '../scripts/utils';
 import '../styles/components/navitem.scss'
 
 interface Props {
@@ -14,7 +14,7 @@ let { href, label = undefined, isToggle = false, isExpand = false } = Astro.prop
 
 // Create capitalized label
 if (label == undefined) {
-    label = (href == "/") ? "Home" : uGetLabel(href);
+    label = (href == "/") ? "Projects" : getLabel(href);
 }
 
 const { pathname } = Astro.url;
@@ -26,16 +26,16 @@ let files = await Astro.glob("../pages/**/*.astro");
 let ffiles = files.filter(file => file.url?.includes(href));
 
 let subitems = ffiles.map(file => (
+    
     {href: file.url, 
-     label: uGetLabel(file.url),
+     label: getLabel(file.url),
      isCurrent: file.url === pathname,
     }
 ));
 ---
 <nav-item data-toggle={isToggle} 
           data-expand={isToggle ? isExpand : undefined}>
-    <button role={isToggle ? "button" : undefined}
-            aria-controls={isToggle ? ariaControls : undefined} 
+    <button aria-controls={isToggle ? ariaControls : undefined} 
             aria-expanded={isToggle ? isExpand : undefined} 
             aria-label={label} 
             aria-current={isCurrent}>
@@ -45,33 +45,33 @@ let subitems = ffiles.map(file => (
         </a>
     </button>
     {isToggle &&
-        <div class="sub-items" id={ariaControls}>
-            {subitems.map(s => (
-                <nav-item>
-                    <button aria-label={s.label}
-                            aria-current={s.isCurrent}>
-                        <Icon name="arrow" />
-                        <a href={s.href}>
-                            {s.label}
-                        </a>
-                    </button>
-                </nav-item>
-                ))
-            }
-        </div>
+    <div class="sub-items" id={ariaControls}>
+        {subitems.map(s => (
+            <nav-item>
+                <button aria-label={s.label}
+                        aria-current={s.isCurrent}>
+                    <Icon name="arrow" />
+                    <a href={s.href}>
+                        {s.label}
+                    </a>
+                </button>
+            </nav-item>
+            ))
+        }
+    </div>
     }
 </nav-item>
 
 <script>
-import Utils from '../scripts/utils';
-import Exp from '../scripts/stores/expand';
-import { $expand } from '../scripts/stores/expand';
+import { getDataAttr, setDataAttr, setBoolAttr } from '../scripts/utils';
+import { $expand, ExpandEvent } from '../scripts/stores/expand';
 
     class NavItem extends HTMLElement {
 
         button : HTMLButtonElement | null;
         anchor : HTMLAnchorElement | null;
         label : string | undefined;
+        mql : MediaQueryList = window.matchMedia("(max-width: 768px)");
 
         // mobile only
         subitems : HTMLElement | null = null;
@@ -81,7 +81,7 @@ import { $expand } from '../scripts/stores/expand';
             super();
             this.button = this.querySelector('button');
             this.anchor = this.querySelector('a');
-            this.label = this.button?.getAttribute("aria-label")?.toLowerCase();
+            this.label = this.button?.getAttribute('aria-label')?.toLowerCase();
 
             if (this.button) {
 
@@ -96,10 +96,10 @@ import { $expand } from '../scripts/stores/expand';
                 this.button.addEventListener('click', this.handleClick);
 
                 // event listeners for the toggle button
-                if (Utils.getDataAttr(this, "toggle")) {
+                if (getDataAttr(this, "toggle")) {
 
-                    this.button.addEventListener(Exp.ExpandEvent.ENABLE, this.handleAutoExpand);
-                    this.button.addEventListener(Exp.ExpandEvent.DISABLE, this.handleAutoExpand);
+                    this.button.addEventListener(ExpandEvent.ENABLE, this.handleAutoExpand);
+                    this.button.addEventListener(ExpandEvent.DISABLE, this.handleAutoExpand);
                     this.button.addEventListener('mouseenter', this.handleEnterLeave);
                     this.button.addEventListener('mouseleave', this.handleEnterLeave);
                     this.button.addEventListener('focus', this.handleEnterLeave);
@@ -110,24 +110,24 @@ import { $expand } from '../scripts/stores/expand';
                     this.subitems?.addEventListener('mouseleave', this.handleEnterLeave);
                     this.subitems?.addEventListener('blur', this.handleEnterLeave);
 
-                    Exp.mql.addEventListener('change', Exp.handleMqlChange(this.button));
+                    this.mql.addEventListener('change', this.handleMqlChange(this.button, this.mql));
 
                     // on page load, query the screen size
-                    Exp.mql.dispatchEvent(new Event('change'));
+                    this.mql.dispatchEvent(new Event('change'));
                 }
             }
         }
 
         setExpand = (expand : boolean) => {
             if (this.dataset["toggle"] != undefined) {
-                Utils.setDataAttr(this, "expand", expand);
-                Utils.setBoolAttr(this.button, "aria-expanded", expand);
+                setDataAttr(this, "expand", expand);
+                setBoolAttr(this.button, "aria-expanded", expand);
             }
         }
 
         handleClick = (evt : MouseEvent) => {
 
-            if (Utils.getDataAttr(this, "toggle")) {
+            if (getDataAttr(this, "toggle")) {
 
                 // prevent href navigation / refresh
                 evt.preventDefault();
@@ -148,16 +148,16 @@ import { $expand } from '../scripts/stores/expand';
 
         handleAutoExpand = (evt : Event) => {
 
-            if (Utils.getDataAttr(this, "toggle")) {
+            if (getDataAttr(this, "toggle")) {
                 
                 // ignore nanostores, expand local state will not persist 
-                if (evt.type == Exp.ExpandEvent.ENABLE) {
+                if (evt.type == ExpandEvent.ENABLE) {
                     this.enableAutoExpand = true;
 
                     // set expand local state
                     this.setExpand(false);    
 
-                } else if (evt.type == Exp.ExpandEvent.DISABLE) {
+                } else if (evt.type == ExpandEvent.DISABLE) {
                     this.enableAutoExpand = false;
 
                     // set expand
@@ -170,6 +170,7 @@ import { $expand } from '../scripts/stores/expand';
         }
 
         handleEnterLeave = (evt : Event | MouseEvent) => {
+
             if (this.enableAutoExpand) {
 
                 if (evt.type == 'mouseenter' || evt.type == 'focus') {
@@ -184,6 +185,16 @@ import { $expand } from '../scripts/stores/expand';
                         }
                     }
                 }
+            }
+        }
+
+        // monitor the viewport size - dispatch custom event on reaching media query breakpoint
+        handleMqlChange = (evtTarget : HTMLElement, mql : MediaQueryList) => {
+            return function handleMqlChangeInner(evt : MediaQueryListEvent) {
+                let newEvt : Event = (mql.matches) ? 
+                                    new Event(ExpandEvent.ENABLE) : 
+                                    new Event(ExpandEvent.DISABLE);
+                evtTarget.dispatchEvent(newEvt);
             }
         }
     }

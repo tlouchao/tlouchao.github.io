@@ -1,18 +1,18 @@
 ---
 import { Icon } from 'astro-icon/components'
 ---
-<button-theme>
+<button-theme id="button-theme">
     <span class="sr-only">Toggle Theme</span>
     <button>
-        <Icon name="moon-duotone" />
         <Icon name="sun-duotone" />
+        <Icon name="moon-duotone" />
     </button>
 </button-theme>
 
 <style>
 
     /* MOBILE */
-    button-theme {
+    #button-theme {
         display: flex;
         flex-direction: inherit;
 
@@ -38,7 +38,7 @@ import { Icon } from 'astro-icon/components'
         [data-icon="moon-duotone"] {
             margin-top: 1px; /* minor */
         }
-    } /* button theme */
+    }
 
     /* DESKTOP */
 	@media (min-width: 768px) {
@@ -51,6 +51,7 @@ import { Icon } from 'astro-icon/components'
 </style>
 
 <script>
+    import { setButtonIcon } from '../scripts/utils.js'
     import { $themeDark } from '../scripts/stores/theme.js'
 
     class ButtonTheme extends HTMLElement {
@@ -77,22 +78,7 @@ import { Icon } from 'astro-icon/components'
 
         setButtonTheme = () => {
             let dark = $themeDark.get();
-            if (this.button) {
-                this.button.setAttribute('aria-pressed', String(dark));
-            }
-
-            // if svg is hidden, also remove it from document flow using absolute positioning
-            let styleVisible = 'opacity: 1; width: 100%; height: 100%;'
-            let styleHidden = 'opacity: 0; width: 0; height: 0;'
-            styleHidden = styleHidden + ' position: absolute;'
-
-            if (dark) {
-                this.svg0?.setAttribute('style', styleVisible)
-                this.svg1?.setAttribute('style', styleHidden)
-            } else {
-                this.svg0?.setAttribute('style', styleHidden)
-                this.svg1?.setAttribute('style', styleVisible)
-            }
+            setButtonIcon(this.button, this.svg0, this.svg1, dark)
         }
     }
 

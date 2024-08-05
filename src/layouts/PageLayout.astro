@@ -21,35 +21,28 @@ import '@fontsource/roboto';
 	</head>
 	<body class="theme-dark">
         <NavBar />
-        <div id="nav-layout">
-            <div id="header-layout">
-                <HeaderImage src='/freljord_splash.jpg' />
-                <div id="main-layout">
-                    <main>
-                        <slot />
-                    </main>
-                    <aside>
-                        <p>Aside div element</p>
-                    </aside>
-                </div>
-                <Footer />
+        <div id="header-layout">
+            <HeaderImage src='/freljord_splash.jpg' />
+            <div id="main-layout">
+                <main>
+                    <slot />
+                </main>
+                <aside />
             </div>
+            <Footer />
         </div>
     </body>
 </html>
 
 <style>
     /* MOBILE */
-    #nav-layout {
-        padding-left: 0;
-        padding-right: 0;
-    }
     #header-layout {
         display: flex;
         flex-direction: column;
+        padding-left: 0;
+        padding-right: 0;
         margin-top: var(--nav-mobile-wh);
-        width: 100%;
-        min-height: 100vh;
+        height: calc(100vh - var(--nav-mobile-wh));
     }
     #main-layout {
         display: flex;
@@ -67,11 +60,10 @@ import '@fontsource/roboto';
     }
     /* DESKTOP */
 	@media (min-width: 768px) {
-        #nav-layout {
-            padding-left: min(25%, var(--nav-desktop-width));
-        }
         #header-layout {
+            padding-left: min(25%, var(--nav-desktop-width));
             margin-top: 0;
+            height: 100vh;
         }
     }
     @media (min-width: 1440px) {

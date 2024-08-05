@@ -2,6 +2,7 @@
 import NavItem from './NavItem.astro';
 import ButtonSocial from './ButtonSocial.astro';
 import ButtonTheme from './ButtonTheme.astro';
+import ButtonNavMenu from './NavButtonMenu.astro';
 import "../styles/components/navbar.scss";
 ---
 
@@ -15,19 +16,20 @@ import "../styles/components/navbar.scss";
 		</a>
 	</div>
 	<div id="nav-right">
-		<div id="nav-items">
-			<NavItem href="/"></NavItem>
-			<NavItem href="/projects"></NavItem>
-			<NavItem href="/blog"></NavItem>
-			<NavItem href="/gallery" isToggle></NavItem>
+		<div id="nav-right-mobile" >
+			<div id="nav-items">
+				<NavItem href="/projects"></NavItem>
+				<NavItem href="/blog"></NavItem>
+				<NavItem href="/about"></NavItem>
+				<NavItem href="/gallery" isToggle></NavItem>
+			</div>
+			<div id="nav-social">
+				<ButtonSocial href="/" name="linkedin" />
+				<ButtonSocial href="https://github.com/tlouchao" name="github" />
+				<ButtonSocial href="/" name="rss" />
+			</div>
 		</div>
-		<div id="nav-theme">
-			<ButtonTheme />
-		</div>
-		<div id="nav-social">
-			<ButtonSocial href="/" name="linkedin" />
-			<ButtonSocial href="https://github.com/tlouchao" name="github" />
-			<ButtonSocial href="/" name="rss" />
-		</div>
+		<ButtonTheme />
+		<ButtonNavMenu ariaControls="nav-right-mobile" />
 	</div>
 </nav>

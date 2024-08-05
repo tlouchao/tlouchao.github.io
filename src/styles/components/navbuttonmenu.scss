@@ -1,0 +1,25 @@
+#nav-button-menu {
+    display: flex;
+    flex-direction: inherit;
+
+    button {
+        overflow: hidden;
+        padding: 0.66em;
+        width: var(--nav-mobile-wh);
+        height: var(--nav-mobile-wh);
+        cursor: pointer;
+        border-left: 1px solid var(--color-nav-rgba);
+        color: var(--color-nav-label);
+        background-color: var(--color-nav-item);
+    }
+    button:hover {
+        color: var(--color-secondary);
+    }
+    svg {
+        width: 100%;
+        height: 100%;
+        transition: all 0.25s ease;
+        transition-property: color, opacity;
+        margin-top: 1px;
+    }
+}

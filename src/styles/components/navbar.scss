@@ -16,8 +16,7 @@ nav {
     height: var(--nav-mobile-wh);
     position: fixed;
     top: 0;
-}
-
+}  
 #nav-left {
     @include mixins.flex-inherit;
     align-items: center;
@@ -43,21 +42,31 @@ nav {
         min-width: 135px; /* font-size and font-family dependent */
         transform: translateY(6.4px); /* how to use vertical-align? */
      }
-}
-
+} 
 #nav-right {
     @include mixins.flex-inherit;
     height: 100%;
-    gap: 0;
-    #nav-items {
-        @include mixins.flex-inherit;
-    }
-    #nav-social {
-        order: 3;
-    }
 }
+#nav-right-mobile {
+    display: none;
+}
+#nav-button-menu {
+    display: flex;
+}  
 
-@media (min-width: 600px) {
+/* TABLET */
+@media (min-width: 600px) { 
+    #nav-right-mobile {
+        @include mixins.flex-inherit;
+        height: 100%;
+        gap: 0;
+        #nav-items {
+            @include mixins.flex-inherit;
+        }
+    }
+    #nav-button-menu {
+        display: none;
+    }  
 }
 
 /* DESKTOP */
@@ -88,20 +97,20 @@ nav {
         }
     }
     #nav-right {
-        align-items: center;
         width: 100%;
+        align-items: center;
         gap: 1em;
+    }
+    #nav-right-mobile {
+        width: 100%;
+        align-items: center;
+        order: 2;
         #nav-items {
             width: 100%;
-            order: 2;
             flex-grow: 1;
         }
-        #nav-theme {
-            order: 1;
-        }
-        #nav-social {
-            margin-top: -0.75em;
-            order: 3;
-        }
+    }
+    #button-theme {
+        order: 1;
     }
 }
