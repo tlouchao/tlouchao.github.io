@@ -71,7 +71,7 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
         button : HTMLButtonElement | null;
         anchor : HTMLAnchorElement | null;
         label : string | undefined;
-        mql : MediaQueryList = window.matchMedia("(max-width: 768px)");
+        mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 768px)");
 
         // mobile only
         subitems : HTMLElement | null = null;

@@ -11,7 +11,8 @@ let { ariaControls, isExpand = false } = Astro.props;
 const ariaLabel = "Navbar Menu Button"
 
 ---
-<nav-button-menu id="nav-button-menu">
+<nav-button-menu id="nav-button-menu"
+                 data-expand={isExpand}>
     <span class="sr-only">{ariaLabel}</span>
     <button aria-controls={ariaControls} 
             aria-expanded={isExpand} 
@@ -36,23 +37,24 @@ const ariaLabel = "Navbar Menu Button"
         button : HTMLButtonElement | null;
         svg0: SVGSVGElement | null;
         svg1: SVGSVGElement | null;
-        isExpand: boolean = false;
+
+        static observedAttributes = ["data-expand"];
+
         constructor() {
             super();
             this.button = this.querySelector('button');
-            this.button?.addEventListener('click', this.handleClick);
-
             let svgs = this.querySelectorAll('svg');
             this.svg0 = svgs[0];
             this.svg1 = svgs[1];
 
-            setButtonIcon(this.button, this.svg0, this.svg1, this.isExpand)
+            setBoolAttr(this.button, "aria-expanded", false);
+            setButtonIcon(this.button, this.svg0, this.svg1, false)
         }
 
-        handleClick = () => {
-            this.isExpand = !this.isExpand;
-            setBoolAttr(this.button, "aria-expanded", this.isExpand);
-            setButtonIcon(this.button, this.svg0, this.svg1, this.isExpand)
+        attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
+            let expand = newValue != undefined;
+            setBoolAttr(this.button, "aria-expanded", expand);
+            setButtonIcon(this.button, this.svg0, this.svg1, expand)
         }
     }
     // Tell the browser to use our NavButtonMenu class for <nav-button-menu> elements.

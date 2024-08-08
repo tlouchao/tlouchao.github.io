@@ -16,6 +16,10 @@ export const setDataAttr = function(elem: HTMLElement | null, attrName : string,
 
 // -------------------------- Bool Attributes ----------------------------- //
 
+export const getBoolAttr = function(elem: HTMLElement | null, attrName: string) : boolean {
+    return elem?.getAttribute(attrName) == "true";
+}
+
 export const setBoolAttr = function(elem: HTMLElement | null, attrName: string, attrVal : boolean) : void {
     elem?.setAttribute(attrName, Boolean(attrVal).toString());
 }

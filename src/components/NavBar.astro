@@ -37,25 +37,71 @@ import "../styles/components/navbar.scss";
 </nav-bar>
 
 <script>
+import { setBoolAttr, setDataAttr } from '../scripts/utils';
+import { ExpandEvent } from '../scripts/stores/expand';
+
     class NavBar extends HTMLElement {
+
 		navRightMobile : HTMLElement | null;
+		navButtonMenu : HTMLElement | null;
         button : HTMLButtonElement | null | undefined;
+		enableButtonExpand: boolean = false;
         isExpand: boolean = false;
+
+		mql : MediaQueryList = window.matchMedia("(max-width: 600px)");
+
         constructor() {
             super();
 			this.navRightMobile = this.querySelector('#nav-right-mobile');
-            let buttonNavMenu = this.querySelector('nav-button-menu');
-			this.button = buttonNavMenu?.querySelector('button');
-            this.button?.addEventListener('click', this.handleClick);
+            this.navButtonMenu = this.querySelector('nav-button-menu');
+			this.button = this.navButtonMenu?.querySelector('button');
+            
+			this.button?.addEventListener('click', this.handleClick);
+			this.button?.addEventListener(ExpandEvent.ENABLE, this.handleEnableExpand);
+            this.button?.addEventListener(ExpandEvent.DISABLE, this.handleEnableExpand);
+
+			this.mql.addEventListener('change', this.handleMqlChange(this.button, this.mql));
+
+			// on page load, query the screen size
+			this.mql.dispatchEvent(new Event('change'));
         }
+
+		setExpand = (expand : boolean) => {
+			this.isExpand = expand;
+			if (this.button) {
+				if ((this.isExpand && this.enableButtonExpand) || !this.enableButtonExpand) {
+					setDataAttr(this.navButtonMenu, "expand", expand);
+					this.navRightMobile?.setAttribute('style', 'display: flex;');
+				} else {
+					setDataAttr(this.navButtonMenu, "expand", expand);
+					this.navRightMobile?.setAttribute('style', 'display: none;');
+				}
+			}
+		}
 
         handleClick = () => {
             this.isExpand = !this.isExpand;
-			if (this.isExpand) {
-				this.navRightMobile?.setAttribute('style', 'display: flex;');
-			} else {
-				this.navRightMobile?.setAttribute('style', 'display: none;');
+			this.setExpand(this.isExpand);
+        }
+
+		handleEnableExpand = (evt : Event) => {
+			if (evt.type == ExpandEvent.ENABLE) {
+            	this.enableButtonExpand = true;
+			} else if (evt.type == ExpandEvent.DISABLE) {
+				this.enableButtonExpand = false;
 			}
+			// set expand local state
+			this.setExpand(false);   
+		}
+
+		// monitor the viewport size - dispatch custom event on reaching media query breakpoint
+        handleMqlChange = (evtTarget : HTMLElement | null | undefined, mql : MediaQueryList) => {
+            return function handleMqlChangeInner(evt : MediaQueryListEvent) {
+                let newEvt : Event = (mql.matches) ? 
+                                    new Event(ExpandEvent.ENABLE) : 
+                                    new Event(ExpandEvent.DISABLE);
+                evtTarget?.dispatchEvent(newEvt);
+            }
         }
     }
     // Tell the browser to use our NavButtonMenu class for <nav-button-menu> elements.
