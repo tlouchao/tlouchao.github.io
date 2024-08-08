@@ -14,9 +14,6 @@ import "../styles/components/buttontheme.scss";
 
     /* MOBILE */
     #button-theme {
-        button {
-            padding: 0.75em;
-        }
         [data-icon="moon-duotone"] {
             margin-top: 1px; /* minor */
         }
@@ -60,6 +57,7 @@ import "../styles/components/buttontheme.scss";
 
         setButtonTheme = () => {
             let dark = $themeDark.get();
+            this.button?.setAttribute('aria-pressed', String(dark));
             setButtonIcon(this.button, this.svg0, this.svg1, dark)
         }
     }

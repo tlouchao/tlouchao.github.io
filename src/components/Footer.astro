@@ -1,15 +1,30 @@
 ---
+import ButtonSocial from './ButtonSocial.astro';
+
 const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Built by <a href="https://github.com/tlouchao" target="_blank">tlouchao</a> with Astro 🚀 All Rights Reserved.
+	<div id="built-by">
+		&copy; {today.getFullYear()} Built by <a href="https://github.com/tlouchao" target="_blank">tlouchao</a> with Astro 🚀 All Rights Reserved.
+	</div>
+	<div class="nav-social">
+		<ButtonSocial href="/" name="linkedin" />
+		<ButtonSocial href="https://github.com/tlouchao" name="github" />
+		<ButtonSocial href="/" name="rss" />
+	</div>
 </footer>
 <style>
 	footer {
-		width: 100%;
+		display: flex;
+		flex-direction: column;
 		text-align: center;
-		padding: 2em 1em 6em 1em;
+		gap: 1em;
+		width: 100%;
+		padding: 2em 1em 2em 1em;
 		background-color: var(--color-footer);
+		#built-by {
+			font-size: small;
+		}
 	}
 </style>

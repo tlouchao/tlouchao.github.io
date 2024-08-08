@@ -13,8 +13,7 @@ const ariaLabel = "Navbar Menu Button"
 ---
 <nav-button-menu id="nav-button-menu">
     <span class="sr-only">{ariaLabel}</span>
-    <button id="nav-button-menu",
-            aria-controls={ariaControls} 
+    <button aria-controls={ariaControls} 
             aria-expanded={isExpand} 
             aria-label={ariaLabel}>
         <Icon name="menu" />
@@ -24,9 +23,6 @@ const ariaLabel = "Navbar Menu Button"
 
 <style>
     #nav-button-menu {
-        button {
-            padding: 0.66em;
-        }
         svg {
             margin-top: 1px;
         }
@@ -59,6 +55,6 @@ const ariaLabel = "Navbar Menu Button"
             setButtonIcon(this.button, this.svg0, this.svg1, this.isExpand)
         }
     }
-    // Tell the browser to use our NavButtonMenuu class for <nav-button-menu> elements.
+    // Tell the browser to use our NavButtonMenu class for <nav-button-menu> elements.
     customElements.define('nav-button-menu', NavButtonMenu);
 </script>

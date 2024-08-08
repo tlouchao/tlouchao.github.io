@@ -51,6 +51,7 @@
 
 	/* navlabel */
 	--color-nav-label: var(--goldenrod-dark);
+	--color-nav-label-rgba: var(92, 90, 60);
 
 	/* links */
 	--anchor-link: var(--blue);
@@ -68,7 +69,7 @@
 
 	font-family: var(--font-family);
 	font-weight: normal;
-	font-size: 13.5px;
+	font-size: 15px;
 
 	/* misc */
 	line-height: 1.5;

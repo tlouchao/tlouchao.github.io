@@ -42,7 +42,7 @@ nav {
         min-width: 135px; /* font-size and font-family dependent */
         transform: translateY(6.4px); /* how to use vertical-align? */
      }
-} 
+}
 #nav-right {
     @include mixins.flex-inherit;
     height: 100%;
@@ -52,7 +52,12 @@ nav {
 }
 #nav-button-menu {
     display: flex;
-}  
+}
+hr {
+    display: block;
+    border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 60%);
+    width: 60%;
+}
 
 /* TABLET */
 @media (min-width: 600px) { 
@@ -66,7 +71,10 @@ nav {
     }
     #nav-button-menu {
         display: none;
-    }  
+    }
+    hr {
+        display: none;
+    }
 }
 
 /* DESKTOP */
@@ -75,7 +83,7 @@ nav {
         flex-direction: column;
         align-items: center;
         justify-content: start;
-        padding: 1.5em 0 1em 0; /* top, right, bottom, left */
+        padding: 2em 0em; /* top, right */
 
         /* Position and Size */
         width: min(25%, var(--nav-desktop-width));
@@ -109,6 +117,11 @@ nav {
             width: 100%;
             flex-grow: 1;
         }
+    }
+    hr {
+        display: block;
+        border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 60%);
+        width: 60%;
     }
     #button-theme {
         order: 1;

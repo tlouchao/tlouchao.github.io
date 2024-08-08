@@ -34,8 +34,8 @@
 }
 
 @mixin border-top-bottom($color : white) {
-    border-top: 1px solid $color;
-    border-bottom: 1px solid $color;
+    border-top: 1px solid color-mix(in srgb, $color, transparent);
+    border-bottom: 1px solid color-mix(in srgb, $color, transparent);
     border-left: none;
     border-right: none;
 }
@@ -43,8 +43,8 @@
 @mixin border-left-right($color : white) {
     border-top: none;
     border-bottom: none;
-    border-left: 1px solid $color;
-    border-right: 1px solid $color;
+    border-left: 1px solid color-mix(in srgb, $color, transparent);
+    border-right: 1px solid color-mix(in srgb, $color, transparent);
 }
 
 @mixin toggle-button-svg($id) {
@@ -52,11 +52,11 @@
         @include flex-inherit;
         button {
             overflow: hidden;
-            padding: 1em;
+            padding: 0.66em;
             width: var(--nav-mobile-wh);
             height: var(--nav-mobile-wh);
             cursor: pointer;
-            border-left: 1px solid var(--color-nav-rgba);
+            border-left: 1px solid color-mix(in srgb, var(--color-nav-rgba), transparent);
             color: var(--color-nav-label);
             background-color: var(--color-nav-item);
         }

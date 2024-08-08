@@ -5,31 +5,59 @@ import ButtonTheme from './ButtonTheme.astro';
 import ButtonNavMenu from './NavButtonMenu.astro';
 import "../styles/components/navbar.scss";
 ---
-
-<nav>
-	<div id="nav-left">
-		<a id="nav-left-icon" href="/">
-			<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />
-		</a>
-		<a id="nav-left-label" href="/">
-			<span>Tiffany Chao</span>
-		</a>
-	</div>
-	<div id="nav-right">
-		<div id="nav-right-mobile" >
-			<div id="nav-items">
-				<NavItem href="/projects"></NavItem>
-				<NavItem href="/blog"></NavItem>
-				<NavItem href="/about"></NavItem>
-				<NavItem href="/gallery" isToggle></NavItem>
-			</div>
-			<div id="nav-social">
-				<ButtonSocial href="/" name="linkedin" />
-				<ButtonSocial href="https://github.com/tlouchao" name="github" />
-				<ButtonSocial href="/" name="rss" />
-			</div>
+<nav-bar>
+	<nav>
+		<div id="nav-left">
+			<a id="nav-left-icon" href="/">
+				<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />
+			</a>
+			<a id="nav-left-label" href="/">
+				<span>Tiffany Chao</span>
+			</a>
 		</div>
-		<ButtonTheme />
-		<ButtonNavMenu ariaControls="nav-right-mobile" />
-	</div>
-</nav>
+		<div id="nav-right">
+			<div id="nav-right-mobile" >
+				<div id="nav-items">
+					<NavItem href="/projects"></NavItem>
+					<NavItem href="/blog"></NavItem>
+					<NavItem href="/about"></NavItem>
+					<NavItem href="/gallery" isToggle></NavItem>
+				</div>
+				<hr />
+				<div class="nav-social">
+					<ButtonSocial href="/" name="linkedin" />
+					<ButtonSocial href="https://github.com/tlouchao" name="github" />
+					<ButtonSocial href="/" name="rss" />
+				</div>
+			</div>
+			<ButtonTheme />
+			<ButtonNavMenu ariaControls="nav-right-mobile" />
+		</div>
+	</nav>
+</nav-bar>
+
+<script>
+    class NavBar extends HTMLElement {
+		navRightMobile : HTMLElement | null;
+        button : HTMLButtonElement | null | undefined;
+        isExpand: boolean = false;
+        constructor() {
+            super();
+			this.navRightMobile = this.querySelector('#nav-right-mobile');
+            let buttonNavMenu = this.querySelector('nav-button-menu');
+			this.button = buttonNavMenu?.querySelector('button');
+            this.button?.addEventListener('click', this.handleClick);
+        }
+
+        handleClick = () => {
+            this.isExpand = !this.isExpand;
+			if (this.isExpand) {
+				this.navRightMobile?.setAttribute('style', 'display: flex;');
+			} else {
+				this.navRightMobile?.setAttribute('style', 'display: none;');
+			}
+        }
+    }
+    // Tell the browser to use our NavButtonMenu class for <nav-button-menu> elements.
+    customElements.define('nav-bar', NavBar);
+</script>
