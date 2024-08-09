@@ -45,16 +45,14 @@ nav-item {
             var(--color-nav-link-active), var(--color-nav-item-active));
     }
     button[aria-expanded=false] + .sub-items {
-        position: static;
-        top: none;
         @include mixins.invisible;
     }
     button[aria-expanded=true] + .sub-items {
-        position: fixed;
-        top: var(--nav-mobile-wh);
         @include mixins.visible-block;
     }
     .sub-items {
+        position: fixed;
+        top: var(--nav-mobile-wh);
         button {
             @include mixins.border-top-bottom(
                 var(--color-nav-rgba));
@@ -111,9 +109,9 @@ nav-item {
                 text-align: left;
             }
         }
-        button[aria-expanded=true] + .sub-items {
+        .sub-items {
             position: static;
-            top: none;
+            top: 0;
         }
     } /* nav-item */
 }

@@ -38,7 +38,7 @@ const ariaLabel = "Navbar Menu Button"
         button : HTMLButtonElement | null;
         svg0: SVGSVGElement | null;
         svg1: SVGSVGElement | null;
-        navRightMobile : Element | null;
+        navRightMobile : Element | null | undefined;
 
         enableButtonExpand: boolean = false;
         mql : MediaQueryList = window.matchMedia("(max-width: 600px)");
@@ -51,11 +51,13 @@ const ariaLabel = "Navbar Menu Button"
             let svgs = this.querySelectorAll('svg');
             this.svg0 = svgs[0];
             this.svg1 = svgs[1];
-            this.navRightMobile = document.querySelector('#nav-right-mobile');
+
+            let ariaControls = this.button?.getAttribute("aria-controls");
+            if (ariaControls) this.navRightMobile = document.querySelector('#' + ariaControls);
         }
 
         connectedCallback() {
-            
+
             this.button?.addEventListener('click', this.handleClick);
             this.addEventListener(ExpandEvent.ENABLE, this.handleEnableExpand);
 			this.addEventListener(ExpandEvent.DISABLE, this.handleEnableExpand);
@@ -65,10 +67,21 @@ const ariaLabel = "Navbar Menu Button"
 			this.mql.dispatchEvent(new Event('change'));
         }
 
+        disconnectedCallback() {
+            
+            this.button?.removeEventListener('click', this.handleClick);
+            this.removeEventListener(ExpandEvent.ENABLE, this.handleEnableExpand);
+			this.removeEventListener(ExpandEvent.DISABLE, this.handleEnableExpand);
+            this.mql.removeEventListener('change', this.handleMqlChange(this, this.mql));
+        }
+
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
+
             let expand = newValue != undefined;
             setBoolAttr(this.button, "aria-expanded", expand);
             setButtonIcon(this.button, this.svg0, this.svg1, expand)
+
+            // set the display state of the controlled element
             if (!this.enableButtonExpand || expand && this.enableButtonExpand) {
 				this.navRightMobile?.setAttribute('style', 'display: flex;');
             } else {

@@ -14,17 +14,26 @@ const today = new Date();
 		<ButtonSocial href="/" name="rss" />
 	</div>
 </footer>
+
 <style>
 	footer {
 		display: flex;
 		flex-direction: column;
 		text-align: center;
-		gap: 1em;
+		gap: 0.33em;
 		width: 100%;
 		padding: 2em 1em 2em 1em;
 		background-color: var(--color-footer);
 		#built-by {
 			font-size: small;
+		}
+		.nav-social {
+			display: inherit;
+			flex-direction: row;
+			justify-content: center;
+			button-social {
+				display: inherit;
+			}
 		}
 	}
 </style>

@@ -18,7 +18,7 @@ if (label == undefined) {
 }
 
 const { pathname } = Astro.url;
-const isCurrent = href === pathname;
+const isCurrent = href === pathname.replace(/\/$/, '');
 const ariaControls = label.toLowerCase() + '-items';
 
 // get routes under href; workaround for Astro.glob string literal
@@ -29,14 +29,14 @@ let subitems = ffiles.map(file => (
     
     {href: file.url, 
      label: getLabel(file.url),
-     isCurrent: file.url === pathname,
+     isCurrent: file.url === pathname.replace(/\/$/, ''),
     }
 ));
 ---
 <nav-item data-toggle={isToggle} 
           data-expand={isToggle ? isExpand : undefined}>
     <button aria-controls={isToggle ? ariaControls : undefined} 
-            aria-expanded={isToggle ? isExpand : undefined} 
+            aria-expanded={isToggle ? "false" : undefined} 
             aria-label={label} 
             aria-current={isCurrent}>
         <Icon name="arrow" />
@@ -73,9 +73,10 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
         label : string | undefined;
         mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 768px)");
 
-        // mobile only
         subitems : HTMLElement | null = null;
         enableAutoExpand: boolean = true;
+
+        static observedAttributes = ["data-expand"];
 
         constructor() {
             super();
@@ -83,15 +84,18 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
             this.anchor = this.querySelector('a');
             this.label = this.button?.getAttribute('aria-label')?.toLowerCase();
 
-            if (this.button) {
+            // get last expand state
+            if (!this.enableAutoExpand) {
+                let label = this.label ?? '';
+                let expand = $expand.get()[label];
+                this.setExpand(expand);
+            }
+        }
 
-                // get last expand state
-                if (!this.enableAutoExpand) {
-                    let label = this.label ?? '';
-                    let expand = $expand.get()[label];
-                    this.setExpand(expand);
-                }
-                
+        connectedCallback() {
+
+            if (this.button) {
+     
                 // any button
                 this.button.addEventListener('click', this.handleClick);
 
@@ -118,10 +122,41 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
             }
         }
 
+        disconnectedCallback () {
+
+            if (this.button) {
+     
+                // any button
+                this.button.removeEventListener('click', this.handleClick);
+
+                // event listeners for the toggle button
+                if (getDataAttr(this, "toggle")) {
+
+                    this.button.removeEventListener(ExpandEvent.ENABLE, this.handleAutoExpand);
+                    this.button.removeEventListener(ExpandEvent.DISABLE, this.handleAutoExpand);
+                    this.button.removeEventListener('mouseenter', this.handleEnterLeave);
+                    this.button.removeEventListener('mouseleave', this.handleEnterLeave);
+                    this.button.removeEventListener('focus', this.handleEnterLeave);
+                    this.button.removeEventListener('blur', this.handleEnterLeave);
+
+                    // event listeners for sub items
+                    this.subitems?.removeEventListener('mouseleave', this.handleEnterLeave);
+                    this.subitems?.removeEventListener('blur', this.handleEnterLeave);
+
+                    this.mql.removeEventListener('change', this.handleMqlChange(this.button, this.mql));
+                }
+            }
+        }
+
+        attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
+            let expand = newValue != undefined;
+            // sub-items display state set using CSS
+            setBoolAttr(this.button, "aria-expanded", expand);
+        }
+
         setExpand = (expand : boolean) => {
             if (this.dataset["toggle"] != undefined) {
                 setDataAttr(this, "expand", expand);
-                setBoolAttr(this.button, "aria-expanded", expand);
             }
         }
 
@@ -143,6 +178,7 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
             } else {              
                 // forward click event to anchor tag
                 this.anchor?.click();
+                this.setExpand(false);
             }
         }
 
