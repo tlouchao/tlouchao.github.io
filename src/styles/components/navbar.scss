@@ -40,7 +40,7 @@ nav {
         font-size: xx-large;
         line-height: 0;
         min-width: 135px; /* font-size and font-family dependent */
-        transform: translateY(6.4px); /* how to use vertical-align? */
+        transform: translateY(6px); /* how to use vertical-align? */
      }
 }
 #nav-right {
@@ -83,7 +83,7 @@ hr {
         flex-direction: column;
         align-items: center;
         justify-content: start;
-        padding: 2em 0em; /* top, right */
+        padding: 1.5em 0em 2em 0em; /* top, right, bottom, left */
 
         /* Position and Size */
         width: min(25%, var(--nav-desktop-width));
@@ -101,7 +101,7 @@ hr {
             line-height: 1;
             min-width: 0;
             max-width: 64px; /* font-size and font-family dependent */
-            transform: translateY(3.2px); /* how to use vertical-align? */
+            transform: translateY(2px); /* how to use vertical-align? */
         }
     }
     #nav-right {

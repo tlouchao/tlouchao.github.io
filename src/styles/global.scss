@@ -30,7 +30,7 @@
 	--color-footer: var(--grey-warm);
 
 	/* navbar */
-	--nav-mobile-wh: 40px;
+	--nav-mobile-wh: 45px;
 	--nav-desktop-width: 240px;
 	--color-nav: var(--grey-warm-light);
 	--color-nav-right: var(--grey-warm-mddark);
@@ -63,13 +63,14 @@
 
     /* fonts */
 	--font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
+	--font-size: 15px;
 	--nav-font-family: var(--font-family);
 	--nav-font-weight: bold;
 	--nav-label-font-family: 'Bebas';
 
 	font-family: var(--font-family);
 	font-weight: normal;
-	font-size: 15px;
+	font-size: --font-size;
 
 	/* misc */
 	line-height: 1.5;

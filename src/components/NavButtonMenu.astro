@@ -31,12 +31,17 @@ const ariaLabel = "Navbar Menu Button"
 </style>
 
 <script>
-    import { setBoolAttr, setButtonIcon } from '../scripts/utils.js'
+    import { getDataAttr, setDataAttr, setBoolAttr, setButtonIcon } from '../scripts/utils.js'
+    import { ExpandEvent } from '../scripts/stores/expand';
 
     class NavButtonMenu extends HTMLElement {
         button : HTMLButtonElement | null;
         svg0: SVGSVGElement | null;
         svg1: SVGSVGElement | null;
+        navRightMobile : Element | null;
+
+        enableButtonExpand: boolean = false;
+        mql : MediaQueryList = window.matchMedia("(max-width: 600px)");
 
         static observedAttributes = ["data-expand"];
 
@@ -46,15 +51,55 @@ const ariaLabel = "Navbar Menu Button"
             let svgs = this.querySelectorAll('svg');
             this.svg0 = svgs[0];
             this.svg1 = svgs[1];
+            this.navRightMobile = document.querySelector('#nav-right-mobile');
+        }
 
-            setBoolAttr(this.button, "aria-expanded", false);
-            setButtonIcon(this.button, this.svg0, this.svg1, false)
+        connectedCallback() {
+            
+            this.button?.addEventListener('click', this.handleClick);
+            this.addEventListener(ExpandEvent.ENABLE, this.handleEnableExpand);
+			this.addEventListener(ExpandEvent.DISABLE, this.handleEnableExpand);
+            this.mql.addEventListener('change', this.handleMqlChange(this, this.mql));
+
+            // on page load, query the screen size
+			this.mql.dispatchEvent(new Event('change'));
         }
 
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
             let expand = newValue != undefined;
             setBoolAttr(this.button, "aria-expanded", expand);
             setButtonIcon(this.button, this.svg0, this.svg1, expand)
+            if (!this.enableButtonExpand || expand && this.enableButtonExpand) {
+				this.navRightMobile?.setAttribute('style', 'display: flex;');
+            } else {
+                this.navRightMobile?.setAttribute('style', 'display: none;');
+            }
+        }
+
+        handleClick = () => {
+            let expand = getDataAttr(this, 'expand');
+			setDataAttr(this, 'expand', !expand);
+        }
+
+		handleEnableExpand = (evt : Event) => {
+
+			if (evt.type == ExpandEvent.ENABLE) {
+            	this.enableButtonExpand = true;
+                setDataAttr(this, 'expand', false);
+			} else if (evt.type == ExpandEvent.DISABLE) {
+				this.enableButtonExpand = false;
+                setDataAttr(this, 'expand', true);
+			} 
+		}
+
+		// monitor the viewport size - dispatch custom event on reaching media query breakpoint
+        handleMqlChange = (evtTarget : HTMLElement | null | undefined, mql : MediaQueryList) => {
+            return function handleMqlChangeInner(evt : MediaQueryListEvent) {
+                let newEvt : Event = (mql.matches) ? 
+                                    new Event(ExpandEvent.ENABLE) : 
+                                    new Event(ExpandEvent.DISABLE);
+                evtTarget?.dispatchEvent(newEvt);
+            }
         }
     }
     // Tell the browser to use our NavButtonMenu class for <nav-button-menu> elements.
