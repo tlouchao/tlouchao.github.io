@@ -149,15 +149,11 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
         }
 
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
-            let expand = newValue != undefined;
-            // sub-items display state set using CSS
-            setBoolAttr(this.button, "aria-expanded", expand);
+            setBoolAttr(this.button, "aria-expanded", newValue != undefined); // CSS controls the display state
         }
 
         setExpand = (expand : boolean) => {
-            if (this.dataset["toggle"] != undefined) {
-                setDataAttr(this, "expand", expand);
-            }
+            if (getDataAttr(this, "toggle")) setDataAttr(this, "expand", expand);
         }
 
         handleClick = (evt : MouseEvent) => {
@@ -167,16 +163,25 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
                 // prevent href navigation / refresh
                 evt.preventDefault();
 
-                // get and invert
-                let label = this.label ?? '';
-                let expand = !$expand.get()[label];
-                $expand.setKey(label, expand);
+                if (this.enableAutoExpand) {
 
-                // set attribute on elements
-                this.setExpand(expand);
+                    // ignore store, set expand local state
+                    let expand = getDataAttr(this, "expand");
+                    this.setExpand(!expand);
+                
+                } else {
+
+                    // use store
+                    let label = this.label ?? '';
+                    let expand = !$expand.get()[label];
+                    $expand.setKey(label, expand);
+
+                    // set attributes
+                    this.setExpand(expand);
+                }
 
             } else {              
-                // forward click event to anchor tag
+                // not a toggle button, forward click event to anchor tag
                 this.anchor?.click();
                 this.setExpand(false);
             }
@@ -186,23 +191,24 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
 
             if (getDataAttr(this, "toggle")) {
                 
-                // ignore nanostores, expand local state will not persist 
                 if (evt.type == ExpandEvent.ENABLE) {
                     this.enableAutoExpand = true;
 
-                    // set expand local state
-                    this.setExpand(false);    
+                    // ignore store, set expand local state
+                    this.setExpand(false);
 
                 } else if (evt.type == ExpandEvent.DISABLE) {
                     this.enableAutoExpand = false;
 
-                    // set expand
+                    // use store
                     let label = this.label ?? '';
                     let expand = $expand.get()[label];
+                    
+                    // set attributes
                     this.setExpand(expand);
 
                 }
-            } // else do nothing
+            } // do nothing if not a toggle button
         }
 
         handleEnterLeave = (evt : Event | MouseEvent) => {
