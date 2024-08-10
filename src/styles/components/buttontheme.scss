@@ -1,2 +1,16 @@
 @use '../mixins';
 @include mixins.toggle-button-svg("#button-theme");
+
+#button-theme {
+    button {
+        padding: 0.7em 0em; /* top, right, bottom, left */
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #button-theme {
+        button {
+            background-color: var(--color-nav-item);
+        }
+    }
+}

@@ -1,149 +1,88 @@
 @use '../mixins';
+@use 'navmixins';
 
 /* MOBILE */
-nav {
-    @include mixins.flex-row;
-    align-items: stretch;
-    justify-content: space-between;
-    padding: 0;
-    padding-left: 1em; /* top, right, bottom, left */
-    gap: 1em;
-    z-index: 1;
-    background-color: var(--color-nav);
-
-    /* position and size */
-    width: 100%;
-    height: var(--nav-mobile-wh);
-    position: fixed;
-    top: 0;
-    hr {
-        display: block;
-        border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 60%);
-        width: 60%;
-    }
-    .nav-social {
-        display: inherit;
-        flex-direction: row;
-        justify-content: center;
-        button-social {
-            display: inherit;
-        }
-    }
-}  
-#nav-left {
-    @include mixins.flex-inherit;
-    align-items: center;
-    gap: 1em;
-    #nav-left-icon {
-        font-size: 0;
-    }
-    a {
-        width: fit-content;
-        text-decoration: none;
-    }
-    img {
-        width: 28px;
-        border-radius: 50%;
-        border-style: none;
-     }
-     span {
-        display: inline-flex;
-        color: var(--color-nav-label);
-        font-family: var(--nav-label-font-family);
-        font-size: xx-large;
-        line-height: 0;
-        min-width: 135px; /* font-size and font-family dependent */
-        transform: translateY(6px); /* how to use vertical-align? */
-     }
-}
-#nav-right {
-    @include mixins.flex-inherit;
-    height: 100%;
-}
-#nav-right-mobile {
-    display: none;
-}
-#nav-button-menu {
-    display: flex;
+@media only screen and (max-width: 599px) {
+    @include navmixins.nav-bar;
 }
 
 /* TABLET */
-@media (min-width: 600px) {
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+    @include navmixins.nav-bar;
     nav {
-        hr {
-            display: none;
-        }
-        .nav-social {
-            button-social {
+        #nav-right {
+            padding-right: 0;
+            #nav-right-inner {
+                @include mixins.flex-row;
+                position: static;
+                filter: none;
+                #nav-items {
+                    @include mixins.flex-inherit;
+                    height: 100%;
+                    flex-grow: 1;
+                }
+                .nav-social {
+                    display: none;
+                }
+            }
+            #nav-button-menu {
                 display: none;
             }
         }
     }
-    #nav-right-mobile {
-        @include mixins.flex-inherit;
-        height: 100%;
-        gap: 0;
-        #nav-items {
-            @include mixins.flex-inherit;
-        }
-    }
-    #nav-button-menu {
-        display: none;
-    }
 }
 
 /* DESKTOP */
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) {
+    @include navmixins.nav-bar;
     nav {
-        flex-direction: column;
-        align-items: center;
-        justify-content: start;
-        padding: 1.5em 0em 2em 0em; /* top, right, bottom, left */
-
-        /* Position and Size */
+        @include mixins.flex-col;
+        padding: 0;
+        padding-top: 1.5em;
         width: min(25%, var(--nav-desktop-width));
         height: 100%;
-        overflow-y: auto;
-        hr {
-            display: block;
-            border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 60%);
-            width: 60%;
-        }
-        .nav-social {
-            button-social {
-                display: inherit;
+        #nav-left {
+            gap: 0.5em;
+            img {
+                width: 128px;
+            }
+            span {
+                text-align: center;
+                font-size: x-large;
+                line-height: 1;
+                min-width: 0;
+                max-width: 64px;
+                transform: translateY(3px);
             }
         }
-    }
-    #nav-left {
-        gap: 0.5em;
-        img {
-            width: 128px;
-        }
-        span {
-            text-align: center;
-            font-size: x-large;
-            line-height: 1;
-            min-width: 0;
-            max-width: 64px; /* font-size and font-family dependent */
-            transform: translateY(3px); /* how to use vertical-align? */
-        }
-    }
-    #nav-right {
-        width: 100%;
-        align-items: center;
-        gap: 1em;
-    }
-    #nav-right-mobile {
-        width: 100%;
-        align-items: center;
-        order: 2;
-        #nav-items {
+        #nav-right {
             width: 100%;
-            flex-grow: 1;
+            align-items: center;
+            padding: 0;
+            gap: 1em;
+            #nav-right-inner {
+                order: 2;
+                flex-grow: 1;
+                position: static;
+                filter: none;
+                hr {
+                    display: block;
+                    margin-top: 2em;
+                    border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 50%);
+                    width: 60%;
+                }
+                .nav-social {
+                    button-social {
+                        display: inherit;
+                    }
+                }
+            }
+            #button-theme {
+                order: 1;
+            }
+            #nav-button-menu {
+                display: none;
+            }
         }
-    }
-    #button-theme {
-        order: 1;
     }
 }

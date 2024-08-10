@@ -34,8 +34,8 @@
 }
 
 @mixin border-top-bottom($color : white) {
-    border-top: 1px solid color-mix(in srgb, $color, transparent);
-    border-bottom: 1px solid color-mix(in srgb, $color, transparent);
+    border-top: 1px solid color-mix(in srgb, $color, transparent 50%);
+    border-bottom: 1px solid color-mix(in srgb, $color, transparent 50%);
     border-left: none;
     border-right: none;
 }
@@ -43,8 +43,8 @@
 @mixin border-left-right($color : white) {
     border-top: none;
     border-bottom: none;
-    border-left: 1px solid color-mix(in srgb, $color, transparent);
-    border-right: 1px solid color-mix(in srgb, $color, transparent);
+    border-left: 1px solid color-mix(in srgb, $color, transparent 50%);
+    border-right: 1px solid color-mix(in srgb, $color, transparent 50%);
 }
 
 @mixin toggle-button-svg($id) {
@@ -52,13 +52,12 @@
         @include flex-inherit;
         button {
             overflow: hidden;
-            padding: 0.66em;
-            width: var(--nav-mobile-wh);
+            padding: 0.5em 0em; /* top, right, bottom, left */
+            width: var(--nav-button-width);
             height: var(--nav-mobile-wh);
             cursor: pointer;
-            border-left: 1px solid color-mix(in srgb, var(--color-nav-rgba), transparent);
             color: var(--color-nav-label);
-            background-color: var(--color-nav-item);
+            background-color: inherit;
         }
         button:hover {
             color: var(--color-secondary);
@@ -68,6 +67,16 @@
             height: 100%;
             transition: all 0.25s ease;
             transition-property: color, opacity;
+        }
+    }
+    @media only screen and (min-width: 768px) {
+        #{$id} {
+            button {
+                border: none;
+                background-color: var(--color-nav-item);
+                width: var(--nav-mobile-wh);
+                height: var(--nav-mobile-wh);
+            }
         }
     }
 }

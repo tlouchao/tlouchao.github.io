@@ -7,10 +7,10 @@
 	--black-warm: rgb(20, 18, 15);
 	--white: rgb(255, 250, 245);
 	--white-warm: rgb(245, 240, 235);
-	--grey-cool: rgb(65, 70, 85);
+	--grey-cool: rgb(40, 45, 60);
 	--grey-cool-light: rgb(210, 215, 230);
 	--grey-cool-mddark: rgb(25, 30, 45);
-	--grey-cool-dark: rgb(40, 45, 60);
+	--grey-cool-dark: rgb(10, 15, 30);
 	--grey-warm: rgb(175, 170, 165);
 	--grey-warm-light: rgb(210, 205, 200);
 	--grey-warm-mddark: rgb(155, 150, 145);
@@ -30,11 +30,11 @@
 	--color-footer: var(--grey-warm);
 
 	/* navbar */
+	--nav-button-width: 40px;
 	--nav-mobile-wh: 45px;
 	--nav-desktop-width: 240px;
 	--color-nav: var(--grey-warm-light);
 	--color-nav-right: var(--grey-warm-mddark);
-	--color-nav-rgba: rgba(210, 215, 220, .5);
 	--color-nav-item: var(--grey-warm);
 	--color-nav-item-hover: var(--white-warm);
 	--color-nav-item-active: var(--white-warm);
@@ -83,15 +83,14 @@
 .theme-dark {
 
 	/* body, header, footer */
-	--color-primary: var(--grey-cool-dark);
+	--color-primary: var(--grey-cool);
 	--color-secondary: var(--white);
 	--color-footer: var(--violet-dark);
 
 	/* navbar */
 	--color-nav: var(--grey-cool);
 	--color-nav-right: var(--grey-cool-mddark);
-	--color-nav-rgba: rgba(65, 70, 75, .5);
-	--color-nav-item: var(--grey-cool-dark);
+	--color-nav-item: var(--grey-cool-mddark);
 	--color-nav-item-hover: darkmagenta;
 	--color-nav-item-active: darkmagenta;
 	--color-nav-item-current: darkviolet;
@@ -99,7 +98,7 @@
 	--color-nav-link-hover: magenta;
 	--color-nav-link-active: lightcyan;
 	--color-nav-link-current: lightcyan;
-	--color-nav-sub-item: var(--grey-cool-mddark);
+	--color-nav-sub-item: var(--grey-cool-dark);
 	--color-nav-sub-link: chartreuse;
 	--color-nav-sub-link-current: lightcyan;
 	--color-nav-social: magenta;
@@ -137,13 +136,13 @@ a:hover, a:active {
 	color: var(--anchor-active);
 }
 button {
-	color: inherit;
 	font: inherit;
 	cursor: pointer;
 	margin: 0;
 	padding: 0;
 	border: none;
-	outline: inherit;
+	color: inherit;
+	background-color: inherit;
 }
 .sr-only {
 	position: absolute !important;

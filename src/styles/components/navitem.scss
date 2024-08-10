@@ -1,117 +1,42 @@
 @use '../mixins';
+@use 'navmixins';
 
 /* MOBILE */
-[data-icon=arrow] {
-    @include mixins.invisible;
-    color: inherit;
+@media only screen and (max-width: 599px) {
+    @include navmixins.nav-item;
 }
-nav-item {
-    @include mixins.flex-col;
-    height: inherit;
-    button {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        padding: 0.5em;
-        gap: 0.25em;
-        font-family: var(--nav-font-family);
-        @include mixins.border-left-right(
-            var(--color-nav-rgba));
-        @include mixins.set-color-bgcolor(
-            var(--color-nav-link), var(--color-nav-item));
-        a, a:link, a:visited {
-            color: inherit;
-            text-decoration: none;
-            line-height: 1;
-            font-weight: var(--nav-font-weight);
+
+/* TABLET */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+    @include navmixins.nav-item;
+    nav-item {
+        button {
+            height: 100%;
+            padding: 0.5em;
+            @include mixins.border-left-right(
+                var(--color-nav));
+            @include mixins.set-color-bgcolor(
+                var(--color-nav-link), var(--color-nav));
         }
     }
-    button[aria-current=true] {
-        @include mixins.set-color-bgcolor(
-            var(--color-nav-link-current), var(--color-nav-item-current));
-        a, a:link, a:visited {
-            color: inherit;
-        }
-    }
-    button:hover {
-        cursor: pointer;
-        @include mixins.set-color-bgcolor(
-            var(--color-nav-link-hover), var(--color-nav-item-hover));
-    }
-    button:active {
-        cursor: pointer;
-        @include mixins.set-color-bgcolor(
-            var(--color-nav-link-active), var(--color-nav-item-active));
-    }
-    button[aria-expanded=false] + .sub-items {
+    nav-item[data-toggle] > button > [data-icon=arrow] {
         @include mixins.invisible;
     }
-    button[aria-expanded=true] + .sub-items {
-        @include mixins.visible-block;
+    nav-item[data-toggle][data-expand] > button > [data-icon=arrow] {
+        @include mixins.invisible;
     }
     .sub-items {
         position: fixed;
         top: var(--nav-mobile-wh);
-        button {
-            @include mixins.border-top-bottom(
-                var(--color-nav-rgba));
-            @include mixins.set-color-bgcolor(
-            var(--color-nav-sub-link), var(--color-nav-sub-item));
-            a, a:link, a:visited {
-                color: inherit;
-            }
-        }
-
-        button[aria-current=true] {
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-sub-link-current), var(--color-nav-item-current));
-            a, a:link, a:visited {
-                color: inherit;
-            }
-        }
-        button:hover {
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-hover), var(--color-nav-item-hover));
-        }
-        button:active {
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-active), var(--color-nav-item-active));
-        }
-    } /* sub-items */
-} /* nav-item */
-
-/* TABLET */
-@media (min-width: 600px) {
+    }
 }
 
 /* DESKTOP */
-@media (min-width: 768px) {
-    [data-icon=arrow] {
-        display: inherit;
-    }
-    nav-item[data-toggle] > button > [data-icon=arrow] {
-        @include mixins.visible;
-        transform: rotate(90deg);
-    }
-    nav-item[data-toggle][data-expand] > button > [data-icon=arrow] {
-        @include mixins.visible;
-        transform: rotate(180deg);
-    }
+@media only screen and (min-width: 768px) {
+    @include navmixins.nav-item;
     nav-item {
-        width: 100%;
         button {
-            padding: 0.5em 0.25em;
-            height: auto;
-            @include mixins.border-top-bottom(var(--color-nav-rgba));
-            border-right: 1px solid var(--color-nav-rgba);
-            a {
-                text-align: left;
-            }
-        }
-        .sub-items {
-            position: static;
-            top: 0;
+            padding: 0.5em;
         }
     } /* nav-item */
 }

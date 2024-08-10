@@ -39,10 +39,10 @@ let subitems = ffiles.map(file => (
             aria-expanded={isToggle ? "false" : undefined} 
             aria-label={label} 
             aria-current={isCurrent}>
-        <Icon name="arrow" />
         <a href={href}>
             {label}
         </a>
+        <Icon name="arrow" />
     </button>
     {isToggle &&
     <div class="sub-items" id={ariaControls}>
@@ -50,10 +50,10 @@ let subitems = ffiles.map(file => (
             <nav-item>
                 <button aria-label={s.label}
                         aria-current={s.isCurrent}>
-                    <Icon name="arrow" />
                     <a href={s.href}>
                         {s.label}
                     </a>
+                    <Icon name="arrow" />
                 </button>
             </nav-item>
             ))
