@@ -41,7 +41,7 @@ const ariaLabel = "Navbar Menu Button"
         navRightMobile : Element | null | undefined;
 
         enableButtonExpand: boolean = false;
-        mql : MediaQueryList = window.matchMedia("(max-width: 600px)");
+        mql : MediaQueryList = window.matchMedia("(max-width: 599px)");
 
         static observedAttributes = ["data-expand"];
 
@@ -76,11 +76,13 @@ const ariaLabel = "Navbar Menu Button"
         }
 
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
-
             let expand = newValue != undefined;
             setBoolAttr(this.button, "aria-expanded", expand);
             setButtonIcon(this.button, this.svg0, this.svg1, expand)
+            this.refreshNavRight(expand);
+        }
 
+        refreshNavRight = (expand : boolean) => {
             // set the display state of the controlled element
             if (!this.enableButtonExpand || expand && this.enableButtonExpand) {
 				this.navRightMobile?.setAttribute('style', 'display: flex;');
@@ -98,19 +100,25 @@ const ariaLabel = "Navbar Menu Button"
 
 			if (evt.type == ExpandEvent.ENABLE) {
             	this.enableButtonExpand = true;
-                setDataAttr(this, 'expand', false);
 			} else if (evt.type == ExpandEvent.DISABLE) {
 				this.enableButtonExpand = false;
-                setDataAttr(this, 'expand', true);
-			} 
+			}
+
+            // attributeChangedCallback will not trigger if the previous value is the same
+            let prevExpand = getDataAttr(this, 'expand');
+            if (prevExpand) {
+                setDataAttr(this, 'expand', false);
+            } else {
+                this.refreshNavRight(prevExpand);
+            }
 		}
 
 		// monitor the viewport size - dispatch custom event on reaching media query breakpoint
-        handleMqlChange = (evtTarget : HTMLElement | null | undefined, mql : MediaQueryList) => {
+        handleMqlChange = (evtTarget : HTMLElement, mql : MediaQueryList) => {
             return function handleMqlChangeInner(evt : MediaQueryListEvent) {
                 let newEvt : Event = (mql.matches) ? 
-                                    new Event(ExpandEvent.ENABLE) : 
-                                    new Event(ExpandEvent.DISABLE);
+                                     new Event(ExpandEvent.ENABLE) : 
+                                     new Event(ExpandEvent.DISABLE);
                 evtTarget?.dispatchEvent(newEvt);
             }
         }

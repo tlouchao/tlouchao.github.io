@@ -35,7 +35,7 @@ export const getLabel = function(href: string | undefined) : string {
     return ret;
 }
 
-// ---------------------- Capitalize Button Label ------------------------- //
+// ---------------------- Swap Visible Button Icon ------------------------ //
 
 export const setButtonIcon = function(button: HTMLButtonElement | null,
                                        svg0: SVGSVGElement | null,

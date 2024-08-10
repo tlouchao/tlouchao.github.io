@@ -71,7 +71,7 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
         button : HTMLButtonElement | null;
         anchor : HTMLAnchorElement | null;
         label : string | undefined;
-        mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 768px)");
+        mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 767px)");
 
         subitems : HTMLElement | null = null;
         enableAutoExpand: boolean = true;
@@ -228,8 +228,8 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
         handleMqlChange = (evtTarget : HTMLElement, mql : MediaQueryList) => {
             return function handleMqlChangeInner(evt : MediaQueryListEvent) {
                 let newEvt : Event = (mql.matches) ? 
-                                    new Event(ExpandEvent.ENABLE) : 
-                                    new Event(ExpandEvent.DISABLE);
+                                     new Event(ExpandEvent.ENABLE) : 
+                                     new Event(ExpandEvent.DISABLE);
                 evtTarget.dispatchEvent(newEvt);
             }
         }

@@ -12,6 +12,6 @@ export const $expand = map<ExpandInterface>(
 )
 
 export enum ExpandEvent {
-    ENABLE = "enableautoexpand", // TODO: remove enum?
+    ENABLE = "enableautoexpand",
     DISABLE = "disableautoexpand",
 }
