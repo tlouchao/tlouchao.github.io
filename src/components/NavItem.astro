@@ -14,7 +14,7 @@ let { href, label = undefined, isToggle = false, isExpand = false } = Astro.prop
 
 // Create capitalized label
 if (label == undefined) {
-    label = (href == "/") ? "Projects" : getLabel(href);
+    label = (href == "/") ? "Home" : getLabel(href);
 }
 
 const { pathname } = Astro.url;
@@ -71,7 +71,7 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
         button : HTMLButtonElement | null;
         anchor : HTMLAnchorElement | null;
         label : string | undefined;
-        mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 767px)");
+        mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 768px)");
 
         subitems : HTMLElement | null = null;
         enableAutoExpand: boolean = true;

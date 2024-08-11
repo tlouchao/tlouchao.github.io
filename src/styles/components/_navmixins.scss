@@ -50,9 +50,8 @@
             padding-right: 0.25em;
             #nav-right-inner {
                 @include mixins.flex-col;
-                align-items: center;
+                @include mixins.align-center;
                 justify-content: start;
-                width: 100%;
                 background-color: var(--color-nav-item);
 
                 /* position and size */
@@ -62,6 +61,12 @@
                 #nav-items {
                     width: 100%;
                     flex-grow: 1;
+                    @include mixins.border-top-bottom(
+                        var(--color-nav));
+                }
+                #nav-social {
+                    @include mixins.flex-col;
+                    @include mixins.align-center;
                 }
                 hr {
                     display: none;
@@ -87,8 +92,7 @@
     nav-item {
         button {
             @include mixins.flex-row;
-            align-items: center;
-            width: 100%;
+            @include mixins.align-center;
             height: auto;
             padding: 0.75em;
             font-family: var(--nav-font-family);
@@ -104,6 +108,7 @@
             }
         }
         button[aria-current=true] {
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link-current), var(--color-nav-item-current));
             a, a:link, a:visited {
@@ -112,11 +117,13 @@
         }
         button:hover {
             cursor: pointer;
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link-hover), var(--color-nav-item-hover));
         }
         button:active {
             cursor: pointer;
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link-active), var(--color-nav-item-active));
         }
@@ -153,6 +160,7 @@
             }
         }
         button[aria-current=true] {
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-sub-link-current), var(--color-nav-item-current));
             a, a:link, a:visited {
@@ -160,10 +168,14 @@
             }
         }
         button:hover {
+            cursor: pointer;
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link-hover), var(--color-nav-item-hover));
         }
         button:active {
+            cursor: pointer;
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link-active), var(--color-nav-item-active));
         }

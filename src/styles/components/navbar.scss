@@ -2,16 +2,15 @@
 @use 'navmixins';
 
 /* MOBILE */
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 600px) {
     @include navmixins.nav-bar;
 }
 
 /* TABLET */
-@media only screen and (min-width: 600px) and (max-width: 767px) {
+@media only screen and (min-width: 600px) and (max-width: 768px) {
     @include navmixins.nav-bar;
     nav {
         #nav-right {
-            padding-right: 0;
             #nav-right-inner {
                 @include mixins.flex-row;
                 position: static;
@@ -20,6 +19,7 @@
                     @include mixins.flex-inherit;
                     height: 100%;
                     flex-grow: 1;
+                    border: none;
                 }
                 .nav-social {
                     display: none;
@@ -56,21 +56,25 @@
             }
         }
         #nav-right {
-            width: 100%;
-            align-items: center;
+            @include mixins.align-center;
             padding: 0;
             gap: 1em;
             #nav-right-inner {
                 order: 2;
                 flex-grow: 1;
+                justify-content: space-between;
                 position: static;
                 filter: none;
+                #nav-items {
+                    flex-grow: 0;
+                }
                 hr {
                     display: block;
                     margin-top: 2em;
                     border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 50%);
                     width: 60%;
                 }
+                
                 .nav-social {
                     button-social {
                         display: inherit;

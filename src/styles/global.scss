@@ -53,6 +53,9 @@
 	--color-nav-label: var(--goldenrod-dark);
 	--color-nav-label-rgba: var(92, 90, 60);
 
+    /* header */
+    --header-height: 225px;
+
 	/* links */
 	--anchor-link: var(--blue);
 	--anchor-active: var(--violet);
@@ -128,6 +131,7 @@ nav, main, header, footer {
 h1, h2, h3, h4, h4, h5, h6 {
 	font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
 	font-weight: 700;
+    margin: 0;
 }
 a:link, a:visited {
 	color: var(--anchor-link);

@@ -24,7 +24,7 @@ export const setBoolAttr = function(elem: HTMLElement | null, attrName: string, 
     elem?.setAttribute(attrName, Boolean(attrVal).toString());
 }
 
-// ---------------------- Capitalize Button Label ------------------------- //
+// -------------------------- Capitalize Label ---------------------------- //
 
 export const getLabel = function(href: string | undefined) : string {
     

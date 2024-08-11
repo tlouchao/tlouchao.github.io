@@ -2,12 +2,12 @@
 @use 'navmixins';
 
 /* MOBILE */
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 600px) {
     @include navmixins.nav-item;
 }
 
 /* TABLET */
-@media only screen and (min-width: 600px) and (max-width: 767px) {
+@media only screen and (min-width: 600px) and (max-width: 768px) {
     @include navmixins.nav-item;
     nav-item {
         button {
@@ -34,9 +34,14 @@
 /* DESKTOP */
 @media only screen and (min-width: 768px) {
     @include navmixins.nav-item;
-    nav-item {
-        button {
-            padding: 0.5em;
+    #nav-items {
+        nav-item {
+            button {
+                padding: 0.5em 0.75em;
+            }
         }
-    } /* nav-item */
+        nav-item > button > [data-icon=arrow] {
+            right: 0.5em;
+        }
+    }
 }

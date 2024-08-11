@@ -1,7 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import NavBar from '../components/NavBar.astro';
-import HeaderImage from '../components/HeaderImage.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
 import { ViewTransitions } from "astro:transitions";
@@ -9,6 +9,17 @@ import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
 
 import '@fontsource/oxygen';
 import '@fontsource/roboto';
+
+import { getLabel } from '../scripts/utils';
+
+interface Props {
+  header?: string;
+  headerImgSrc?: string;
+}
+
+let { pathname } = Astro.url;
+let { header = getLabel(pathname), headerImgSrc = '/freljord_splash.jpg' } = Astro.props;
+
 ---
 
 <!doctype html>
@@ -22,7 +33,7 @@ import '@fontsource/roboto';
 	<body class="theme-dark">
         <NavBar />
         <div id="header-layout">
-            <HeaderImage src='/freljord_splash.jpg' />
+            <Header header={header} headerImgSrc={headerImgSrc} />
             <div id="main-layout">
                 <main>
                     <slot />
