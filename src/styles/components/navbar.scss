@@ -21,8 +21,10 @@
                     flex-grow: 1;
                     border: none;
                 }
-                .nav-social {
-                    display: none;
+                #nav-social {
+                    hr, .nav-social {
+                        display: none;
+                    }
                 }
             }
             #nav-button-menu {
@@ -52,7 +54,7 @@
                 line-height: 1;
                 min-width: 0;
                 max-width: 64px;
-                transform: translateY(3px);
+                transform: translateY(4px);
             }
         }
         #nav-right {
@@ -68,16 +70,18 @@
                 #nav-items {
                     flex-grow: 0;
                 }
-                hr {
-                    display: block;
-                    margin-top: 2em;
-                    border: 1px solid color-mix(in srgb, var(--color-nav-label), transparent 50%);
-                    width: 60%;
-                }
-                
-                .nav-social {
-                    button-social {
-                        display: inherit;
+                #nav-social {
+                    hr {
+                        display: block;
+                        margin-top: 2em;
+                        border: 1px solid color-mix(in srgb, var(--color-nav-social), transparent 50%);
+                        width: 60%;
+                    }
+                    
+                    .nav-social {
+                        button-social {
+                            display: inherit;
+                        }
                     }
                 }
             }

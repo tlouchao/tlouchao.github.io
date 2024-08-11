@@ -13,8 +13,7 @@
         button {
             height: 100%;
             padding: 0.5em;
-            @include mixins.border-left-right(
-                var(--color-nav));
+            border: 1px solid transparent;
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link), var(--color-nav));
         }

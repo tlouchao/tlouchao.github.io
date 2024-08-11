@@ -23,42 +23,58 @@
 	--violet-red: rgb(100, 0, 72);
 	--goldenrod: rgb(164, 160, 114);
 	--goldenrod-dark: rgb(92, 90, 60);
+    
+    --turquoise: rgb(64, 230, 220);
+    --turquoise-light: rgb(0, 180, 195);
+    --turquoise-mdlight: rgb(0, 130, 170);
+    --turquoise-mddark: rgb(0, 90, 155);
+    --turquoise-dark: rgb(0, 50, 80);
+    --sand: rgb(255, 245, 240);
+    --sand-light: rgb(245, 230, 225);
+    --sand-mdrose: rgb(235, 215, 210);
+    --sand-rose: rgb(225, 200, 195);
+    --sand-dark: rgb(215, 185, 180);
+    --redwood: rgb(180, 90, 55);
+    --redwood-light: rgb(200, 90, 90);
+    --redwood-dark: rgb(85, 40, 35);
+    --coffee: rgb(48, 22, 22);
 
 	/* body, header, footer */
-	--color-primary: var(--white-warm);
-	--color-secondary: var(--black-warm);
-	--color-footer: var(--grey-warm);
+	--color-primary: var(--sand);
+	--color-secondary: var(--coffee);
+    --color-header: var(--sand);
+	--bgcolor-footer: var(--redwood-light);
 
 	/* navbar */
 	--nav-button-width: 40px;
 	--nav-mobile-wh: 45px;
 	--nav-desktop-width: 240px;
-	--color-nav: var(--grey-warm-light);
-	--color-nav-right: var(--grey-warm-mddark);
-	--color-nav-item: var(--grey-warm);
-	--color-nav-item-hover: var(--white-warm);
-	--color-nav-item-active: var(--white-warm);
-	--color-nav-item-current: var(--goldenrod);
-	--color-nav-link: var(--color-secondary);
-	--color-nav-link-hover: maroon;
-	--color-nav-link-active: crimson;
-	--color-nav-link-current: var(--color-secondary);
-	--color-nav-sub-item: var(--grey-warm-mddark);
-	--color-nav-sub-link: maroon;
-	--color-nav-sub-link-current: maroon;
-	--color-nav-social: var(--goldenrod-dark);
-	--color-nav-social-hover: maroon;
+	--color-nav: var(--sand-light);
+	--color-nav-right: var(--sand-mdrose);
+	--color-nav-item: var(--sand-mdrose);
+	--color-nav-item-hover: var(--turquoise-light);
+	--color-nav-item-active: var(--turquoise-light);
+	--color-nav-item-current: var(--turquoise);
+	--color-nav-link: var(--redwood-dark);
+	--color-nav-link-hover: var(--turquoise-dark);
+	--color-nav-link-active: var(--sand);
+	--color-nav-link-current: var(--turquoise-dark);
+	--color-nav-sub-item: var(--sand-dark);
+	--color-nav-sub-link: var(--coffee);
+	--color-nav-sub-link-current: var(--turquoise-dark);
+	--color-nav-social: maroon;
+	--color-nav-social-hover: crimson;
+    --color-divider: var(--sand-light);
 
 	/* navlabel */
-	--color-nav-label: var(--goldenrod-dark);
-	--color-nav-label-rgba: var(92, 90, 60);
+	--color-nav-label: maroon;
 
     /* header */
     --header-height: 225px;
 
 	/* links */
-	--anchor-link: var(--blue);
-	--anchor-active: var(--violet);
+	--anchor-link: maroon;
+	--anchor-active: crimson;
 
 	/* main */
 	--main-min-width: 720px;
@@ -88,7 +104,8 @@
 	/* body, header, footer */
 	--color-primary: var(--grey-cool);
 	--color-secondary: var(--white);
-	--color-footer: var(--violet-dark);
+    --color-header: var(--white);
+	--bgcolor-footer: var(--violet-dark);
 
 	/* navbar */
 	--color-nav: var(--grey-cool);
@@ -106,6 +123,7 @@
 	--color-nav-sub-link-current: lightcyan;
 	--color-nav-social: magenta;
 	--color-nav-social-hover: lightcyan;
+    --color-divider: var(--grey-cool);
 
 	/* navlabel */
 	--color-nav-label: magenta;
@@ -148,6 +166,11 @@ button {
 	color: inherit;
 	background-color: inherit;
 }
+
+.nav-social {
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.33));
+}
+
 .sr-only {
 	position: absolute !important;
 	height: 1px;

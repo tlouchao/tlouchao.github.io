@@ -41,7 +41,7 @@
                 font-size: xx-large;
                 line-height: 0;
                 min-width: 135px; /* font-size and font-family dependent */
-                transform: translateY(6px); /* how to use vertical-align? */
+                transform: translateY(8px); /* how to use vertical-align? */
             }
         }
         #nav-right {
@@ -62,22 +62,23 @@
                     width: 100%;
                     flex-grow: 1;
                     @include mixins.border-top-bottom(
-                        var(--color-nav));
+                        var(--color-divider));
                 }
                 #nav-social {
                     @include mixins.flex-col;
                     @include mixins.align-center;
-                }
-                hr {
-                    display: none;
-                }
-                .nav-social {
-                    @include mixins.flex-row;
-                    padding-top: 0.75em;
-                    padding-bottom: 2em;
-                    background-color: inherit;
-                    button-social {
-                        display: inherit;
+                    hr {
+                        color: var(--color-nav-social);
+                        display: none;
+                    }
+                    .nav-social {
+                        @include mixins.flex-row;
+                        padding-top: 0.75em;
+                        padding-bottom: 2em;
+                        background-color: inherit;
+                        button-social {
+                            display: inherit;
+                        }
                     }
                 }
             }
@@ -97,7 +98,7 @@
             padding: 0.75em;
             font-family: var(--nav-font-family);
             @include mixins.border-top-bottom(
-                var(--color-nav));
+                var(--color-divider));
             @include mixins.set-color-bgcolor(
                 var(--color-nav-link), var(--color-nav-item));
             a, a:link, a:visited {
@@ -152,7 +153,7 @@
         top: 0;
         button {
             @include mixins.border-top-bottom(
-                var(--color-nav));
+                var(--color-divider));
             @include mixins.set-color-bgcolor(
             var(--color-nav-sub-link), var(--color-nav-sub-item));
             a, a:link, a:visited {
