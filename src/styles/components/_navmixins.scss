@@ -26,6 +26,7 @@
                 font-size: 0;
             }
             a {
+                @include mixins.flex-inherit;
                 width: fit-content;
                 text-decoration: none;
             }
@@ -34,14 +35,15 @@
                 border-radius: 50%;
                 border-style: none;
             }
+            #nav-left-label {
+                height: 100%;
+            }
             span {
-                display: inline-flex;
                 color: var(--color-nav-label);
                 font-family: var(--nav-label-font-family);
                 font-size: xx-large;
-                line-height: 0;
+                line-height: 50px;
                 min-width: 135px; /* font-size and font-family dependent */
-                transform: translateY(8px); /* how to use vertical-align? */
             }
         }
         #nav-right {

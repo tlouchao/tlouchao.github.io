@@ -26,7 +26,7 @@
     }
     .sub-items {
         position: fixed;
-        top: var(--nav-mobile-wh);
+        top: var(--nav-mobile-wh); /* navbar height */
     }
 }
 

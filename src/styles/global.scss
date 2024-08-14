@@ -21,11 +21,9 @@
 	--violet: rgb(180, 0, 255);
 	--violet-dark: rgb(66, 0, 100);
 	--violet-red: rgb(100, 0, 72);
-	--goldenrod: rgb(164, 160, 114);
-	--goldenrod-dark: rgb(92, 90, 60);
     
     --turquoise: rgb(64, 230, 220);
-    --turquoise-light: rgb(0, 180, 195);
+    --turquoise-light: rgb(0, 180, 205);
     --turquoise-mdlight: rgb(0, 130, 170);
     --turquoise-mddark: rgb(0, 90, 155);
     --turquoise-dark: rgb(0, 50, 80);
@@ -35,15 +33,14 @@
     --sand-rose: rgb(225, 200, 195);
     --sand-dark: rgb(215, 185, 180);
     --redwood: rgb(180, 90, 55);
-    --redwood-light: rgb(200, 90, 90);
-    --redwood-dark: rgb(85, 40, 35);
+    --redwood-dark: rgb(100, 45, 38);
     --coffee: rgb(48, 22, 22);
 
 	/* body, header, footer */
 	--color-primary: var(--sand);
 	--color-secondary: var(--coffee);
     --color-header: var(--sand);
-	--bgcolor-footer: var(--redwood-light);
+	--bgcolor-footer: lightblue;
 
 	/* navbar */
 	--nav-button-width: 40px;

@@ -41,13 +41,13 @@
 @mixin border-top-bottom($color : white) {
     border-top: 1px solid color-mix(in srgb, $color, transparent 33%);
     border-bottom: 1px solid color-mix(in srgb, $color, transparent 33%);
-    border-left: none;
-    border-right: none;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
 }
 
 @mixin border-left-right($color : white) {
-    border-top: none;
-    border-bottom: none;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
     border-left: 1px solid color-mix(in srgb, $color, transparent 33%);
     border-right: 1px solid color-mix(in srgb, $color, transparent 33%);
 }
