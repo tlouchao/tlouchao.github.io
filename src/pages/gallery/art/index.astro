@@ -1,11 +1,8 @@
 ---
-import Layout from '../../../layouts/PageLayout.astro';
-
-const pathname = Astro.url.pathname;
-const parr = Array(50).fill("Check the vertical scrollbar behavior");
+import GalleryLayout from '../../../layouts/GalleryLayout.astro';
+import PhotoGrid from '../../../components/PhotoGrid.astro';
 ---
 
-<Layout>
-    {parr.map(x => <p>{x}</p>)}
-	<p>This page is found under the art subdirectory</p>
-</Layout>
+<GalleryLayout>
+   <PhotoGrid />
+</GalleryLayout>

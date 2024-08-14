@@ -1,10 +1,8 @@
 ---
-import Layout from '../../../layouts/PageLayout.astro';
-
-const pathname = Astro.url.pathname;
+import GalleryLayout from '../../../layouts/GalleryLayout.astro';
+import PhotoGrid from '../../../components/PhotoGrid.astro';
 ---
 
-<Layout>
-    <p>{pathname}</p>
-	<p>This page is found under the snapshots subdirectory</p>
-</Layout>
+<GalleryLayout>
+   <PhotoGrid />
+</GalleryLayout>

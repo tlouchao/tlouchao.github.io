@@ -1,0 +1,26 @@
+@use '../mixins';
+
+gallery-bar {
+    @include mixins.flex-row;
+    @include mixins.align-center;
+    box-sizing: border-box;
+    gap: 1em;
+    padding: 0.33em 1em;
+    height: 60px;
+    background-color: var(--color-nav-item);
+
+    #gallery-label {
+        font-weight: bold;
+    }
+    #gallery-terms {
+        @include mixins.flex-inherit;
+        gap: 0.66em;
+        height: 100%;
+        button {
+            background-color: var(--color-nav-sub-item);
+            border: none;
+            border-radius: 25%;
+            padding: 0.33em 0.66em;
+        }
+    }
+}

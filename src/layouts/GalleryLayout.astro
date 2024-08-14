@@ -1,7 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import NavBar from '../components/NavBar.astro';
-import Header from '../components/Header.astro';
+import GalleryBar from '../components/GalleryBar.astro';
 import Footer from '../components/Footer.astro';
 
 import { ViewTransitions } from "astro:transitions";
@@ -14,11 +14,10 @@ import { getLabel } from '../scripts/utils';
 
 interface Props {
   header?: string;
-  headerImgSrc?: string;
 }
 
 let { pathname } = Astro.url;
-let { header = getLabel(pathname), headerImgSrc = '/freljord_splash.jpg' } = Astro.props;
+let { header = getLabel(pathname) } = Astro.props;
 
 ---
 
@@ -33,12 +32,11 @@ let { header = getLabel(pathname), headerImgSrc = '/freljord_splash.jpg' } = Ast
 	<body class="theme-dark">
         <NavBar />
         <div id="header-layout">
-            <Header header={header} headerImgSrc={headerImgSrc} />
+            <GalleryBar header={header} />
             <div id="main-layout">
                 <main>
                     <slot />
                 </main>
-                <aside />
             </div>
             <Footer />
         </div>
@@ -66,9 +64,6 @@ let { header = getLabel(pathname), headerImgSrc = '/freljord_splash.jpg' } = Ast
         min-width: min(100%, var(--main-min-width));
         max-width: min(100%, var(--main-max-width));
     }
-    aside {
-        display: none;
-    }
     /* DESKTOP */
 	@media (min-width: 768px) {
         #header-layout {
@@ -76,22 +71,5 @@ let { header = getLabel(pathname), headerImgSrc = '/freljord_splash.jpg' } = Ast
             margin-top: 0;
             height: 100vh;
         }
-        main {
-            padding: 2em;
-        }
-    }
-    @media (min-width: 1440px) {
-        #main-layout {
-            display: grid;
-            grid-template-columns: 3fr 1fr;
-        }
-        main {
-            justify-self: center;
-        }
-        aside {
-            display: block;
-            border: 1px solid black;
-        }
-    }
-    
+    }   
 </style>

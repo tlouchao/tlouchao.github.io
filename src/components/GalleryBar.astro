@@ -1,0 +1,17 @@
+---
+import "../styles/components/gallerybar.scss";
+
+interface Props {
+    header: string;
+}
+
+const { header } = Astro.props;
+const terms = ['Quick', 'Brown', 'Fox']
+
+---
+<gallery-bar>
+    <p id="gallery-label">{header}</p>
+    <div id="gallery-terms">
+        {terms.map(m => <button>{m}</button>)}
+    </div>
+</gallery-bar>

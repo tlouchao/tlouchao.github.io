@@ -25,5 +25,6 @@ pnpm-debug.log*
 .idea/
 
 # misc
+src/components/DummyText.astro
 dummy.astro
 404.astro

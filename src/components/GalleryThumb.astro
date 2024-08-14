@@ -1,0 +1,22 @@
+---
+import { getLabel } from '../scripts/utils';
+
+interface Props {
+    src: string;
+    label?: string;
+}
+
+let { src, label = '' } = Astro.props;
+label = getLabel(label);
+
+---
+<img src={src} alt={label} aria-label={label} />
+
+<style>
+    img {
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        background-color: transparent;
+    }
+</style>
