@@ -1,0 +1,29 @@
+@use '../mixins';
+
+/* MOBILE */
+@media only screen and (max-width: 600px) {
+    #photo-grid {
+        @include mixins.photo-grid-repeat(2);
+    }
+}
+
+/* TABLET */
+@media only screen and (min-width: 600px) and (max-width: 992px) {
+    #photo-grid {
+        @include mixins.photo-grid-repeat(3);
+    }
+}
+
+/* DESKTOP */
+@media only screen and (min-width: 992px) and (max-width: 1440px) {
+    #photo-grid {
+        @include mixins.photo-grid-repeat(4);
+    }
+}
+
+/* ULTRAWIDE */
+@media only screen and (min-width: 1440px) {
+    #photo-grid {
+        @include mixins.photo-grid-repeat(5);
+    }
+}

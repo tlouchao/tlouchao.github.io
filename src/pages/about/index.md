@@ -17,7 +17,7 @@ Currently, I'm interested in leveraging a combined engineering & visual arts ski
 - **Become a Technical Artist** with Aaron Aikman ([ELVTR](https://elvtr.com/))
 - **Introduction to 3D with Maya** with James Schaub ([Gnomon School of Visual Effects](https://www.gnomon.edu/))
  
-Additionally, I have taken the time to lean into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in Pasadena, California, as well as at [CG Master Academy](https://www.cgmasteracademy.com/). Notable classes are listed below: 
+Additionally, I've taken the time to lean into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in Pasadena, California, as well as at [CG Master Academy](https://www.cgmasteracademy.com/). Notable classes are listed below: 
 
 #### CDA (Concept Design Academy) ####
 - **Dynamic Sketching** with Peter Han
@@ -29,11 +29,9 @@ Additionally, I have taken the time to lean into traditional sketching and illus
 - **Analytical Figure Drawing** with Christian Nacorda
 - **Animal Drawing** with Shannon Beaumont
 
-<br>
-
 ## Resources ##
 
-I plan to place links to helpful resources on this page for now. Once I have a sizable number of links, then these resources will be moved to their own dedicated page.
+I plan to place links to helpful resources on this page for now. Once I have a sizable number of links, then these will be moved to their own dedicated page.
 
 - Vectors and Matrices: https://www.3blue1brown.com/topics/linear-algebra
 - Blender Python API: https://docs.blender.org/api/current/info_quickstart.html

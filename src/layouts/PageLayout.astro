@@ -15,8 +15,6 @@ import { getLabel } from '../scripts/utils';
 let { pathname } = Astro.url;
 const {frontmatter} = Astro.props;
 
-console.log(frontmatter)
-
 const header = getLabel(pathname);
 const headerImgSrc = frontmatter?.headerImgSrc ?? '/freljord_splash.jpg';
 

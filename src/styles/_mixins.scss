@@ -52,6 +52,13 @@
     border-right: 1px solid color-mix(in srgb, $color, transparent 33%);
 }
 
+@mixin photo-grid-repeat($num : 1, $gap : 0.25em) {
+    display: grid;
+    grid-template-columns: repeat($num, 1fr);
+    grid-gap: $gap;
+    padding: $gap;
+}
+
 @mixin toggle-button-svg($id) {
     #{$id} {
         @include flex-inherit;
