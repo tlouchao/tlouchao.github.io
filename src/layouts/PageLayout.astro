@@ -12,13 +12,13 @@ import '@fontsource/roboto';
 
 import { getLabel } from '../scripts/utils';
 
-interface Props {
-  header?: string;
-  headerImgSrc?: string;
-}
-
 let { pathname } = Astro.url;
-let { header = getLabel(pathname), headerImgSrc = '/freljord_splash.jpg' } = Astro.props;
+const {frontmatter} = Astro.props;
+
+console.log(frontmatter)
+
+const header = getLabel(pathname);
+const headerImgSrc = frontmatter?.headerImgSrc ?? '/freljord_splash.jpg';
 
 ---
 
