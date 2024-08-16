@@ -9,17 +9,18 @@ title: About
 ## Bio ##
 
 Hey there! I am a software engineer with previous work experience as a freelance
-animator for my alma mater, and with local companies in my area. I've recently built 
-out this website in order to consolidate [personal projects](/projects), useful [resources](#resources), and [experiments with digital content creation tools](/blog) into one location.
+animator for my alma mater, and for local companies in my area. I've built out this website 
+in order to consolidate [personal projects](/projects), useful [resources](#resources), and 
+[experiments with digital content creation tools](/blog) into one location.
 
-Currently, I'm interested in leveraging a combined engineering & visual arts skillset to land a technical role in, or adjacent to, the entertainment industry. I've tinkered with software packages such as **Autodesk Maya** and **Unreal Engine 5** after venturing into the 3D asset creation / tech art space, with a leg up from completing some coursework with a few talented instructors:
+Currently, I'm interested in bringing a dual engineering & visual arts skillset to a future technical role in, or adjacent to, the entertainment industry. I've tinkered with software packages such as **Autodesk Maya** and **Unreal Engine 5** after venturing into the 3D asset creation / tech art space, in the wake of completing some coursework with a few talented instructors:
 
 - **Become a Technical Artist** with Aaron Aikman ([ELVTR](https://elvtr.com/))
 - **Introduction to 3D with Maya** with James Schaub ([Gnomon School of Visual Effects](https://www.gnomon.edu/))
  
-Additionally, I've taken the time to lean into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in Pasadena, California, as well as at [CG Master Academy](https://www.cgmasteracademy.com/). Notable classes are listed below: 
+Additionally, I've leaned into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in the Los Angeles vicinity, as well as at [CG Master Academy](https://www.cgmasteracademy.com/):
 
-#### CDA (Concept Design Academy) ####
+#### CDA ####
 - **Dynamic Sketching** with Peter Han
 - **Analytical Figure Drawing** with Kevin Chen
 - **Head and Hands Drawing** with Kevin Chen
@@ -31,7 +32,7 @@ Additionally, I've taken the time to lean into traditional sketching and illustr
 
 ## Resources ##
 
-I plan to place links to helpful resources on this page for now. Once I have a sizable number of links, then these will be moved to their own dedicated page.
+I plan to collect links to helpful resources here. Once the link count becomes unwieldy, these resources will likely be moved to their own separate page:
 
 - Vectors and Matrices: https://www.3blue1brown.com/topics/linear-algebra
 - Blender Python API: https://docs.blender.org/api/current/info_quickstart.html
@@ -49,4 +50,3 @@ This website was built using [Astro](https://astro.build/), a Javascript web fra
 * [Sass](https://sass-lang.com/) for maintainable CSS stylesheets
 * [Fontsource](https://fontsource.org/) for custom fonts
         
-

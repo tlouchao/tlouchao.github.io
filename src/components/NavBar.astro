@@ -4,9 +4,15 @@ import ButtonSocial from './ButtonSocial.astro';
 import ButtonTheme from './ButtonTheme.astro';
 import ButtonNavMenu from './NavButtonMenu.astro';
 import "../styles/components/navbar.scss";
+
+interface Props {
+  hasDropShadow?: boolean;
+}
+
+let { hasDropShadow = false } = Astro.props;
 ---
 <nav-bar>
-	<nav>
+	<nav data-shadow={hasDropShadow}>
 		<div id="nav-left">
 			<a id="nav-left-icon" href="/">
 				<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />

@@ -24,12 +24,12 @@ const headerImgSrc = frontmatter?.headerImgSrc ?? '/freljord_splash.jpg';
 <html lang="en"> <!--transition:animate="none">-->
 	<head>
         <ViewTransitions />
-		<BaseHead title={SITE_TITLE} 
+		<BaseHead title={SITE_TITLE}
                   description={SITE_DESCRIPTION}  
                   transition:persist/>
 	</head>
 	<body class="theme-dark">
-        <NavBar />
+        <NavBar hasDropShadow={true} />
         <div id="header-layout">
             <Header header={header} headerImgSrc={headerImgSrc} />
             <div id="main-layout">

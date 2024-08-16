@@ -1,6 +1,10 @@
 @use '../mixins';
 
 @mixin nav-bar {
+
+    nav[data-shadow] {
+        filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.75));
+    }
     nav {
         @include mixins.flex-row;
         align-items: stretch;
@@ -10,7 +14,7 @@
         gap: 1em;
         z-index: 3;
         background-color: var(--color-nav);
-        filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.75));
+        filter: none;
 
         /* position and size */
         width: 100%;

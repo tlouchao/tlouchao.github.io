@@ -62,9 +62,10 @@ let { header = getLabel(pathname) } = Astro.props;
         padding: 0em;
         width: 100%;
         height: 100%;
+        background-color: var(--color-gallery);
     }
     /* DESKTOP */
-	@media (min-width: 768px) {
+	@media only screen and (min-width: 768px) {
         #header-layout {
             padding-left: min(25%, var(--nav-desktop-width));
             margin-top: 0;
