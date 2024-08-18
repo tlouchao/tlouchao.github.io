@@ -6,12 +6,6 @@ interface ExpandInterface {
 
 export const $expand = map<ExpandInterface>(
     { 
-        navbar: false,
         gallery: true,
     }
 )
-
-export enum ExpandEvent {
-    ENABLE = "enableautoexpand",
-    DISABLE = "disableautoexpand",
-}

@@ -1,0 +1,17 @@
+---
+import GalleryItem from './GalleryItem.astro';
+import GalleryModal from './GalleryModal.astro';
+import '../styles/components/gallerygrid.scss'
+
+const arr = Array(9).fill('/husky.jpg');
+---
+
+<gallery-grid>
+    <div id="gallery-grid">
+        {arr.map((x, idx) => (
+            <GalleryItem src={x} label={"Husky" + idx} evtTarget="gallery-modal" />
+            )
+        )}
+        <GalleryModal />
+    </div>
+</gallery-grid>

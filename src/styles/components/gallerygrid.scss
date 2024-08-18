@@ -1,31 +1,31 @@
 @use '../mixins';
 
 @media only screen and (max-width: 600px) {
-    #photo-grid {
-        @include mixins.photo-grid-repeat(2);
+    #gallery-grid {
+        @include mixins.gallery-grid-repeat(2);
     }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 1080px) {
-    #photo-grid {
-        @include mixins.photo-grid-repeat(3);
+    #gallery-grid {
+        @include mixins.gallery-grid-repeat(3);
     }
 }
 
 @media only screen and (min-width: 1080px) and (max-width: 1440px) {
-    #photo-grid {
-        @include mixins.photo-grid-repeat(4);
+    #gallery-grid {
+        @include mixins.gallery-grid-repeat(4);
     }
 }
 
 @media only screen and (min-width: 1440px) and (max-width: 1920px) {
-    #photo-grid {
-        @include mixins.photo-grid-repeat(5);
+    #gallery-grid {
+        @include mixins.gallery-grid-repeat(5);
     }
 }
 
 @media only screen and (min-width: 1920px) {
-    #photo-grid {
-        @include mixins.photo-grid-repeat(6);
+    #gallery-grid {
+        @include mixins.gallery-grid-repeat(6);
     }
 }

@@ -1,0 +1,23 @@
+<gallery-modal id="gallery-modal">
+    Nothing selected.
+</gallery-modal>
+
+<script>
+    import { ModalEvent } from '../scripts/events';
+    class GalleryModal extends HTMLElement {
+        constructor() {
+            super();
+        }
+        connectedCallback() {
+            this.addEventListener(ModalEvent.OPEN, this.handleModalOpenClose);
+        }
+        disconnectedCallback() {
+            this.removeEventListener(ModalEvent.OPEN, this.handleModalOpenClose);
+        }
+        handleModalOpenClose = (evt : Event) => {
+            let t = evt.target;
+            this.innerText = 'Selected!'
+        }
+    }
+    customElements.define('gallery-modal', GalleryModal);
+</script>

@@ -6,13 +6,13 @@ import ButtonNavMenu from './NavButtonMenu.astro';
 import "../styles/components/navbar.scss";
 
 interface Props {
-  hasDropShadow?: boolean;
+  isGallery?: boolean;
 }
 
-let { hasDropShadow = false } = Astro.props;
+let { isGallery = false } = Astro.props;
 ---
 <nav-bar>
-	<nav data-shadow={hasDropShadow}>
+	<nav data-shadow={isGallery}>
 		<div id="nav-left">
 			<a id="nav-left-icon" href="/">
 				<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />

@@ -64,7 +64,8 @@ let subitems = ffiles.map(file => (
 
 <script>
 import { getDataAttr, setDataAttr, setBoolAttr } from '../scripts/utils';
-import { $expand, ExpandEvent } from '../scripts/stores/expand';
+import { $expand } from '../scripts/stores/expand';
+import { ExpandEvent } from '../scripts/events';
 
     class NavItem extends HTMLElement {
 
@@ -240,7 +241,5 @@ import { $expand, ExpandEvent } from '../scripts/stores/expand';
             }
         }
     }
-
-    // Tell the browser to use our NavItem class for <nav-item> elements.
     customElements.define('nav-item', NavItem);
 </script>

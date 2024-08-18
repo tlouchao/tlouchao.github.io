@@ -32,7 +32,7 @@ const ariaLabel = "Navbar Menu Button"
 
 <script>
     import { getDataAttr, setDataAttr, setBoolAttr, setButtonIcon } from '../scripts/utils.js'
-    import { ExpandEvent } from '../scripts/stores/expand';
+    import { ExpandEvent } from '../scripts/events';
 
     class NavButtonMenu extends HTMLElement {
         button : HTMLButtonElement | null;
@@ -123,6 +123,5 @@ const ariaLabel = "Navbar Menu Button"
             }
         }
     }
-    // Tell the browser to use our NavButtonMenu class for <nav-button-menu> elements.
     customElements.define('nav-button-menu', NavButtonMenu);
 </script>

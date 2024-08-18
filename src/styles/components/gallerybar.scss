@@ -14,7 +14,7 @@ gallery-bar {
     #gallery-label {
         font-weight: bold;
     }
-    #gallery-terms {
+    #gallery-tags {
         @include mixins.flex-inherit;
         gap: 0.66em;
         height: 100%;
