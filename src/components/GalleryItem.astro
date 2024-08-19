@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
-    src: string;
+    src: ImageMetadata;
     label?: string;
     evtTarget: string;
 }
@@ -9,7 +11,7 @@ let { src, label = '', evtTarget } = Astro.props;
 ---
 
 <gallery-item data-target={evtTarget}>
-    <img src={src} alt={label} aria-label={label} />
+    <Image src={src} alt={label} />
 </gallery-item>
 
 <style>
@@ -36,7 +38,7 @@ let { src, label = '', evtTarget } = Astro.props;
 
 <script>
 import { ModalEvent } from '../scripts/events';
-    class GalleryItem extends HTMLElement {
+    class GalleryItems extends HTMLElement {
         img : HTMLImageElement | null;
         modal : HTMLElement | null;
         constructor() {
@@ -55,5 +57,5 @@ import { ModalEvent } from '../scripts/events';
             this.modal?.dispatchEvent(evt);
         }
     }
-    customElements.define('gallery-item', GalleryItem);
+    // customElements.define('gallery-item', GalleryItem);
 </script>

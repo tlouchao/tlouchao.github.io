@@ -8,7 +8,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
 	site: 'https://example.com',
 	integrations: [icon(), lit(), mdx(), sitemap()],
-	redirects: {
-		'/gallery': '/',
-	}
+    image: {
+        remotePatterns: [{ protocol: "https" }],
+        domains: ["cloudinary"],
+    }
 });

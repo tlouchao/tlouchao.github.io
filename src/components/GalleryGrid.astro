@@ -1,7 +1,14 @@
 ---
-import GalleryItem from './GalleryItem.astro';
+import { GalleryItem } from './GalleryItem.ts';
 import GalleryModal from './GalleryModal.astro';
 import '../styles/components/gallerygrid.scss'
+
+import { v2 as cloudinary } from 'cloudinary';
+
+// Return "https" URLs by setting secure: true
+cloudinary.config({
+  secure: true
+});
 
 const arr = Array(9).fill('/husky.jpg');
 ---
@@ -9,7 +16,8 @@ const arr = Array(9).fill('/husky.jpg');
 <gallery-grid>
     <div id="gallery-grid">
         {arr.map((x, idx) => (
-            <GalleryItem src={x} label={"Husky" + idx} evtTarget="gallery-modal" />
+            // @ts-ignore
+            <GalleryItem client:visible src={x} label={x + idx} />
             )
         )}
         <GalleryModal />
