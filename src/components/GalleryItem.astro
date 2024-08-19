@@ -11,7 +11,7 @@ let { src, label = '', evtTarget } = Astro.props;
 ---
 
 <gallery-item data-target={evtTarget}>
-    <Image src={src} alt={label} />
+    <Image src={src} alt={label} loading="lazy" />
 </gallery-item>
 
 <style>
@@ -38,7 +38,7 @@ let { src, label = '', evtTarget } = Astro.props;
 
 <script>
 import { ModalEvent } from '../scripts/events';
-    class GalleryItems extends HTMLElement {
+    class GalleryItemAstro extends HTMLElement {
         img : HTMLImageElement | null;
         modal : HTMLElement | null;
         constructor() {
