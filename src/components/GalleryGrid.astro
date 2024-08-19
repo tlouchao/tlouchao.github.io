@@ -14,15 +14,15 @@ const apiSecret = await import.meta.env.CLOUD_API_SECRET;
 
 // Return "https" URLs by setting secure: true
 let cconfig = await cloudinary.api.config({
+    cloud_name: cloudName,
     api_key: apiKey,
     api_secret: apiSecret,
     secure: true,
 });
 
-console.log(cconfig);
-
 // Send the request
 let options = {
+    cloud_name: cloudName,
     api_key: apiKey,
     api_secret: apiSecret,
     prefix: 'photos/travel',
@@ -45,8 +45,10 @@ const publicIds : string[] | void = await cloudinary.api.resources(
         .catch((err) => {
         });
 
+console.log(publicIds);
+
 // Set img src to public URLs
-let transform = "t_Thumbnail";
+let transform = "t_Thumbnail_360";
 let urlObject = {
         protocol: 'https',
         hostname: cloudHostname,
@@ -56,7 +58,7 @@ let urlObject = {
 type imgType = {src: string, label: string}[];
 const itemArr : imgType | undefined = publicIds?.map(publicId => {
         urlObject.pathname = path.join(cloudName, transform, publicId);
-        let label = publicId.replace(/\/$/, '');
+        let label = path.parse(publicId).name;
         return {src: url.format(urlObject), label: label}; 
     });
 ---
@@ -65,7 +67,7 @@ const itemArr : imgType | undefined = publicIds?.map(publicId => {
     <div id="gallery-grid">
         {itemArr?.map((x, idx) => (
             // @ts-ignore
-            <GalleryItem client:visible src={x.src} label={x.label + idx} />
+            <GalleryItem client:visible src={x.src} label={x.label} />
             )
         )}
         <GalleryModal />

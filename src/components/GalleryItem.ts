@@ -1,5 +1,5 @@
-import {LitElement, css, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
+import { LitElement, css, html, type PropertyValues } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import { ModalEvent } from '../scripts/events';
 
 @customElement('gallery-item')
@@ -11,7 +11,7 @@ export class GalleryItem extends LitElement {
         overflow: hidden;
         width: 100%;
         aspect-ratio: 1/1;
-        background-color: white;
+        background-color: transparent;
     }
     img {
         width:100%; 
@@ -19,6 +19,7 @@ export class GalleryItem extends LitElement {
         object-position: center;
         object-fit: cover;
         opacity: 1;
+        color: black;
     }
         img:hover {
         cursor: pointer;
@@ -36,9 +37,18 @@ export class GalleryItem extends LitElement {
         super();
       }
     
-    firstUpdated() {
-        let img = this.renderRoot?.querySelector('img');
+    connectedCallback() {
+        super.connectedCallback();
+        let img = this.shadowRoot?.querySelector('img');
         img?.addEventListener('click', this.handleClick);
+        img?.addEventListener('error', this.handleError);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        let img = this.shadowRoot?.querySelector('img');
+        img?.removeEventListener('click', this.handleClick);
+        img?.removeEventListener('error', this.handleError);
     }
 
     handleClick() {
@@ -47,10 +57,34 @@ export class GalleryItem extends LitElement {
         modal?.dispatchEvent(evt);
     }
 
+    handleError() {
+        // @ts-ignore
+        this.getRootNode().host.setAttribute('style', 'display: none;');
+    }
+
+    handleLoad() {
+        // @ts-ignore
+        this.getRootNode().host.setAttribute('style', 'background-color: white;');
+    }
+
+    update(changed : any) {
+        super.update(changed);
+        if (this.src) {
+            let img = this.shadowRoot?.querySelector('img');
+            if (img) {
+                img.onload = this.handleLoad;
+                img.onerror = this.handleError;
+                img.src = this.src.toString();
+            }
+        }
+    }
+
     // Render the UI as a function of component state
     render() {
         return html`
-            <img src=${this.src} label=${this.label} />
+            <img src=${this.src} 
+                 alt=${this.label} 
+                 aria-label=${this.label} />
         `;
     }
 }
