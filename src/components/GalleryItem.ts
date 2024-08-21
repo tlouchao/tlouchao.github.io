@@ -37,8 +37,8 @@ export class GalleryItem extends LitElement {
         super();
       }
     
-    connectedCallback() {
-        super.connectedCallback();
+    // Not using connectedCallback, since shadowRoot may not render
+    firstUpdated() {
         let img = this.shadowRoot?.querySelector('img');
         img?.addEventListener('click', this.handleClick);
         img?.addEventListener('error', this.handleError);
@@ -58,13 +58,17 @@ export class GalleryItem extends LitElement {
     }
 
     handleError() {
-        // @ts-ignore
-        this.getRootNode().host.setAttribute('style', 'display: none;');
+        let node : Node = this.getRootNode();
+        if (node instanceof ShadowRoot) {
+            node.host.setAttribute('style', 'display: none;');
+        }
     }
 
     handleLoad() {
-        // @ts-ignore
-        this.getRootNode().host.setAttribute('style', 'background-color: white;');
+        let node : Node = this.getRootNode();
+        if (node instanceof ShadowRoot) {
+            node.host.setAttribute('style', 'background-color: white;');
+        }
     }
 
     update(changed : any) {

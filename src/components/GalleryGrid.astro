@@ -5,67 +5,30 @@ import '../styles/components/gallerygrid.scss'
 
 import url from 'url';
 import path from 'path';
-import { v2 as cloudinary } from 'cloudinary';
+import { publicIds } from '../scripts/fetchImg.ts';
 
 const cloudName = import.meta.env.PUBLIC_CLOUD_NAME;
 const cloudHostname = import.meta.env.PUBLIC_CLOUD_HOSTNAME;
-const apiKey = await import.meta.env.CLOUD_API_KEY;
-const apiSecret = await import.meta.env.CLOUD_API_SECRET;
-
-// Return "https" URLs by setting secure: true
-let cconfig = await cloudinary.api.config({
-    cloud_name: cloudName,
-    api_key: apiKey,
-    api_secret: apiSecret,
-    secure: true,
-});
-
-// Send the request
-let options = {
-    cloud_name: cloudName,
-    api_key: apiKey,
-    api_secret: apiSecret,
-    prefix: 'photos/travel',
-    type: 'upload',
-    max_results: 50,
-}
-
-// Parse the response
-interface ResponseData {
-    resources: {
-        public_id: string,
-    }[]
-}
-
-const publicIds : string[] | void = await cloudinary.api.resources(
-    options)
-        .then((response : ResponseData) => {
-            return response['resources'].map(r => r['public_id']);
-        })
-        .catch((err) => {
-        });
-
-console.log(publicIds);
 
 // Set img src to public URLs
+type GalleryItemProps = {src: string, label: string}[] | undefined;
 let transform = "t_Thumbnail_360";
-let urlObject = {
-        protocol: 'https',
-        hostname: cloudHostname,
-        pathname: '',
-    };
+let urlObj = {
+    protocol: 'https',
+    hostname: cloudHostname,
+    pathname: '',
+};
 
-type imgType = {src: string, label: string}[];
-const itemArr : imgType | undefined = publicIds?.map(publicId => {
-        urlObject.pathname = path.join(cloudName, transform, publicId);
-        let label = path.parse(publicId).name;
-        return {src: url.format(urlObject), label: label}; 
-    });
+const galleryItemArr : GalleryItemProps = publicIds?.map(publicId => {
+    urlObj.pathname = path.join(cloudName, transform, publicId);
+    let label = path.parse(publicId).name;
+    return {src: url.format(urlObj), label: label}; 
+});
 ---
 
 <gallery-grid>
     <div id="gallery-grid">
-        {itemArr?.map((x, idx) => (
+        {galleryItemArr?.map((x) => (
             // @ts-ignore
             <GalleryItem client:visible src={x.src} label={x.label} />
             )
