@@ -1,5 +1,7 @@
 @use '../mixins';
-@include mixins.toggle-button-svg("#button-theme");
+@use 'buttonmixins';
+
+@include buttonmixins.toggle-button-svg("#button-theme");
 
 #button-theme {
     button {

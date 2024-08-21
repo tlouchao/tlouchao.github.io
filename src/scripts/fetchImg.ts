@@ -2,11 +2,11 @@ import { v2 as cloudinary } from 'cloudinary';
 
 const cloudName = import.meta.env.PUBLIC_CLOUD_NAME;
 const cloudPrefix = import.meta.env.PUBLIC_CLOUD_PREFIX;
-const apiKey = await import.meta.env.CLOUD_API_KEY;
-const apiSecret = await import.meta.env.CLOUD_API_SECRET;
+const apiKey = import.meta.env.CLOUD_API_KEY;
+const apiSecret = import.meta.env.CLOUD_API_SECRET;
 
 // Return "https" URLs by setting secure ro true
-let cconfig = cloudinary.config({
+cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
     api_secret: apiSecret,

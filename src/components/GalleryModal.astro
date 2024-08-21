@@ -1,22 +1,41 @@
-<gallery-modal id="gallery-modal">
-    Nothing selected.
+---
+import { Icon } from 'astro-icon/components'
+import '../styles/components/gallerymodal.scss'
+---
+<gallery-modal id="gallery-modal" data-open={false}>
+    <button>
+        <Icon name="close" />
+        <img src="" alt="" />
+    </button>
 </gallery-modal>
 
 <script>
+    import { setDataAttr } from '../scripts/utils';
     import { ModalEvent } from '../scripts/events';
     class GalleryModal extends HTMLElement {
         constructor() {
             super();
         }
         connectedCallback() {
+            this.addEventListener('click', this.handleClick);
             this.addEventListener(ModalEvent.OPEN, this.handleModalOpenClose);
+            this.addEventListener(ModalEvent.CLOSE, this.handleModalOpenClose);
         }
         disconnectedCallback() {
+            this.removeEventListener('click', this.handleClick);
             this.removeEventListener(ModalEvent.OPEN, this.handleModalOpenClose);
+            this.addEventListener(ModalEvent.CLOSE, this.handleModalOpenClose);
+        }
+        handleClick = () => {
+            let evt = new Event(ModalEvent.CLOSE);
+            this.dispatchEvent(evt)
         }
         handleModalOpenClose = (evt : Event) => {
-            let t = evt.target;
-            this.innerText = 'Selected!'
+            if (evt.type == ModalEvent.OPEN) {
+                setDataAttr(this, 'open', true);
+            } else if (evt.type == ModalEvent.CLOSE) {
+                setDataAttr(this, 'open', false);
+            }
         }
     }
     customElements.define('gallery-modal', GalleryModal);

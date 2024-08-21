@@ -1,2 +1,4 @@
 @use '../mixins';
-@include mixins.toggle-button-svg("#nav-button-menu");
+@use 'buttonmixins';
+
+@include buttonmixins.toggle-button-svg("#nav-button-menu");

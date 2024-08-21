@@ -53,7 +53,7 @@
         #nav-right {
             @include mixins.flex-inherit;
             height: 100%;
-            padding-right: 0.25em;
+            padding-right: var(--nav-padding-right);
             #nav-right-inner {
                 @include mixins.flex-col;
                 @include mixins.align-center;

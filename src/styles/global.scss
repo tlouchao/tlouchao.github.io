@@ -29,7 +29,7 @@
     --sand-dark: rgb(215, 185, 180);
     --redwood: rgb(255, 84, 120);
     --redwood-light: rgb(240, 48, 84);
-    --redwood-dark: rgb(80, 16, 30);
+    --redwood-dark: rgb(100, 20, 36);
     --coffee: rgb(48, 22, 22);
     --violet-dark: rgb(50, 20, 80);
 
@@ -44,6 +44,7 @@
 	--nav-button-width: 40px;
 	--nav-mobile-wh: 45px;
 	--nav-desktop-width: 240px;
+    --nav-padding-right: 0.25em;
 	--color-nav: var(--sand-mdrose);
     --color-nav-light: var(--sand-light);
 	--color-nav-right: var(--sand-mdrose);
@@ -60,6 +61,9 @@
 	--color-nav-sub-link-current: var(--sand-light);
 	--color-nav-social: maroon;
 	--color-nav-social-hover: crimson;
+    --color-modal: lavender;
+	--color-modal-hover: white;
+    --color-modal-bg: var(--grey-warm-dark);
     --color-divider: var(--sand-light);
 
 	/* headings */
@@ -122,6 +126,9 @@
 	--color-nav-sub-link-current: lightcyan;
 	--color-nav-social: magenta;
 	--color-nav-social-hover: lightcyan;
+    --color-modal: magenta;
+	--color-modal-hover: lightcyan;
+    --color-modal-bg: black;
     --color-divider: var(--grey-cool);
 
 	/* headings */

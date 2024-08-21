@@ -1,6 +1,5 @@
 ---
 import { GalleryItem } from './GalleryItem.ts';
-import GalleryModal from './GalleryModal.astro';
 import '../styles/components/gallerygrid.scss'
 
 import url from 'url';
@@ -33,6 +32,5 @@ const galleryItemArr : GalleryItemProps = publicIds?.map(publicId => {
             <GalleryItem client:visible src={x.src} label={x.label} />
             )
         )}
-        <GalleryModal />
     </div>
 </gallery-grid>

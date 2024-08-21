@@ -1,0 +1,46 @@
+@use '../mixins';
+@use 'buttonmixins';
+
+gallery-modal {
+    @include buttonmixins.button-svg;
+    display: none;
+}
+gallery-modal[data-open] {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 5;
+}
+gallery-modal > button {
+    position: absolute;
+    top: 1px; /* navbar border */
+    right: 0; /* navbar border */
+    color: var(--color-modal);
+    background-color: var(--color-modal-bg);
+}
+gallery-modal > button:hover {
+    color: var(--color-modal-hover);
+}
+@media only screen and (max-width: 599px) {
+    gallery-modal > button {
+        width: calc(var(--nav-button-width) + 2 * var(--nav-padding-right));
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+    gallery-modal > button {
+        width: calc(var(--nav-button-width) + var(--nav-padding-right));
+    }
+}
+@media only screen and (min-width: 768px) {
+    gallery-modal > button {
+        width: var(--nav-button-width);
+        position: absolute;
+        top: 0.5em;
+        right: 0.5em;
+        background-color: transparent;
+    }
+}

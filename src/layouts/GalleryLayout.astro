@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import NavBar from '../components/NavBar.astro';
 import GalleryBar from '../components/GalleryBar.astro';
+import GalleryModal from '../components/GalleryModal.astro';
 import Footer from '../components/Footer.astro';
 
 import { ViewTransitions } from "astro:transitions";
@@ -40,6 +41,7 @@ let { header = getLabel(pathname) } = Astro.props;
             </div>
             <Footer />
         </div>
+        <GalleryModal />
     </body>
 </html>
 
