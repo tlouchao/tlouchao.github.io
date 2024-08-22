@@ -1,6 +1,6 @@
-import { LitElement, css, html, type PropertyValues } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ModalEvent } from '../scripts/events';
+import { ModalEvent, ModalEventType } from '../scripts/events';
 
 @customElement('gallery-item')
 export class GalleryItem extends LitElement {
@@ -28,10 +28,10 @@ export class GalleryItem extends LitElement {
     }
   `;
     @property()
-    src : String | null = "";
+    src : string | undefined = "";
 
     @property()
-    label : String | null = "";
+    label : string | undefined = "";
 
     constructor() {
         super();
@@ -53,7 +53,7 @@ export class GalleryItem extends LitElement {
 
     handleClick() {
         let modal = document.querySelector('#gallery-modal');
-        let evt = new Event(ModalEvent.OPEN);
+        let evt = new ModalEvent(ModalEventType.OPEN, this.src);
         modal?.dispatchEvent(evt);
     }
 
@@ -78,7 +78,7 @@ export class GalleryItem extends LitElement {
             if (img) {
                 img.onload = this.handleLoad;
                 img.onerror = this.handleError;
-                img.src = this.src.toString();
+                img.src = this.src;
             }
         }
     }

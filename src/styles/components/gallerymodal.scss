@@ -6,7 +6,9 @@ gallery-modal {
     display: none;
 }
 gallery-modal[data-open] {
-    display: block;
+    display: flex;
+    align-self: center;
+    justify-content: center;
     position: absolute;
     top: 0;
     width: 100%;
@@ -14,6 +16,12 @@ gallery-modal[data-open] {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 5;
+}
+gallery-modal > img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-sizing: border-box;
 }
 gallery-modal > button {
     position: absolute;
@@ -26,16 +34,25 @@ gallery-modal > button:hover {
     color: var(--color-modal-hover);
 }
 @media only screen and (max-width: 599px) {
+    gallery-modal > img {
+        padding: 12em 1em;
+    }
     gallery-modal > button {
         width: calc(var(--nav-button-width) + 2 * var(--nav-padding-right));
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 767px) {
+    gallery-modal > img {
+        padding: 12em 1em;
+    }
     gallery-modal > button {
         width: calc(var(--nav-button-width) + var(--nav-padding-right));
     }
 }
 @media only screen and (min-width: 768px) {
+    gallery-modal > img {
+        padding: 12em 1em;
+    }
     gallery-modal > button {
         width: var(--nav-button-width);
         position: absolute;

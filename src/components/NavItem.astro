@@ -65,7 +65,7 @@ let subitems = ffiles.map(file => (
 <script>
 import { getDataAttr, setDataAttr, setBoolAttr } from '../scripts/utils';
 import { $expand } from '../scripts/stores/expand';
-import { ExpandEvent } from '../scripts/events';
+import { ExpandEventType } from '../scripts/events';
 
     class NavItem extends HTMLElement {
 
@@ -103,8 +103,8 @@ import { ExpandEvent } from '../scripts/events';
                 // event listeners for the toggle button
                 if (getDataAttr(this, "toggle")) {
 
-                    this.button.addEventListener(ExpandEvent.ENABLE, this.handleAutoExpand);
-                    this.button.addEventListener(ExpandEvent.DISABLE, this.handleAutoExpand);
+                    this.button.addEventListener(ExpandEventType.ENABLE, this.handleAutoExpand);
+                    this.button.addEventListener(ExpandEventType.DISABLE, this.handleAutoExpand);
                     this.button.addEventListener('mouseenter', this.handleEnterLeave);
                     this.button.addEventListener('mouseleave', this.handleEnterLeave);
                     this.button.addEventListener('focus', this.handleEnterLeave);
@@ -133,8 +133,8 @@ import { ExpandEvent } from '../scripts/events';
                 // event listeners for the toggle button
                 if (getDataAttr(this, "toggle")) {
 
-                    this.button.removeEventListener(ExpandEvent.ENABLE, this.handleAutoExpand);
-                    this.button.removeEventListener(ExpandEvent.DISABLE, this.handleAutoExpand);
+                    this.button.removeEventListener(ExpandEventType.ENABLE, this.handleAutoExpand);
+                    this.button.removeEventListener(ExpandEventType.DISABLE, this.handleAutoExpand);
                     this.button.removeEventListener('mouseenter', this.handleEnterLeave);
                     this.button.removeEventListener('mouseleave', this.handleEnterLeave);
                     this.button.removeEventListener('focus', this.handleEnterLeave);
@@ -192,13 +192,13 @@ import { ExpandEvent } from '../scripts/events';
 
             if (getDataAttr(this, "toggle")) {
                 
-                if (evt.type == ExpandEvent.ENABLE) {
+                if (evt.type == ExpandEventType.ENABLE) {
                     this.enableAutoExpand = true;
 
                     // ignore store, set expand local state
                     this.setExpand(false);
 
-                } else if (evt.type == ExpandEvent.DISABLE) {
+                } else if (evt.type == ExpandEventType.DISABLE) {
                     this.enableAutoExpand = false;
 
                     // use store
@@ -235,8 +235,8 @@ import { ExpandEvent } from '../scripts/events';
         handleMqlChange = (evtTarget : HTMLElement, mql : MediaQueryList) => {
             return function handleMqlChangeInner(evt : MediaQueryListEvent) {
                 let newEvt : Event = (mql.matches) ? 
-                                     new Event(ExpandEvent.ENABLE) : 
-                                     new Event(ExpandEvent.DISABLE);
+                                     new Event(ExpandEventType.ENABLE) : 
+                                     new Event(ExpandEventType.DISABLE);
                 evtTarget.dispatchEvent(newEvt);
             }
         }

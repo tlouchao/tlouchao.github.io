@@ -5,36 +5,46 @@ import '../styles/components/gallerymodal.scss'
 <gallery-modal id="gallery-modal" data-open={false}>
     <button>
         <Icon name="close" />
-        <img src="" alt="" />
     </button>
+    <img src="" alt="" />
 </gallery-modal>
 
 <script>
     import { setDataAttr } from '../scripts/utils';
-    import { ModalEvent } from '../scripts/events';
+    import { ModalEvent, ModalEventType } from '../scripts/events';
+    
     class GalleryModal extends HTMLElement {
+        img : HTMLImageElement | null;
         constructor() {
             super();
+            this.img = this.querySelector('img');
         }
+
         connectedCallback() {
             this.addEventListener('click', this.handleClick);
-            this.addEventListener(ModalEvent.OPEN, this.handleModalOpenClose);
-            this.addEventListener(ModalEvent.CLOSE, this.handleModalOpenClose);
+            this.addEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
+            this.addEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
         }
+
         disconnectedCallback() {
             this.removeEventListener('click', this.handleClick);
-            this.removeEventListener(ModalEvent.OPEN, this.handleModalOpenClose);
-            this.addEventListener(ModalEvent.CLOSE, this.handleModalOpenClose);
+            this.removeEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
+            this.removeEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
         }
+
         handleClick = () => {
-            let evt = new Event(ModalEvent.CLOSE);
+            let evt = new ModalEvent(ModalEventType.CLOSE);
             this.dispatchEvent(evt)
         }
-        handleModalOpenClose = (evt : Event) => {
-            if (evt.type == ModalEvent.OPEN) {
+        
+        handleModalOpenClose = (evt : ModalEvent) => {
+            if (evt.type == ModalEventType.OPEN) {
+                if (this.img) this.img.src = evt.src;
+                document.body.style.overflowY = 'hidden';
                 setDataAttr(this, 'open', true);
-            } else if (evt.type == ModalEvent.CLOSE) {
+            } else if (evt.type == ModalEventType.CLOSE) {
                 setDataAttr(this, 'open', false);
+                document.body.style.overflowY = 'visible';
             }
         }
     }

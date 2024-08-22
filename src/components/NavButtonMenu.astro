@@ -32,7 +32,7 @@ const ariaLabel = "Navbar Menu Button"
 
 <script>
     import { getDataAttr, setDataAttr, setBoolAttr, setButtonIcon } from '../scripts/utils.js'
-    import { ExpandEvent } from '../scripts/events';
+    import { ExpandEventType } from '../scripts/events';
 
     class NavButtonMenu extends HTMLElement {
         button : HTMLButtonElement | null;
@@ -59,8 +59,8 @@ const ariaLabel = "Navbar Menu Button"
         connectedCallback() {
 
             this.button?.addEventListener('click', this.handleClick);
-            this.addEventListener(ExpandEvent.ENABLE, this.handleEnableExpand);
-			this.addEventListener(ExpandEvent.DISABLE, this.handleEnableExpand);
+            this.addEventListener(ExpandEventType.ENABLE, this.handleEnableExpand);
+			this.addEventListener(ExpandEventType.DISABLE, this.handleEnableExpand);
             this.mql.addEventListener('change', this.handleMqlChange(this, this.mql));
 
             // on page load, query the screen size
@@ -70,8 +70,8 @@ const ariaLabel = "Navbar Menu Button"
         disconnectedCallback() {
             
             this.button?.removeEventListener('click', this.handleClick);
-            this.removeEventListener(ExpandEvent.ENABLE, this.handleEnableExpand);
-			this.removeEventListener(ExpandEvent.DISABLE, this.handleEnableExpand);
+            this.removeEventListener(ExpandEventType.ENABLE, this.handleEnableExpand);
+			this.removeEventListener(ExpandEventType.DISABLE, this.handleEnableExpand);
             this.mql.removeEventListener('change', this.handleMqlChange(this, this.mql));
         }
 
@@ -98,9 +98,9 @@ const ariaLabel = "Navbar Menu Button"
 
 		handleEnableExpand = (evt : Event) => {
 
-			if (evt.type == ExpandEvent.ENABLE) {
+			if (evt.type == ExpandEventType.ENABLE) {
             	this.enableButtonExpand = true;
-			} else if (evt.type == ExpandEvent.DISABLE) {
+			} else if (evt.type == ExpandEventType.DISABLE) {
 				this.enableButtonExpand = false;
 			}
 
@@ -117,8 +117,8 @@ const ariaLabel = "Navbar Menu Button"
         handleMqlChange = (evtTarget : HTMLElement, mql : MediaQueryList) => {
             return function handleMqlChangeInner(evt : MediaQueryListEvent) {
                 let newEvt : Event = (mql.matches) ? 
-                                     new Event(ExpandEvent.ENABLE) : 
-                                     new Event(ExpandEvent.DISABLE);
+                                     new Event(ExpandEventType.ENABLE) : 
+                                     new Event(ExpandEventType.DISABLE);
                 evtTarget?.dispatchEvent(newEvt);
             }
         }
