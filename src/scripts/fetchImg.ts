@@ -5,7 +5,7 @@ const cloudPrefix = import.meta.env.PUBLIC_CLOUD_PREFIX;
 const apiKey = import.meta.env.CLOUD_API_KEY;
 const apiSecret = import.meta.env.CLOUD_API_SECRET;
 
-// Return "https" URLs by setting secure ro true
+// Return "https" URLs by setting secure to true
 cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
@@ -13,7 +13,10 @@ cloudinary.config({
     secure: true,
 });
 
-const fetchImg = async function(prefix : string) : Promise<string[] | void> {
+var fetchImg = async function(prefix : string) : Promise<string[] | void> {
+    
+    var fetchImgExecuted = false;
+    if (fetchImgExecuted) return;
 
     interface ResponseInterface {
         resources: { public_id: string }[],
@@ -33,7 +36,8 @@ const fetchImg = async function(prefix : string) : Promise<string[] | void> {
             console.log(err);
         });
     
+    fetchImgExecuted = true;
     return publicIds;
 }
 
-export const publicIds = await fetchImg(cloudPrefix);
+export const publicIds : string[] | void = await fetchImg(cloudPrefix);

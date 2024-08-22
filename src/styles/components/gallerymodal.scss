@@ -2,8 +2,25 @@
 @use 'buttonmixins';
 
 gallery-modal {
-    @include buttonmixins.button-svg;
     display: none;
+    @include buttonmixins.button-svg;
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        box-sizing: border-box;
+    }
+    button {
+        display: none;
+        position: absolute;
+        top: 1px; /* navbar border */
+        right: 0; /* navbar border */
+        color: var(--color-modal);
+        background-color: var(--color-modal-bg);
+    }
+    button:hover {
+        color: var(--color-modal-hover);
+    }
 }
 gallery-modal[data-open] {
     display: flex;
@@ -16,22 +33,9 @@ gallery-modal[data-open] {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.75);
     z-index: 5;
-}
-gallery-modal > img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    box-sizing: border-box;
-}
-gallery-modal > button {
-    position: absolute;
-    top: 1px; /* navbar border */
-    right: 0; /* navbar border */
-    color: var(--color-modal);
-    background-color: var(--color-modal-bg);
-}
-gallery-modal > button:hover {
-    color: var(--color-modal-hover);
+    button {
+        display: block;
+    }
 }
 @media only screen and (max-width: 599px) {
     gallery-modal > img {

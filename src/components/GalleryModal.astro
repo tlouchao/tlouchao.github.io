@@ -10,43 +10,56 @@ import '../styles/components/gallerymodal.scss'
 </gallery-modal>
 
 <script>
-    import { setDataAttr } from '../scripts/utils';
-    import { ModalEvent, ModalEventType } from '../scripts/events';
+import { setDataAttr } from '../scripts/utils';
+import { ModalEvent, ModalEventType } from '../scripts/events';
+
+class GalleryModal extends HTMLElement {
+    img : HTMLImageElement | null;
+    constructor() {
+        super();
+        this.img = this.querySelector('img');
+    }
+
+    connectedCallback() {
+        this.addEventListener('click', this.handleClick);
+        this.addEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
+        this.addEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
+    }
+
+    disconnectedCallback() {
+        this.removeEventListener('click', this.handleClick);
+        this.removeEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
+        this.removeEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
+    }
+
+    handleClick() {
+        let evt = new ModalEvent(ModalEventType.CLOSE);
+        this.dispatchEvent(evt)
+    }
     
-    class GalleryModal extends HTMLElement {
-        img : HTMLImageElement | null;
-        constructor() {
-            super();
-            this.img = this.querySelector('img');
-        }
+    handleModalOpenClose = (evt : ModalEvent) => {
+        if (evt.type == ModalEventType.OPEN) {
 
-        connectedCallback() {
-            this.addEventListener('click', this.handleClick);
-            this.addEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
-            this.addEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
-        }
-
-        disconnectedCallback() {
-            this.removeEventListener('click', this.handleClick);
-            this.removeEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
-            this.removeEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
-        }
-
-        handleClick = () => {
-            let evt = new ModalEvent(ModalEventType.CLOSE);
-            this.dispatchEvent(evt)
-        }
-        
-        handleModalOpenClose = (evt : ModalEvent) => {
-            if (evt.type == ModalEventType.OPEN) {
-                if (this.img) this.img.src = evt.src;
-                document.body.style.overflowY = 'hidden';
-                setDataAttr(this, 'open', true);
-            } else if (evt.type == ModalEventType.CLOSE) {
-                setDataAttr(this, 'open', false);
-                document.body.style.overflowY = 'visible';
+            if (this.img) {
+                let transform = 't_Wide';
+                let newSrc = evt.src.replace(/t_[a-zA-Z0-9_]+/, transform);
+                this.img.src = newSrc;
+                this.img.alt = evt.label;
             }
+            document.body.style.overflowY = 'hidden';
+            setDataAttr(this, 'open', true);
+
+        } else if (evt.type == ModalEventType.CLOSE) {  
+
+            if (this.img) {
+                this.img.src = "";
+                this.img.alt = "";
+            }
+            document.body.style.overflowY = 'visible';
+            setDataAttr(this, 'open', false);
+
         }
     }
-    customElements.define('gallery-modal', GalleryModal);
+}
+customElements.define('gallery-modal', GalleryModal);
 </script>

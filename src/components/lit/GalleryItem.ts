@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { ModalEvent, ModalEventType } from '../scripts/events';
+import { ModalEvent, ModalEventType } from '../../scripts/events';
 
 @customElement('gallery-item')
 export class GalleryItem extends LitElement {
@@ -53,7 +53,7 @@ export class GalleryItem extends LitElement {
 
     handleClick() {
         let modal = document.querySelector('#gallery-modal');
-        let evt = new ModalEvent(ModalEventType.OPEN, this.src);
+        let evt = new ModalEvent(ModalEventType.OPEN, this.src, this.label);
         modal?.dispatchEvent(evt);
     }
 

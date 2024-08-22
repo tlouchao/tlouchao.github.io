@@ -1,33 +1,19 @@
 ---
-import { GalleryItem } from './GalleryItem.ts';
+import { GalleryItem } from './lit/GalleryItem.ts'
 import '../styles/components/gallerygrid.scss'
 
-import url from 'url';
-import path from 'path';
-import { publicIds } from '../scripts/fetchImg.ts';
-
-const cloudName = import.meta.env.PUBLIC_CLOUD_NAME;
-const cloudHostname = import.meta.env.PUBLIC_CLOUD_HOSTNAME;
+import { publicIds } from '../scripts/fetchImg';
+import { type GalleryImageProp, transformImageProps } from '../scripts/transformImg';
 
 // Set img src to public URLs
-type GalleryItemProps = {src: string, label: string}[] | undefined;
 let transform = "t_Thumbnail_360";
-let urlObj = {
-    protocol: 'https',
-    hostname: cloudHostname,
-    pathname: '',
-};
-
-const galleryItemArr : GalleryItemProps = publicIds?.map(publicId => {
-    urlObj.pathname = path.join(cloudName, transform, publicId);
-    let label = path.parse(publicId).name;
-    return {src: url.format(urlObj), label: label}; 
-});
+let items : GalleryImageProp[] = [];
+if (publicIds) items = transformImageProps(publicIds, transform);
 ---
 
 <gallery-grid>
     <div id="gallery-grid">
-        {galleryItemArr?.map((x) => (
+        {items.map((x) => (
             // @ts-ignore
             <GalleryItem client:visible src={x.src} label={x.label} />
             )

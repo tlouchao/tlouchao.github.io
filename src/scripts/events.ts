@@ -6,10 +6,12 @@ declare global {
 }
 
 export class ModalEvent extends Event {
-    src : string;
-    constructor(eventType: string, src?: string) {
+    src: string;
+    label: string;
+    constructor(eventType: string, src?: string, label?: string) {
         super(eventType);
         this.src = src ?? "";
+        this.label = label ?? "";
     }
 }
 
