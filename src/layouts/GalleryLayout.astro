@@ -30,7 +30,7 @@ let { header = getLabel(pathname) } = Astro.props;
                   transition:persist/>
 	</head>
 	<body class="theme-dark">
-        <NavBar />
+        <NavBar isGallery={true} />
         <div id="header-layout">
             <GalleryBar header={header} />
             <div id="main-layout">
@@ -65,12 +65,4 @@ let { header = getLabel(pathname) } = Astro.props;
         height: 100%;
         background-color: var(--color-gallery);
     }
-    /* DESKTOP */
-	@media only screen and (min-width: 768px) {
-        #header-layout {
-            padding-left: min(25%, var(--nav-desktop-width));
-            margin-top: 0;
-            height: 100vh;
-        }
-    }   
 </style>

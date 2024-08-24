@@ -7,8 +7,8 @@ gallery-bar {
     gap: 1em;
     padding: 0.33em 1em;
     height: 64px;
-    border-top: 1px solid var(--color-nav-sub-item);
-    border-bottom: 1px solid var(--color-nav-sub-item);
+    border-top: 3px solid var(--color-nav-sub-item);
+    border-bottom: 3px solid var(--color-nav-sub-item);
     background-color: var(--color-nav-item);
 
     #gallery-label {
@@ -24,11 +24,5 @@ gallery-bar {
             border-radius: 25%;
             padding: 0.33em 0.66em;
         }
-    }
-}
-
-@media only screen and (min-width: 768px) {
-    gallery-bar {
-        border: none;
     }
 }

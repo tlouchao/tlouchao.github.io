@@ -1,138 +1,229 @@
 @use '../mixins';
 
-@mixin nav-bar {
+/* --------------------- Navbar ------------------------ */
 
-    nav[data-shadow] {
-        filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.75));
-    }
-    nav {
-        @include mixins.flex-row;
-        align-items: stretch;
-        justify-content: space-between;
-        padding: 0em;
-        padding-left: 1em;
+@mixin nav-mobile {
+    @include mixins.flex-row;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 0em;
+    padding-left: 1em;
+    gap: 1em;
+    z-index: 3;
+    background-color: var(--color-nav);
+
+    /* position and size */
+    width: 100%;
+    height: var(--nav-mobile-wh);
+    position: fixed;
+    top: 0;
+}
+
+@mixin nav-left-mobile {
+    #nav-left {
+        @include mixins.flex-inherit;
+        align-items: center;
         gap: 1em;
-        z-index: 3;
-        background-color: var(--color-nav);
-        filter: none;
-
-        /* position and size */
-        width: 100%;
-        height: var(--nav-mobile-wh);
-        position: fixed;
-        top: 0;
-
-        #nav-left {
-            @include mixins.flex-inherit;
-            align-items: center;
-            gap: 1em;
-            #nav-left-icon {
-                font-size: 0;
-            }
-            a {
-                @include mixins.flex-inherit;
-                width: fit-content;
-                text-decoration: none;
-            }
-            img {
-                width: 28px;
-                border-radius: 50%;
-                border-style: none;
-            }
-            #nav-left-label {
-                height: 100%;
-            }
-            span {
-                color: var(--color-nav-label);
-                font-family: var(--nav-label-font-family);
-                font-size: xx-large;
-                line-height: 50px;
-                min-width: 135px; /* font-size and font-family dependent */
-            }
+        #nav-left-icon {
+            font-size: 0;
         }
-        #nav-right {
+        a {
             @include mixins.flex-inherit;
+            width: fit-content;
+            text-decoration: none;
+        }
+        img {
+            width: 28px;
+            border-radius: 50%;
+            border-style: none;
+        }
+        #nav-left-label {
             height: 100%;
-            padding-right: var(--nav-padding-right);
-            #nav-right-inner {
-                @include mixins.flex-col;
-                @include mixins.align-center;
-                justify-content: start;
-                background-color: var(--color-nav-item);
-
-                /* position and size */
-                position: fixed;
-                top: var(--nav-mobile-wh);
-                left: 0;
-                #nav-items {
-                    width: 100%;
-                    flex-grow: 1;
-                    @include mixins.border-top-bottom(
-                        var(--color-divider));
-                }
-                #nav-social {
-                    @include mixins.flex-col;
-                    @include mixins.align-center;
-                    hr {
-                        color: var(--color-nav-social);
-                        display: none;
-                    }
-                    .nav-social {
-                        @include mixins.flex-row;
-                        padding-top: 0.75em;
-                        padding-bottom: 2em;
-                        background-color: inherit;
-                        button-social {
-                            display: inherit;
-                        }
-                    }
-                }
-            }
-            #nav-button-menu {
-                display: flex;
-            }
+        }
+        span {
+            color: var(--color-nav-label);
+            font-family: var(--nav-label-font-family);
+            font-size: xx-large;
+            line-height: 52px;
+            min-width: 135px; /* font-size and font-family dependent */
+            transform: none;
         }
     }
 }
 
+@mixin nav-right-mobile {
+    #nav-right {
+        @include mixins.flex-inherit;
+        height: 100%;
+        width: auto;
+        padding-right: var(--nav-padding-right);
+        #nav-right-inner {
+            @include mixins.flex-col;
+            @include mixins.align-center;
+            justify-content: start;
+            background-color: var(--color-nav-item);
+
+            /* position and size */
+            position: fixed;
+            top: var(--nav-mobile-wh);
+            left: 0;
+            #nav-items {
+                width: 100%;
+                flex-grow: 1;
+                @include mixins.border-top-bottom(
+                    var(--color-divider));
+            }
+            #nav-social {
+                @include mixins.flex-col;
+                @include mixins.align-center;
+                hr {
+                    color: var(--color-nav-social);
+                    display: none;
+                }
+                .nav-social {
+                    @include mixins.flex-row;
+                    padding-top: 0.75em;
+                    padding-bottom: 2em;
+                    background-color: inherit;
+                    button-social {
+                        display: inherit;
+                    }
+                }
+            }
+        }
+        #nav-button-menu {
+            display: flex;
+        }
+    }
+}
+
+@mixin nav-right-tablet {
+    #nav-right {
+        height: 100%;
+        width: auto;
+        gap: 0;
+        padding-right: var(--nav-padding-right);
+        #nav-right-inner {
+            @include mixins.flex-row;
+            height: 100%;
+            order: 1;
+            position: static;
+            filter: none;
+            #nav-items {
+                @include mixins.flex-inherit;
+                height: 100%;
+                flex-grow: 1;
+                border: none;
+            }
+            #nav-social {
+                hr, .nav-social {
+                    display: none;
+                }
+            }
+        }
+        #button-theme {
+            order: 2;
+            width: var(--nav-button-width);
+            height: var(--nav-mobile-wh);
+        }
+        #nav-button-menu {
+            display: none;
+        }
+    }
+}
+
+@mixin nav-bar {
+    nav[data-gallery] {
+        filter: none;
+    }
+    nav {
+        filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.75));
+        @include nav-mobile;
+        @include nav-left-mobile;
+        @include nav-right-mobile;
+    }
+}
+
+/* --------------------- Navitem ----------------------- */
+
+@mixin nav-button($color, $bgcolor) {
+    button {
+        @include mixins.border-top-bottom(var(--color-divider));
+        @include mixins.set-color-bgcolor($color, $bgcolor);
+        a, a:link, a:visited {
+            color: inherit;
+            text-decoration: none;
+            line-height: 1;
+            font-weight: var(--nav-font-weight);
+        }
+    }
+    button[aria-current=true] {
+        border: 1px solid transparent;
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link-current), var(--color-nav-item-current));
+        a, a:link, a:visited {
+            color: inherit;
+        }
+    }
+    button:hover {
+        cursor: pointer;
+        border: 1px solid transparent;
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link-hover), var(--color-nav-item-hover));
+    }
+    button:active {
+        cursor: pointer;
+        border: 1px solid transparent;
+        @include mixins.set-color-bgcolor(
+            var(--color-nav-link-active), var(--color-nav-item-active));
+    }
+}
+
+@mixin nav-item-tablet {
+    nav-item {
+        @include nav-button(var(--color-nav-link), var(--color-nav-item));
+        button {
+            height: 100%;
+            padding: 0.5em;
+            border: 1px solid transparent;
+        }
+    }
+    nav-item[data-toggle] > button > [data-icon=arrow] {
+        @include mixins.invisible;
+    }
+    nav-item[data-toggle][data-expand] > button > [data-icon=arrow] {
+        @include mixins.invisible;
+    }
+    .sub-items {
+        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
+        position: fixed;
+        top: var(--nav-mobile-wh);
+    }
+}
+@mixin nav-item-desktop($gallery : false) {
+    @if $gallery {
+        @include nav-item-tablet;
+    } @else {
+        nav-item {
+            button {
+                height: auto;
+                padding: 0.5em 0.75em;
+            }
+        }
+        nav-item > button > [data-icon=arrow] {
+            right: 0.5em;
+        }
+    }
+}
 @mixin nav-item {
     nav-item {
+        @include nav-button(var(--color-nav-link), var(--color-nav-item));
         button {
             @include mixins.flex-row;
             @include mixins.align-center;
             height: auto;
             padding: 0.75em;
-            font-family: var(--nav-font-family);
-            @include mixins.border-top-bottom(
-                var(--color-divider));
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link), var(--color-nav-item));
-            a, a:link, a:visited {
-                color: inherit;
-                text-decoration: none;
-                line-height: 1;
-                font-weight: var(--nav-font-weight);
-            }
-        }
-        button[aria-current=true] {
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-current), var(--color-nav-item-current));
-            a, a:link, a:visited {
-                color: inherit;
-            }
-        }
-        button:hover {
-            cursor: pointer;
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-hover), var(--color-nav-item-hover));
-        }
-        button:active {
-            cursor: pointer;
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-active), var(--color-nav-item-active));
+            font-family: var(--nav-font-family); 
         }
     }
     nav-item > button > [data-icon=arrow] {
@@ -155,36 +246,8 @@
         @include mixins.visible-block;
     }
     .sub-items {
+        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
         position: static;
         top: 0;
-        button {
-            @include mixins.border-top-bottom(
-                var(--color-divider));
-            @include mixins.set-color-bgcolor(
-            var(--color-nav-sub-link), var(--color-nav-sub-item));
-            a, a:link, a:visited {
-                color: inherit;
-            }
-        }
-        button[aria-current=true] {
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-sub-link-current), var(--color-nav-item-current));
-            a, a:link, a:visited {
-                color: inherit;
-            }
-        }
-        button:hover {
-            cursor: pointer;
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-hover), var(--color-nav-item-hover));
-        }
-        button:active {
-            cursor: pointer;
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link-active), var(--color-nav-item-active));
-        }
     }
 }

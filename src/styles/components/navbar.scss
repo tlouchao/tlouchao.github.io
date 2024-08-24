@@ -10,33 +10,20 @@
 @media only screen and (min-width: 600px) and (max-width: 768px) {
     @include navmixins.nav-bar;
     nav {
-        #nav-right {
-            #nav-right-inner {
-                @include mixins.flex-row;
-                position: static;
-                filter: none;
-                #nav-items {
-                    @include mixins.flex-inherit;
-                    height: 100%;
-                    flex-grow: 1;
-                    border: none;
-                }
-                #nav-social {
-                    hr, .nav-social {
-                        display: none;
-                    }
-                }
-            }
-            #nav-button-menu {
-                display: none;
-            }
-        }
+        @include navmixins.nav-mobile;
+        @include navmixins.nav-left-mobile;
+        @include navmixins.nav-right-tablet;
     }
 }
 
 /* DESKTOP */
 @media only screen and (min-width: 768px) {
     @include navmixins.nav-bar;
+    nav[data-gallery] {
+        @include navmixins.nav-mobile;
+        @include navmixins.nav-left-mobile;
+        @include navmixins.nav-right-tablet;
+    }
     nav {
         @include mixins.flex-col;
         padding: 0;

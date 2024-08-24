@@ -71,7 +71,7 @@ var fetchImg = async function(prefix : string) : Promise<string[] | void> {
                 return predicate(url.format(urlObj));
             }))
             .then((response : boolean[]) => {
-                validAssets = assets.filter((v, idx) => response[idx]);
+                validAssets = assets.filter((_, idx) => response[idx]);
             })
             .catch((err) => {});
     }

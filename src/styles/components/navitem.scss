@@ -7,40 +7,18 @@
 }
 
 /* TABLET */
-@media only screen and (min-width: 600px) and (max-width: 768px) {
+@media only screen and (min-width: 600px) and (max-width: 767px) {
     @include navmixins.nav-item;
-    nav-item {
-        button {
-            height: 100%;
-            padding: 0.5em;
-            border: 1px solid transparent;
-            @include mixins.set-color-bgcolor(
-                var(--color-nav-link), var(--color-nav));
-        }
-    }
-    nav-item[data-toggle] > button > [data-icon=arrow] {
-        @include mixins.invisible;
-    }
-    nav-item[data-toggle][data-expand] > button > [data-icon=arrow] {
-        @include mixins.invisible;
-    }
-    .sub-items {
-        position: fixed;
-        top: var(--nav-mobile-wh); /* navbar height */
-    }
+    @include navmixins.nav-item-tablet;
 }
 
 /* DESKTOP */
 @media only screen and (min-width: 768px) {
     @include navmixins.nav-item;
-    #nav-items {
-        nav-item {
-            button {
-                padding: 0.5em 0.75em;
-            }
-        }
-        nav-item > button > [data-icon=arrow] {
-            right: 0.5em;
-        }
+    nav[data-gallery] {
+        @include navmixins.nav-item-desktop(true);
+    }
+    nav:not([data-gallery]) {
+        @include navmixins.nav-item-desktop(false);
     }
 }

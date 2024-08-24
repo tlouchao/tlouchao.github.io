@@ -12,7 +12,7 @@ interface Props {
 let { isGallery = false } = Astro.props;
 ---
 <nav-bar>
-	<nav data-shadow={isGallery}>
+	<nav data-gallery={isGallery}>
 		<div id="nav-left">
 			<a id="nav-left-icon" href="/">
 				<img src="/secretary-bird-sq.jpg" aria-label="Navbar Icon" />

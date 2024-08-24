@@ -72,7 +72,7 @@ import { ExpandEventType } from '../scripts/events';
         button : HTMLButtonElement | null;
         anchor : HTMLAnchorElement | null;
         label : string | undefined;
-        mql : MediaQueryList = window.matchMedia("(min-width: 600px) and (max-width: 768px)");
+        mql : MediaQueryList;
 
         subitems : HTMLElement | null = null;
         enableAutoExpand: boolean = true;
@@ -90,6 +90,14 @@ import { ExpandEventType } from '../scripts/events';
                 let label = this.label ?? '';
                 let expand = $expand.get()[label];
                 this.setExpand(expand);
+            }
+
+            // set the media query breakpoint
+            let nav = document.querySelector('nav');
+            if (nav && getDataAttr(nav, 'gallery')) {
+                this.mql = window.matchMedia("(min-width: 600px)");
+            } else {
+                this.mql = window.matchMedia("(min-width: 600px) and (max-width: 768px)");
             }
         }
 
