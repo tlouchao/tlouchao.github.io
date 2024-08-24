@@ -7,13 +7,13 @@
 }
 
 /* TABLET */
-@media only screen and (min-width: 600px) and (max-width: 767px) {
+@media only screen and (min-width: 600px) and (max-width: 991px) {
     @include navmixins.nav-item;
     @include navmixins.nav-item-tablet;
 }
 
 /* DESKTOP */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 992px) {
     @include navmixins.nav-item;
     nav[data-gallery] {
         @include navmixins.nav-item-desktop(true);

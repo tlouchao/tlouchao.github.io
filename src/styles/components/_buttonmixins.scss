@@ -1,7 +1,6 @@
 @use '../mixins';
 
 @mixin button-svg {
-    @include mixins.flex-inherit;
     button {
         cursor: pointer;
         overflow: hidden;
@@ -28,7 +27,7 @@
             transition-property: color, opacity;
         }
     }
-    @media only screen and (min-width: 768px) {
+    @media only screen and (min-width: 992px) {
         #{$id} {
             button {
                 border: none;

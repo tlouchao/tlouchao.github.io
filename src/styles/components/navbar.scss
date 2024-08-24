@@ -7,7 +7,7 @@
 }
 
 /* TABLET */
-@media only screen and (min-width: 600px) and (max-width: 768px) {
+@media only screen and (min-width: 600px) and (max-width: 991px) {
     @include navmixins.nav-bar;
     nav {
         @include navmixins.nav-mobile;
@@ -17,7 +17,7 @@
 }
 
 /* DESKTOP */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 992px) {
     @include navmixins.nav-bar;
     nav[data-gallery] {
         @include navmixins.nav-mobile;
@@ -28,7 +28,7 @@
         @include mixins.flex-col;
         padding: 0;
         padding-top: 1.5em;
-        width: min(25%, var(--nav-desktop-width));
+        width: min(22.5%, var(--nav-desktop-width));
         height: 100%;
         background-color: var(--color-nav-light);
         filter: none;
@@ -38,7 +38,6 @@
                 width: 128px;
             }
             span {
-                text-align: center;
                 font-size: x-large;
                 line-height: 1;
                 min-width: 0;

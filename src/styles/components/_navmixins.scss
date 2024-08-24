@@ -46,6 +46,7 @@
             font-size: xx-large;
             line-height: 52px;
             min-width: 135px; /* font-size and font-family dependent */
+            text-align: center;
             transform: none;
         }
     }
@@ -148,6 +149,7 @@
 
 @mixin nav-button($color, $bgcolor) {
     button {
+        padding: 0.5em;
         @include mixins.border-top-bottom(var(--color-divider));
         @include mixins.set-color-bgcolor($color, $bgcolor);
         a, a:link, a:visited {
@@ -184,7 +186,6 @@
         @include nav-button(var(--color-nav-link), var(--color-nav-item));
         button {
             height: 100%;
-            padding: 0.5em;
             border: 1px solid transparent;
         }
     }
@@ -249,5 +250,8 @@
         @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
         position: static;
         top: 0;
+        button {
+            padding: 0.75em;
+        }
     }
 }
