@@ -1,12 +1,21 @@
 ---
 import { Icon } from 'astro-icon/components'
+import GalleryModalArrow from './GalleryModalArrow.astro'
 import '../styles/components/gallerymodal.scss'
+
+interface Props {
+    max: number;
+}
+
+const { max } = Astro.props;
 ---
-<gallery-modal id="gallery-modal" data-open={false}>
-    <button>
-        <Icon name="close" />
-    </button>
-    <img src="" alt="" />
+<gallery-modal id="gallery-modal" data-open={false} data-index={0} data-max={max}>
+    <div class="gallery-modal-inner">
+        <img src="" alt="" />
+        <GalleryModalArrow target="prev"/>
+        <GalleryModalArrow target="next"/>
+        <button class="modal-close"><Icon name="close" /></button>
+    </div>
 </gallery-modal>
 
 <script>
@@ -14,27 +23,58 @@ import { setDataAttr } from '../scripts/utils';
 import { ModalEvent, ModalEventType } from '../scripts/events';
 
 class GalleryModal extends HTMLElement {
+
     img : HTMLImageElement | null;
+    prev : HTMLElement | null;
+    next : HTMLElement | null;
+    index : number = 0;
+    max : number = 0;
+
     constructor() {
         super();
+        
         this.img = this.querySelector('img');
+        this.prev = this.querySelector("button[data-target='prev']");
+        this.next = this.querySelector("button[data-target='next']")
+
+        let max = this.dataset['max'];
+        if (max && !Number.isNaN(parseInt(max))) {
+            this.max = parseInt(max);
+        }
+    }
+
+    setIndex(index : number) {
+        this.index = index;
+        this.dataset.index = this.index.toString();
     }
 
     connectedCallback() {
-        this.addEventListener('click', this.handleClick);
+        
+        // modal
+        this.addEventListener('click', this.handleModalClick);
         this.addEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
         this.addEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
+
+        // arrow
+        this.prev?.addEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
+        this.next?.addEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
     }
 
     disconnectedCallback() {
-        this.removeEventListener('click', this.handleClick);
+
+        // modal
+        this.removeEventListener('click', this.handleModalClick);
         this.removeEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
         this.removeEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
+
+        // arrow
+        this.prev?.removeEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
+        this.next?.removeEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
     }
 
-    handleClick() {
-        let evt = new ModalEvent(ModalEventType.CLOSE);
-        this.dispatchEvent(evt)
+    handleModalClick(evt : Event) {
+        let closeEvt = new ModalEvent(ModalEventType.CLOSE);
+        this.dispatchEvent(closeEvt)
     }
     
     handleModalOpenClose = (evt : ModalEvent) => {
@@ -45,6 +85,7 @@ class GalleryModal extends HTMLElement {
                 let newSrc = evt.src.replace(/t_[a-zA-Z0-9_]+/, transform);
                 this.img.src = newSrc;
                 this.img.alt = evt.label;
+                this.setIndex(evt.index);
             }
             document.body.style.overflowY = 'hidden';
             setDataAttr(this, 'open', true);
@@ -60,6 +101,23 @@ class GalleryModal extends HTMLElement {
 
         }
     }
+    
+    handleArrowClick(evt : Event, host : GalleryModal) {
+        evt.stopPropagation();
+        if (evt.currentTarget instanceof HTMLElement) {
+            let target = evt.currentTarget.dataset.target; // probably rename this
+            if (target) {
+                if (target == 'prev') {
+                    let index = host.index - 1;
+                    if (index < 0) index = host.max - 1;
+                    host.setIndex(index);
+                } else if (target == 'next') {
+                    host.setIndex((host.index + 1) % (host.max));
+                }
+            }
+        }
+    }
 }
+
 customElements.define('gallery-modal', GalleryModal);
 </script>

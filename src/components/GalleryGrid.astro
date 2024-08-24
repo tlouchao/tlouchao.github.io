@@ -1,31 +1,20 @@
 ---
 import { GalleryItem } from './lit/GalleryItem.ts'
+import { type GalleryImageProp } from '../scripts/transformImg'
 import '../styles/components/gallerygrid.scss'
 
-import { fetchImg } from '../scripts/fetchImg'
-import { type GalleryImageProp, transformImageProps } from '../scripts/transformImg'
-
-const clouddir = import.meta.env.PUBLIC_CLOUD_DIR;
-
 interface Props {
-    subdir? : string;
-    tags? : string[];
+    items: GalleryImageProp[];
 }
 
-let { subdir = "", tags = [] } = Astro.props;
-
-// Set img src to public URLs
-let transform = "t_Thumbnail_360";
-let items : GalleryImageProp[] = [];
-let publicIds = await fetchImg(clouddir + '/' + subdir);
-if (publicIds) items = transformImageProps(publicIds, transform);
+const { items } = Astro.props;
 ---
 
 <gallery-grid>
     <div id="gallery-grid">
-        {items.map((x) => (
+        {items.map((x, idx) => (
             // @ts-ignore
-            <GalleryItem client:visible src={x.src} label={x.label} />
+            <GalleryItem client:visible src={x.src} label={x.label} index={idx} />
             )
         )}
     </div>

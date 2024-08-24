@@ -8,10 +8,12 @@ declare global {
 export class ModalEvent extends Event {
     src: string;
     label: string;
-    constructor(eventType: string, src?: string, label?: string) {
+    index: number;
+    constructor(eventType: string, src?: string, label?: string, index?: number) {
         super(eventType);
         this.src = src ?? "";
         this.label = label ?? "";
+        this.index = index ?? 0;
     }
 }
 

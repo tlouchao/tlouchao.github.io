@@ -27,33 +27,35 @@ export class GalleryItem extends LitElement {
         opacity: 0.66;
     }
   `;
-    @property()
+    @property({ type: String })
     src : string | undefined = "";
 
-    @property()
+    @property({ type: String })
     label : string | undefined = "";
+
+    // reflect property to visible attribute in DOM
+    @property({ type: Number, reflect: true })
+    index : number | undefined = 0;
 
     constructor() {
         super();
-      }
+    }
     
     // Not using connectedCallback, since shadowRoot may not render
     firstUpdated() {
-        let img = this.shadowRoot?.querySelector('img');
-        img?.addEventListener('click', this.handleClick);
-        img?.addEventListener('error', this.handleError);
+        this.addEventListener('click', this.handleClick);
+        this.addEventListener('error', this.handleError);
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
-        let img = this.shadowRoot?.querySelector('img');
-        img?.removeEventListener('click', this.handleClick);
-        img?.removeEventListener('error', this.handleError);
+        this.removeEventListener('click', this.handleClick);
+        this.removeEventListener('error', this.handleError);
     }
 
     handleClick() {
         let modal = document.querySelector('#gallery-modal');
-        let evt = new ModalEvent(ModalEventType.OPEN, this.src, this.label);
+        let evt = new ModalEvent(ModalEventType.OPEN, this.src, this.label, this.index);
         modal?.dispatchEvent(evt);
     }
 

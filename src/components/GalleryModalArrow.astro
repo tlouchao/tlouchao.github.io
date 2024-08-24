@@ -1,0 +1,12 @@
+---
+import { Icon } from 'astro-icon/components'
+
+interface Props {
+    target: string;
+}
+
+const { target } = Astro.props;
+---
+<button class="modal-arrow" data-target={target}>
+    <Icon name="arrow" />
+</button>

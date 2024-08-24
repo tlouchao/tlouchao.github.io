@@ -63,7 +63,11 @@
     --color-divider: var(--sand-light);
 
     /* gallery */
+    --modal-height: 720px;
+    --modal-width: 960px;
+    --modal-arrow-width: 72px;
     --color-modal: lavender;
+    --color-modal-arrow: var(--grey-warm-dark);
 	--color-modal-hover: white;
     --color-modal-bg: var(--grey-warm-dark);
     --color-gallery-tag: var(--sand-mdrose);
@@ -137,6 +141,7 @@
 
     /* gallery */
     --color-modal: magenta;
+    --color-modal-arrow: var(--grey-cool-mddark);
 	--color-modal-hover: lightcyan;
     --color-modal-bg: black;
     --color-gallery-tag: var(--grey-cool);
