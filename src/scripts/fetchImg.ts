@@ -5,7 +5,6 @@ import url from 'url'
 
 const cloudName = import.meta.env.PUBLIC_CLOUD_NAME;
 const cloudHostname = import.meta.env.PUBLIC_CLOUD_HOSTNAME;
-const cloudPrefix = import.meta.env.PUBLIC_CLOUD_PREFIX;
 const apiKey = import.meta.env.CLOUD_API_KEY;
 const apiSecret = import.meta.env.CLOUD_API_SECRET;
 
@@ -29,7 +28,7 @@ interface ResponseInterface {
     resources: AssetInterface[],
 }
 
-var fetchImg = async function(prefix : string) : Promise<string[] | void> {
+export const fetchImg = async function(prefix : string) : Promise<string[] | void> {
 
     // Make sure that this function is executed once
     var fetchImgExecuted = false;
@@ -82,5 +81,3 @@ var fetchImg = async function(prefix : string) : Promise<string[] | void> {
     // Return the filtered images
     return (validAssets) ? validAssets?.map(a => a.public_id) : assets?.map(a => a.public_id);
 }
-
-export const publicIds : string[] | void = await fetchImg(cloudPrefix);

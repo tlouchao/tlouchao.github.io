@@ -1,0 +1,55 @@
+---
+interface Props {
+    tag: string;
+}
+
+const { tag } = Astro.props;
+const label = 'tag-' + tag.toLowerCase();
+---
+
+<gallery-tag>
+    <span class="sr-only">{label}</span>
+    <button data-toggle={false}>
+        {tag}
+    </button>
+</gallery-tag>
+
+<script>
+    import { getDataAttr, setDataAttr, setButtonIcon } from '../scripts/utils.js'
+    class GalleryTag extends HTMLElement {
+
+        button : HTMLButtonElement | null;
+        svg0: SVGSVGElement | null;
+        svg1: SVGSVGElement | null;
+
+        static observedAttributes = ["data-toggle"];
+
+        constructor() {
+            super();
+            this.button = this.querySelector('button');
+            let svgs = this.querySelectorAll('svg');
+            this.svg0 = svgs[0];
+            this.svg1 = svgs[1];
+            let toggle = this.dataset.toggle != undefined;
+            setButtonIcon(this.button, this.svg0, this.svg1, toggle, 'auto');
+        }
+
+        connectedCallback() {
+            this.addEventListener('click', this.handleClick);
+        }
+
+        disconnectedCallback() {
+            this.removeEventListener('click', this.handleClick);
+        }
+
+        attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
+            let toggle = newValue != undefined;
+            setButtonIcon(this.button, this.svg0, this.svg1, toggle, 'auto')
+        }
+
+        handleClick() {
+            setDataAttr(this, 'toggle', !getDataAttr(this, 'toggle'))
+        }
+    }
+    customElements.define('gallery-tag', GalleryTag);
+</script>

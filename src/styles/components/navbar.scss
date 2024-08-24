@@ -31,7 +31,7 @@
         width: min(22.5%, var(--nav-desktop-width));
         height: 100%;
         background-color: var(--color-nav-light);
-        filter: none;
+        filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.75));
         #nav-left {
             gap: 0.5em;
             img {

@@ -40,11 +40,13 @@ export const getLabel = function(href: string | undefined) : string {
 export const setButtonIcon = function(button: HTMLButtonElement | null,
                                        svg0: SVGSVGElement | null,
                                        svg1: SVGSVGElement | null,
-                                       doSwap : boolean) : void {
+                                       doSwap : boolean,
+                                       size? : string) : void {
 
     // if svg is hidden, remove it from document flow using absolute positioning
-    let styleVisible = 'opacity: 1; width: 100%; height: 100%;'
-    let styleHidden = 'opacity: 0; width: 0; height: 0;'
+    if (!(size == "100%" || size == "auto")) { size = "100%"; }
+    let styleVisible = `opacity: 1; width: ${size}; height: ${size};`
+    let styleHidden = `opacity: 0; width: 0; height: 0;`
     styleHidden = styleHidden + ' position: absolute;'
 
     if (doSwap) {

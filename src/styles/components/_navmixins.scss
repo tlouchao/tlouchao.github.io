@@ -196,9 +196,9 @@
         @include mixins.invisible;
     }
     .sub-items {
-        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
         position: fixed;
         top: var(--nav-mobile-wh);
+        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
     }
 }
 @mixin nav-item-desktop($gallery : false) {
@@ -247,11 +247,11 @@
         @include mixins.visible-block;
     }
     .sub-items {
-        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
         position: static;
         top: 0;
         button {
             padding: 0.75em;
         }
+        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
     }
 }

@@ -1,8 +1,16 @@
 ---
 import GalleryLayout from '../../../layouts/GalleryLayout.astro';
 import GalleryGrid from '../../../components/GalleryGrid.astro';
+import GalleryBar from '../../../components/GalleryBar.astro';
+
+import { getLabel } from '../../../scripts/utils';
+
+let { pathname } = Astro.url;
+const header = getLabel(pathname);
+const tags = ['Japan', 'Taiwan'];
 ---
 
 <GalleryLayout>
-   <GalleryGrid />
+    <GalleryBar header={header} tags={tags} />
+   <GalleryGrid subdir="travel" />
 </GalleryLayout>

@@ -60,10 +60,16 @@
 	--color-nav-sub-link: var(--coffee);
 	--color-nav-social: maroon;
 	--color-nav-social-hover: crimson;
+    --color-divider: var(--sand-light);
+
+    /* gallery */
     --color-modal: lavender;
 	--color-modal-hover: white;
     --color-modal-bg: var(--grey-warm-dark);
-    --color-divider: var(--sand-light);
+    --color-gallery-tag: var(--sand-mdrose);
+    --color-gallery-tag-hover: var(--redwood-light);
+    --color-gallery-tag-current: var(--redwood);
+    --color-gallery-tag-border: white;
 
 	/* headings */
 	--color-nav-label: maroon;
@@ -128,6 +134,15 @@
 	--color-modal-hover: lightcyan;
     --color-modal-bg: black;
     --color-divider: var(--grey-cool);
+
+    /* gallery */
+    --color-modal: magenta;
+	--color-modal-hover: lightcyan;
+    --color-modal-bg: black;
+    --color-gallery-tag: var(--grey-cool);
+    --color-gallery-tag-hover: darkmagenta;
+    --color-gallery-tag-current: darkviolet;
+    --color-gallery-tag-border: white;
 
 	/* headings */
 	--color-nav-label: magenta;

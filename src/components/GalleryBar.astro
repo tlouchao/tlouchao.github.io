@@ -1,17 +1,17 @@
 ---
+import GalleryTag from "./GalleryTag.astro"
 import "../styles/components/gallerybar.scss";
 
 interface Props {
     header: string;
+    tags?: string[];
 }
 
-const { header } = Astro.props;
-const tags = ['Quick', 'Brown', 'Fox']
-
+const { header, tags = [] } = Astro.props;
 ---
+
 <gallery-bar>
-    <p id="gallery-label">{header}</p>
     <div id="gallery-tags">
-        {tags.map(t => <button>{t}</button>)}
+        {tags.map(t => <GalleryTag tag={t} />)}
     </div>
 </gallery-bar>
