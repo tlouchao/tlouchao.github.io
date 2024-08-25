@@ -1,5 +1,7 @@
-import url from 'url';
+import { type PidInterface, type GalleryItemInterface } from '../interface';
+import { getLabel } from './utils';
 import path from 'path';
+import url from 'url';
 
 const cloudName = import.meta.env.PUBLIC_CLOUD_NAME;
 const cloudHostname = import.meta.env.PUBLIC_CLOUD_HOSTNAME;
@@ -11,16 +13,25 @@ let urlObj = {
     pathname: '',
 };
 
-export type GalleryImageProp = {src: string, label: string};
+export const transformImg = (assets: PidInterface[], transform: string) : GalleryItemInterface => {
 
-export const transformImageProp = (publicId: string, transform: string) : GalleryImageProp => {
-    urlObj.pathname = path.join(cloudName, transform, publicId);
-    let label = path.parse(publicId).name;
-    return {src: url.format(urlObj), label: label};
-}
+    // Get transforms for public URLs
+    let ret : GalleryItemInterface = { props: [], tags: [] };
 
-export const transformImageProps = (publicIds: string[], transform: string) : GalleryImageProp[] => {
-    return publicIds.map(publicId => {
-        return transformImageProp(publicId, transform);
-    });
+    if (assets) {
+        
+        // add unique tags to set
+        let stags : Set<string> = new Set<string>();
+        assets.map(a => a.tags.map(t => stags.add(t)));
+        ret.tags = Array.from(stags).map(t => getLabel(t));
+
+        // transforms
+        ret.props = assets.map(asset => {
+            urlObj.pathname = path.join(cloudName, transform, asset.public_id);
+            let label = path.parse(asset.public_id).name;
+            return {src: url.format(urlObj), label: label, tags: asset.tags};
+        });
+    }
+
+    return ret;
 }

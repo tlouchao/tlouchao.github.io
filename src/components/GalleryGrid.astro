@@ -1,10 +1,10 @@
 ---
 import { GalleryItem } from './lit/GalleryItem.ts'
-import { type GalleryImageProp } from '../scripts/transformImg'
+import { type GalleryItemProps } from '../interface.ts'
 import '../styles/components/gallerygrid.scss'
 
 interface Props {
-    items: GalleryImageProp[];
+    items: GalleryItemProps[];
 }
 
 const { items } = Astro.props;
@@ -14,7 +14,7 @@ const { items } = Astro.props;
     <div id="gallery-grid">
         {items.map((x, idx) => (
             // @ts-ignore
-            <GalleryItem client:visible src={x.src} label={x.label} index={idx} />
+            <GalleryItem client:visible src={x.src} label={x.label} tags={x.tags} index={idx} />
             )
         )}
     </div>

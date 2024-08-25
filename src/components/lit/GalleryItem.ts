@@ -29,15 +29,16 @@ export class GalleryItem extends LitElement {
   `;
     // reflect property to visible attribute in DOM
     @property({ type: Number, reflect: true })
-    index : number | undefined = 0;
+    index : number = 0;
 
-    // reflect property to visible attribute in DOM
     @property({ type: String, reflect: true })
-    src : string | undefined = "";
+    src : string = "";
 
-    // hide visibility of label property
-    @property({ type: String })
-    label : string | undefined = "";
+    @property({ type: String, reflect: true })
+    label : string = "";
+
+    @property() 
+    tags : string[] = [];
 
     constructor() {
         super();
@@ -91,9 +92,7 @@ export class GalleryItem extends LitElement {
     // Render the UI as a function of component state
     render() {
         return html`
-            <img src=${this.src} 
-                 alt=${this.label} 
-                 aria-label=${this.label} />
+            <img src=${this.src} alt=${this.label} data-tag0=${this.tags[0]} />
         `;
     }
 }

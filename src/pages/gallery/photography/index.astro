@@ -5,34 +5,33 @@ import GalleryBar from '../../../components/GalleryBar.astro';
 import GalleryModal from '../../../components/GalleryModal.astro';
 
 import { getLabel } from '../../../scripts/utils';
-import { fetchImg } from '../../../scripts/fetchImg'
-import { type GalleryImageProp, transformImageProps } from '../../../scripts/transformImg'
+import { fetchImg } from '../../../scripts/fetchImg';
+import { transformImg } from '../../../scripts/transformImg';
+import { type PidInterface, type GalleryItemInterface } from "../../../interface";
 
 const clouddir = import.meta.env.PUBLIC_CLOUD_DIR;
 
+// Get the header
 let { pathname } = Astro.url;
 const header = getLabel(pathname);
 
+// Get the public URLs
 const subdir = "travel";
-const tags = ['Japan', 'Taiwan'];
+const prefix = clouddir + '/' + subdir;
+let assets : PidInterface[] | void = await fetchImg(prefix);
 
-// Set img src to public URLs
+// Get the transformed URLs
+let tassets : GalleryItemInterface = { props: [], tags: [] };
 let publicTransform = "t_Thumbnail_360";
-let items : GalleryImageProp[] = []; let numItems = 0;
-let publicIds = await fetchImg(clouddir + '/' + subdir);
 
-console.log(clouddir + '/' + subdir);
-
-if (publicIds) {
-    items = transformImageProps(publicIds, publicTransform);
-    numItems = items.length;
-}
+if (assets) tassets = transformImg(assets, publicTransform);
+const numItems = tassets.props.length;
 ---
 
 <GalleryLayout>
     <div slot="main">
-        <GalleryBar header={header} tags={tags} />
-        <GalleryGrid items={items} />
+        <GalleryBar header={header} tags={tassets.tags} />
+        <GalleryGrid items={tassets.props} />
     </div>
     <div slot="modal">
         <GalleryModal max={numItems} />

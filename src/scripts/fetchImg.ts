@@ -1,14 +1,10 @@
-import { v2 as cloudinary } from 'cloudinary'
-import axios from 'axios'
-import path from 'path'
-import url from 'url'
+import { v2 as cloudinary, type ResourceApiResponse } from 'cloudinary'
+import { type PidInterface } from '../interface';
 
 const cloudName = import.meta.env.PUBLIC_CLOUD_NAME;
-const cloudHostname = import.meta.env.PUBLIC_CLOUD_HOSTNAME;
 const apiKey = import.meta.env.CLOUD_API_KEY;
 const apiSecret = import.meta.env.CLOUD_API_SECRET;
 
-// Return "https" URLs by setting secure to true
 cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
@@ -16,68 +12,73 @@ cloudinary.config({
     secure: true,
 });
 
+interface AssetInterface extends PidInterface {
+    secure_url: string,
+}
+
+//-----------------Helper function to validate URLS--------------------------//
+
+const validateImg = async function(assets : AssetInterface[]) : Promise<AssetInterface[]> {
+
+    let validAssets : AssetInterface[] = [];
+
+    if (assets) {
+
+        let predicate = async(url : string) : Promise<boolean> => {
+            try {
+                let response = await fetch(url, { method: "HEAD"});
+                console.log(response);
+                return response.ok;
+            } catch(err) {
+                return false;
+            }
+        };
+
+        // Boolean mask with predicate
+        await Promise.all(
+            assets.map(async(a) => predicate(a.secure_url)))
+            .then((response : boolean[]) => validAssets = assets.filter((_, idx) => response[idx]))
+            .catch((err) => {});
+    }
+
+    return validAssets;
+
+}
+
 //--------------------------------Fetch Images-------------------------------//
 
-interface AssetInterface {
-    public_id: string,
-    version: number,
-    format: string,
-}
-
-interface ResponseInterface {
-    resources: AssetInterface[],
-}
-
-export const fetchImg = async function(prefix : string) : Promise<string[] | void> {
+export const fetchImg = async function(prefix : string) : Promise<PidInterface[] | void> {
 
     // Make sure that this function is executed once
     var fetchImgExecuted = false;
     if (fetchImgExecuted) return;
 
-    let validAssets : AssetInterface[] = [];
-
     // Fetch the images given some prefix
-    const options = {prefix: prefix, type: 'upload'};
+    const options = {prefix: prefix, type: 'upload', tags: true};
     let assets = await cloudinary.api.resources(options)
-        .then((response : ResponseInterface) => {
+        .then((response : ResourceApiResponse) => {
             return response['resources']?.map(r => {
                 return {public_id: r['public_id'], 
-                        version: r['version'],
-                        format: r['format']};
+                        tags: r['tags'],
+                        secure_url: r['secure_url'],};
             })
         })
         .catch((err) => {})
 
     // Get valid images with status code 200
     if (assets) {
+        let validAssets = await validateImg(assets);
 
-        let urlObj = {
-            protocol: 'https',
-            hostname: cloudHostname,
-            pathname: '',
-        };
-
-        let predicate = async(url : string) : Promise<boolean> => {
-            return axios.head(url)
-                .then((response) => response.status == 200)
-                .catch((err) => false);
-        };
-
-        // Boolean mask with predicate
-        await Promise.all(
-            assets.map(async(a) => {
-                urlObj.pathname = path.join(cloudName, 'v' + a.version.toString(), a.public_id + '.' + a.format);
-                return predicate(url.format(urlObj));
-            }))
-            .then((response : boolean[]) => {
-                validAssets = assets.filter((_, idx) => response[idx]);
-            })
-            .catch((err) => {});
+        // Make sure that this function is executed once
+        fetchImgExecuted = true;
+        
+        // Return the filtered images
+        let res : PidInterface[] = [];
+        if (validAssets) {
+            validAssets.map(a => res.push({public_id: a.public_id, tags: a.tags}));
+        } else {
+            assets.map(a => res.push({public_id: a.public_id, tags: a.tags}));
+        }
+        return res;
     }
-
-    // Make sure that this function is executed once
-    fetchImgExecuted = true;
-    
-    // Return the filtered images
-    return (validAssets) ? validAssets?.map(a => a.public_id) : assets?.map(a => a.public_id);
 }
