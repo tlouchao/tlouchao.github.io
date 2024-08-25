@@ -27,22 +27,25 @@ export class GalleryItem extends LitElement {
         opacity: 0.66;
     }
   `;
-    @property({ type: String })
-    src : string | undefined = "";
-
-    @property({ type: String })
-    label : string | undefined = "";
-
     // reflect property to visible attribute in DOM
     @property({ type: Number, reflect: true })
     index : number | undefined = 0;
+
+    // reflect property to visible attribute in DOM
+    @property({ type: String, reflect: true })
+    src : string | undefined = "";
+
+    // hide visibility of label property
+    @property({ type: String })
+    label : string | undefined = "";
 
     constructor() {
         super();
     }
     
     // Not using connectedCallback, since shadowRoot may not render
-    firstUpdated() {
+    firstUpdated(changed : any) {
+        super.firstUpdated(changed);
         this.addEventListener('click', this.handleClick);
         this.addEventListener('error', this.handleError);
     }

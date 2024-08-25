@@ -12,8 +12,8 @@ const { max } = Astro.props;
 <gallery-modal id="gallery-modal" data-open={false} data-index={0} data-max={max}>
     <div class="gallery-modal-inner">
         <img src="" alt="" />
-        <GalleryModalArrow target="prev"/>
-        <GalleryModalArrow target="next"/>
+        <GalleryModalArrow target="prev" />
+        <GalleryModalArrow target="next" />
         <button class="modal-close"><Icon name="close" /></button>
     </div>
 </gallery-modal>
@@ -30,6 +30,9 @@ class GalleryModal extends HTMLElement {
     index : number = 0;
     max : number = 0;
 
+    grid: HTMLElement | null = null;
+    static observedAttributes = ["data-index"];
+
     constructor() {
         super();
         
@@ -43,21 +46,19 @@ class GalleryModal extends HTMLElement {
         }
     }
 
-    setIndex(index : number) {
-        this.index = index;
-        this.dataset.index = this.index.toString();
-    }
-
     connectedCallback() {
-        
+
+        this.grid = document.querySelector("#gallery-grid");
+
         // modal
         this.addEventListener('click', this.handleModalClick);
         this.addEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
         this.addEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
 
-        // arrow
-        this.prev?.addEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
-        this.next?.addEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
+        // children
+        this.prev?.addEventListener('click', (evt : MouseEvent) => this.handleArrowClick(evt, this));
+        this.next?.addEventListener('click', (evt : MouseEvent) => this.handleArrowClick(evt, this));
+        this.img?.addEventListener('click', (evt : MouseEvent) => this.handleImgClick(evt, this));
     }
 
     disconnectedCallback() {
@@ -67,9 +68,10 @@ class GalleryModal extends HTMLElement {
         this.removeEventListener(ModalEventType.OPEN, this.handleModalOpenClose);
         this.removeEventListener(ModalEventType.CLOSE, this.handleModalOpenClose);
 
-        // arrow
-        this.prev?.removeEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
-        this.next?.removeEventListener('click', (evt : Event) => this.handleArrowClick(evt, this));
+        // children
+        this.prev?.removeEventListener('click', (evt : MouseEvent) => this.handleArrowClick(evt, this));
+        this.next?.removeEventListener('click', (evt : MouseEvent) => this.handleArrowClick(evt, this));
+        this.img?.removeEventListener('click', (evt : MouseEvent) => this.handleImgClick(evt, this));
     }
 
     handleModalClick(evt : Event) {
@@ -79,40 +81,70 @@ class GalleryModal extends HTMLElement {
     
     handleModalOpenClose = (evt : ModalEvent) => {
         if (evt.type == ModalEventType.OPEN) {
-
             if (this.img) {
+                // set the index
+                this.setIndex(evt.index);
+                // update the image source
                 let transform = 't_Wide';
                 let newSrc = evt.src.replace(/t_[a-zA-Z0-9_]+/, transform);
                 this.img.src = newSrc;
                 this.img.alt = evt.label;
-                this.setIndex(evt.index);
             }
             document.body.style.overflowY = 'hidden';
             setDataAttr(this, 'open', true);
 
         } else if (evt.type == ModalEventType.CLOSE) {  
-
-            if (this.img) {
-                this.img.src = "";
-                this.img.alt = "";
-            }
             document.body.style.overflowY = 'visible';
             setDataAttr(this, 'open', false);
-
         }
     }
     
-    handleArrowClick(evt : Event, host : GalleryModal) {
+    handleArrowClick(evt : MouseEvent, host : GalleryModal) {
         evt.stopPropagation();
         if (evt.currentTarget instanceof HTMLElement) {
             let target = evt.currentTarget.dataset.target; // probably rename this
             if (target) {
-                if (target == 'prev') {
-                    let index = host.index - 1;
-                    if (index < 0) index = host.max - 1;
-                    host.setIndex(index);
-                } else if (target == 'next') {
-                    host.setIndex((host.index + 1) % (host.max));
+                let prevCond = target == 'prev';
+                let nextCond = target == 'next';
+                host.updateIndex(prevCond, nextCond);
+            }
+        }
+    }
+
+    handleImgClick(evt : MouseEvent, host : GalleryModal) {
+        evt.stopPropagation();
+        let prevCond = evt.clientX < document.body.clientWidth / 2;
+        let nextCond = evt.clientX >= document.body.clientWidth / 2;
+        host.updateIndex(prevCond, nextCond);
+    }
+
+    setIndex(index : number) {
+        this.index = index;
+        this.dataset.index = this.index.toString();
+    }
+
+    updateIndex(prevCond : boolean, nextCond : boolean) {
+        if (prevCond) {
+            let index = this.index - 1;
+            if (index < 0) index = this.max - 1;
+            this.setIndex(index);
+        } else if (nextCond) {
+            this.setIndex((this.index + 1) % (this.max));
+        }
+        this.updateImageSource();
+    }
+
+    updateImageSource() {
+        if (this.grid) {
+            let item = this.grid.querySelector(`gallery-item[index="${this.index}"]`);
+            if (item && item instanceof HTMLElement) {
+                let src = item.getAttribute("src") ?? "";
+                let label = item.getAttribute("label") ?? "";
+                if (this.img) {
+                    let transform = 't_Wide';
+                    let newSrc = src.replace(/t_[a-zA-Z0-9_]+/, transform);
+                    this.img.src = newSrc;
+                    this.img.alt = label;
                 }
             }
         }
