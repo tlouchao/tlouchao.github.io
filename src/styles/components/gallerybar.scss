@@ -7,7 +7,7 @@ gallery-bar {
     gap: 1em;
     padding: 0.5em;
     padding-bottom: 0.25em;
-    height: 64px;
+    height: var(--gallery-bar-height);
     border: 1px solid transparent;
     background-color: transparent;
 

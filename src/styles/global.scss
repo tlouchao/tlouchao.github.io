@@ -63,13 +63,14 @@
     --color-divider: var(--sand-light);
 
     /* gallery */
+    --gallery-bar-height: 64px;
     --modal-height: 720px;
     --modal-width: 960px;
-    --modal-arrow-width: 72px;
+    --modal-arrow-width: 80px;
     --color-modal: lavender;
-    --color-modal-arrow: var(--grey-warm-dark);
-	--color-modal-hover: white;
-    --color-modal-bg: var(--grey-warm-dark);
+    --color-modal-button: var(--grey-warm-dark);
+	--color-modal-button-hover: white;
+    --color-modal-button-active: var(--redwood-dark);
     --color-gallery-tag: var(--sand-mdrose);
     --color-gallery-tag-hover: var(--redwood-light);
     --color-gallery-tag-current: var(--redwood);
@@ -135,15 +136,14 @@
 	--color-nav-social: magenta;
 	--color-nav-social-hover: lightcyan;
     --color-modal: magenta;
-	--color-modal-hover: lightcyan;
-    --color-modal-bg: black;
+	--color-modal-button-hover: lightcyan;
     --color-divider: var(--grey-cool);
 
     /* gallery */
     --color-modal: magenta;
-    --color-modal-arrow: var(--grey-cool-mddark);
-	--color-modal-hover: lightcyan;
-    --color-modal-bg: black;
+    --color-modal-button: var(--grey-cool-mddark);
+	--color-modal-button-hover: lightcyan;
+    --color-modal-button-active: magenta;
     --color-gallery-tag: var(--grey-cool);
     --color-gallery-tag-hover: darkmagenta;
     --color-gallery-tag-current: darkviolet;

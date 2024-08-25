@@ -30,8 +30,8 @@ class GalleryModal extends HTMLElement {
     index : number = 0;
     max : number = 0;
 
-    grid: HTMLElement | null = null;
-    static observedAttributes = ["data-index"];
+    grid : HTMLElement | null = null;
+    mql : MediaQueryList = window.matchMedia("(min-width: 1280px)");
 
     constructor() {
         super();
@@ -100,14 +100,19 @@ class GalleryModal extends HTMLElement {
     }
     
     handleArrowClick(evt : MouseEvent, host : GalleryModal) {
-        evt.stopPropagation();
-        if (evt.currentTarget instanceof HTMLElement) {
-            let target = evt.currentTarget.dataset.target; // probably rename this
-            if (target) {
-                let prevCond = target == 'prev';
-                let nextCond = target == 'next';
-                host.updateIndex(prevCond, nextCond);
+        if (host.mql.matches) {
+            evt.stopPropagation();
+            if (evt.currentTarget instanceof HTMLElement) {
+                let target = evt.currentTarget.dataset.target;
+                if (target) {
+                    let prevCond = target == 'prev';
+                    let nextCond = target == 'next';
+                    host.updateIndex(prevCond, nextCond);
+                }
             }
+        } else {
+            // this arrow should not be visible.
+            // let the modal element handle the propagated click event.
         }
     }
 
