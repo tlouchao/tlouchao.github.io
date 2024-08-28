@@ -143,13 +143,17 @@ class GalleryModal extends HTMLElement {
         if (this.grid) {
             let item = this.grid.querySelector(`gallery-item[index="${this.index}"]`);
             if (item && item instanceof HTMLElement) {
-                let src = item.getAttribute("src") ?? "";
-                let label = item.getAttribute("label") ?? "";
-                if (this.img) {
+                let gridImg = item.shadowRoot?.querySelector('img');
+                if (gridImg && this.img) {
+
+                    let src = gridImg.src ?? "";
+                    let alt = gridImg.alt ?? "";
+
                     let transform = 't_Wide';
                     let newSrc = src.replace(/t_[a-zA-Z0-9_]+/, transform);
                     this.img.src = newSrc;
-                    this.img.alt = label;
+                    this.img.alt = alt;
+                    
                 }
             }
         }

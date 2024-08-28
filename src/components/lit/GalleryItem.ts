@@ -1,5 +1,7 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
+
 import { ModalEvent, ModalEventType } from '../../scripts/events';
 
 @customElement('gallery-item')
@@ -31,10 +33,10 @@ export class GalleryItem extends LitElement {
     @property({ type: Number, reflect: true })
     index : number = 0;
 
-    @property({ type: String, reflect: true })
+    @property({ type: String })
     src : string = "";
 
-    @property({ type: String, reflect: true })
+    @property({ type: String })
     label : string = "";
 
     @property() 
@@ -91,8 +93,8 @@ export class GalleryItem extends LitElement {
 
     // Render the UI as a function of component state
     render() {
-        return html`
-            <img src=${this.src} alt=${this.label} data-tag0=${this.tags[0]} />
-        `;
+        let dynamicTags : {[k: string]: string} = {};
+        this.tags.map((tag, idx) => dynamicTags[`tag${idx}`]=tag);
+        return html `<img src=${this.src} alt=${this.label} data-tags=${JSON.stringify(dynamicTags)} />`
     }
 }

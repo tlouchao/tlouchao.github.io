@@ -27,7 +27,6 @@ const validateImg = async function(assets : AssetInterface[]) : Promise<AssetInt
         let predicate = async(url : string) : Promise<boolean> => {
             try {
                 let response = await fetch(url, { method: "HEAD"});
-                console.log(response);
                 return response.ok;
             } catch(err) {
                 return false;
