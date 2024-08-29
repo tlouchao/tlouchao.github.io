@@ -28,6 +28,9 @@ class GalleryBar extends HTMLElement {
     grid : HTMLElement | null = null;
     modal : HTMLElement | null = null;
 
+    // debounce CSS position toggle
+    timeouts : Map<string, NodeJS.Timeout> = new Map<string, NodeJS.Timeout>();
+
     constructor() {
         super();
         let btns = this.querySelectorAll<HTMLElement>('gallery-tag');
@@ -62,10 +65,10 @@ class GalleryBar extends HTMLElement {
         const setItemHidden = (item : HTMLElement, hiddenIdx : number) => {
             item.setAttribute('index', hiddenIdx.toString());
             item.classList.remove('visible'); item.classList.add('hidden');
-            
-            // hack to set CSS position after CSS transitions
-            setTimeout(() => item.style.position = 'absolute', 250);
         }
+
+        // reset timer delay
+        this.timeouts.forEach(v => clearTimeout(v));
 
         if (evt.target instanceof HTMLElement && this.grid && this.modal) {
 
@@ -77,7 +80,7 @@ class GalleryBar extends HTMLElement {
             let items = this.grid.querySelectorAll<HTMLElement>('gallery-item');
             let visibleIdx : number = 0;
 
-            // If zero/all filters are set, show all images regardless
+            // if zero/all filters are set, show all images regardless
             const activeFilterSet = new Set(this.activeFilterMap.values());
             if (activeFilterSet.size == 1) {
 
@@ -114,12 +117,15 @@ class GalleryBar extends HTMLElement {
                         if (match) {
                             setItemVisible(item, visibleIdx); visibleIdx++;
                         } else {
+                            // this is a hack since CSS position is not animatable.
+                            // add to list of pending items to remove from document flow via CSS position
                             setItemHidden(item, -1);
+                            this.timeouts.set(img.src, setTimeout(() => { item.style.position = 'absolute'; }, 250));
                         }
                     }
                 })
 
-                // Recalculate number of visible images
+                // recalculate number of visible images
                 if (visibleItemFound) {
                     this.modal.dataset.max = visibleIdx.toString();
                 }

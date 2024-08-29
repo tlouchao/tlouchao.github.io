@@ -39,7 +39,7 @@ let subitems = ffiles.map(file => (
             aria-expanded={isToggle ? "false" : undefined} 
             aria-label={label} 
             aria-current={isCurrent}>
-        <a href={href}>
+        <a href={href} data-astro-prefetch={isToggle ? "false" : "true"}>
             {label}
         </a>
         <Icon name="arrow" />
