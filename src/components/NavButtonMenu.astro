@@ -30,7 +30,7 @@ const ariaLabel = "Navbar Menu Button"
 </style>
 
 <script>
-    import { getDataAttr, setDataAttr, setBoolAttr, setButtonIcon } from '../scripts/utils.js'
+    import { getDataAttr, setDataAttr, setBoolAttr, setButtonIcon } from '../scripts/utils'
     import { ExpandEventType } from '../scripts/events';
 
     class NavButtonMenu extends HTMLElement {
@@ -75,18 +75,23 @@ const ariaLabel = "Navbar Menu Button"
         }
 
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
-            let expand = newValue != undefined;
-            setBoolAttr(this.button, "aria-expanded", expand);
-            setButtonIcon(this.button, this.svg0, this.svg1, expand)
-            this.refreshNavRight(expand);
+            if (name == "data-expand") {
+                let expand = newValue != undefined;
+                setBoolAttr(this.button, "aria-expanded", expand);
+                setButtonIcon(this.button, this.svg0, this.svg1, expand)
+                this.refreshNavRight(expand);
+            }
         }
 
         refreshNavRight = (expand : boolean) => {
             // set the display state of the controlled element
-            if (!this.enableButtonExpand || expand && this.enableButtonExpand) {
-				this.navRightMobile?.setAttribute('style', 'display: flex;');
-            } else {
-                this.navRightMobile?.setAttribute('style', 'display: none;');
+            if (this.navRightMobile) {
+                let navRight = this.navRightMobile;
+                if (!this.enableButtonExpand || expand && this.enableButtonExpand) {
+                    navRight.setAttribute('style', 'display: inherit;');
+                } else {
+                    navRight.setAttribute('style', 'display: none;');
+                }
             }
         }
 
@@ -118,7 +123,7 @@ const ariaLabel = "Navbar Menu Button"
                 let newEvt : Event = (mql.matches) ? 
                                      new Event(ExpandEventType.ENABLE) : 
                                      new Event(ExpandEventType.DISABLE);
-                evtTarget?.dispatchEvent(newEvt);
+                evtTarget.dispatchEvent(newEvt);
             }
         }
     }

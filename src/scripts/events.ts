@@ -17,12 +17,17 @@ export class ModalEvent extends Event {
     }
 }
 
-export enum ExpandEventType {
-    ENABLE = "enableautoexpand",
-    DISABLE = "disableautoexpand",
-}
-
 export enum ModalEventType {
     OPEN = "openmodal",
     CLOSE = "closemodal",
+}
+
+export enum ToggleEventType {
+    ON = "toggleon",
+    OFF = "toggleoff",
+}
+
+export enum ExpandEventType {
+    ENABLE = "enableautoexpand",
+    DISABLE = "disableautoexpand",
 }

@@ -14,7 +14,7 @@ const { items } = Astro.props;
     <div id="gallery-grid">
         {items.map((x, idx) => (
             // @ts-ignore
-            <GalleryItem client:visible src={x.src} label={x.label} tags={x.tags} index={idx} />
+            <GalleryItem client:visible class="hidden" src={x.src} label={x.label} tags={x.tags} index={idx} />
             )
         )}
     </div>

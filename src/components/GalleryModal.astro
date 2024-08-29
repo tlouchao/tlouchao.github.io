@@ -33,17 +33,13 @@ class GalleryModal extends HTMLElement {
     grid : HTMLElement | null = null;
     mql : MediaQueryList = window.matchMedia("(min-width: 1280px)");
 
+    static observedAttributes = ["data-max"];
+
     constructor() {
-        super();
-        
+        super();  
         this.img = this.querySelector('img');
         this.prev = this.querySelector("button[data-target='prev']");
         this.next = this.querySelector("button[data-target='next']")
-
-        let max = this.dataset['max'];
-        if (max && !Number.isNaN(parseInt(max))) {
-            this.max = parseInt(max);
-        }
     }
 
     connectedCallback() {
@@ -72,6 +68,14 @@ class GalleryModal extends HTMLElement {
         this.prev?.removeEventListener('click', (evt : MouseEvent) => this.handleArrowClick(evt, this));
         this.next?.removeEventListener('click', (evt : MouseEvent) => this.handleArrowClick(evt, this));
         this.img?.removeEventListener('click', (evt : MouseEvent) => this.handleImgClick(evt, this));
+    }
+
+    attributeChangedCallback(name : string, oldValue : string, newValue : string) {
+        if (name = 'data-max') {
+            if (!Number.isNaN(parseInt(newValue))) {
+            this.max = parseInt(newValue);
+            }
+        }
     }
 
     handleModalClick(evt : Event) {
@@ -153,7 +157,7 @@ class GalleryModal extends HTMLElement {
                     let newSrc = src.replace(/t_[a-zA-Z0-9_]+/, transform);
                     this.img.src = newSrc;
                     this.img.alt = alt;
-                    
+
                 }
             }
         }

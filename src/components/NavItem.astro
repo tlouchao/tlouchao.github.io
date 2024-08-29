@@ -158,7 +158,9 @@ import { ExpandEventType } from '../scripts/events';
         }
 
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
-            setBoolAttr(this.button, "aria-expanded", newValue != undefined); // CSS controls the display state
+            if (name == "data-expand") {
+                setBoolAttr(this.button, "aria-expanded", newValue != undefined); // CSS controls the display state
+            }
         }
 
         setExpand = (expand : boolean) => {

@@ -7,15 +7,16 @@ const { tag } = Astro.props;
 const label = 'tag-' + tag.toLowerCase();
 ---
 
-<gallery-tag>
+<gallery-tag id={label} data-toggle={false}>
     <span class="sr-only">{label}</span>
-    <button data-toggle={false}>
+    <button aria-label={label}>
         {tag}
     </button>
 </gallery-tag>
 
 <script>
-    import { getDataAttr, setDataAttr, setButtonIcon } from '../scripts/utils.js'
+    import { getDataAttr, setDataAttr, setButtonIcon } from '../scripts/utils'
+    import { ToggleEventType } from '../scripts/events'
     class GalleryTag extends HTMLElement {
 
         button : HTMLButtonElement | null;
@@ -43,8 +44,15 @@ const label = 'tag-' + tag.toLowerCase();
         }
 
         attributeChangedCallback(name : string, oldValue : string | null, newValue : string | null) {
-            let toggle = newValue != undefined;
-            setButtonIcon(this.button, this.svg0, this.svg1, toggle, 'auto')
+            if (name == "data-toggle") {
+
+                let toggle = newValue != undefined;
+                setButtonIcon(this.button, this.svg0, this.svg1, toggle, 'auto')
+                
+                // outer bar element should handle this event
+                let eventType = (toggle) ? ToggleEventType.ON : ToggleEventType.OFF;
+                this.dispatchEvent(new Event(eventType, {bubbles: true}));
+            }
         }
 
         handleClick() {

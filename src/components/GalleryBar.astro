@@ -15,3 +15,119 @@ const { header, tags = [] } = Astro.props;
         {tags.map(t => <GalleryTag tag={t} />)}
     </div>
 </gallery-bar>
+
+<script>
+import { getDataAttr } from "../scripts/utils";
+import { ToggleEventType } from "../scripts/events";
+
+
+class GalleryBar extends HTMLElement {
+    
+    activeFilterMap : Map<string, boolean> = new Map<string, boolean>();
+    filterBtnMap : Map<string, HTMLElement> = new Map<string, HTMLElement>();
+    grid : HTMLElement | null = null;
+    modal : HTMLElement | null = null;
+
+    constructor() {
+        super();
+        let btns = this.querySelectorAll<HTMLElement>('gallery-tag');
+        btns.forEach(btn => {
+            this.activeFilterMap.set(btn.id, false);
+            this.filterBtnMap.set(btn.id, btn);
+        });
+    }
+
+    connectedCallback() {
+        this.grid = document.querySelector("#gallery-grid");
+        this.modal = document.querySelector("#gallery-modal");
+        this.addEventListener(ToggleEventType.ON, this.handleToggle)
+        this.addEventListener(ToggleEventType.OFF, this.handleToggle)
+    }
+
+    disconnectedCallback() {
+        this.removeEventListener(ToggleEventType.ON, this.handleToggle)
+        this.removeEventListener(ToggleEventType.OFF, this.handleToggle)
+    }
+
+    handleToggle(evt : Event) {
+
+        // helper function to show item
+        const setItemVisible = (item : HTMLElement, idx : number) => {
+            item.setAttribute('index', idx.toString());
+            item.classList.remove('hidden'); item.classList.add('visible');
+            item.style.position = 'static';
+        }
+
+        // helper function to hide item
+        const setItemHidden = (item : HTMLElement, hiddenIdx : number) => {
+            item.setAttribute('index', hiddenIdx.toString());
+            item.classList.remove('visible'); item.classList.add('hidden');
+            
+            // hack to set CSS position after CSS transitions
+            setTimeout(() => item.style.position = 'absolute', 250);
+        }
+
+        if (evt.target instanceof HTMLElement && this.grid && this.modal) {
+
+            // update record of toggle button states
+            let btn = evt.target;
+            this.activeFilterMap.set(btn.id, getDataAttr(btn, 'toggle'));
+
+            // get gallery items
+            let items = this.grid.querySelectorAll<HTMLElement>('gallery-item');
+            let visibleIdx : number = 0;
+
+            // If zero/all filters are set, show all images regardless
+            const activeFilterSet = new Set(this.activeFilterMap.values());
+            if (activeFilterSet.size == 1) {
+
+                items.forEach(item => { setItemVisible(item, visibleIdx); visibleIdx++; })
+                this.modal.dataset.max = visibleIdx.toString();
+
+            // otherwise, show a subset of images
+            } else {
+
+                let visibleItemFound = false;
+                items.forEach(item => {
+
+                    let img = item.shadowRoot?.querySelector('img');
+                    if (img && img.dataset.tags) {
+
+                        // parse JSON string stored in "tags" attribute
+                        let match = false;
+                        let tags = img.dataset.tags;
+                        let JSONtags : Object = JSON.parse(tags);
+
+                        for (const v of Object.values(JSONtags)) {
+                            if (this.activeFilterMap.get('tag-' + v)) {
+                                if (!visibleItemFound) {
+                                    visibleItemFound = true;
+                                }
+                                if (!match) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // at least one match found
+                        if (match) {
+                            setItemVisible(item, visibleIdx); visibleIdx++;
+                        } else {
+                            setItemHidden(item, -1);
+                        }
+                    }
+                })
+
+                // Recalculate number of visible images
+                if (visibleItemFound) {
+                    this.modal.dataset.max = visibleIdx.toString();
+                }
+            }
+        }
+    }
+}
+
+customElements.define('gallery-bar', GalleryBar);
+</script>
+

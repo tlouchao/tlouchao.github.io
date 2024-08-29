@@ -1,6 +1,5 @@
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 
 import { ModalEvent, ModalEventType } from '../../scripts/events';
 
@@ -9,7 +8,6 @@ export class GalleryItem extends LitElement {
 
   static styles = css`
     :host {
-        position: relative;
         overflow: hidden;
         width: 100%;
         aspect-ratio: 1/1;
@@ -25,7 +23,7 @@ export class GalleryItem extends LitElement {
     }
         img:hover {
         cursor: pointer;
-        transition: .25s ease;
+        transition: 0.25s ease;
         opacity: 0.66;
     }
   `;
@@ -49,8 +47,15 @@ export class GalleryItem extends LitElement {
     // Not using connectedCallback, since shadowRoot may not render
     firstUpdated(changed : any) {
         super.firstUpdated(changed);
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
         this.addEventListener('click', this.handleClick);
         this.addEventListener('error', this.handleError);
+        this.setAttribute('style', 'background-color: white;');
+        this.classList.remove("hidden");
+        this.classList.add("visible");
     }
 
     disconnectedCallback() {
@@ -62,7 +67,7 @@ export class GalleryItem extends LitElement {
     handleClick() {
         let modal = document.querySelector('#gallery-modal');
         let evt = new ModalEvent(ModalEventType.OPEN, this.src, this.label, this.index);
-        modal?.dispatchEvent(evt);
+        modal?.dispatchEvent(evt); // modal is not a parent, so dispatch event directly
     }
 
     handleError() {
@@ -73,10 +78,7 @@ export class GalleryItem extends LitElement {
     }
 
     handleLoad() {
-        let node : Node = this.getRootNode();
-        if (node instanceof ShadowRoot) {
-            node.host.setAttribute('style', 'background-color: white;');
-        }
+        // nothing
     }
 
     update(changed : any) {
