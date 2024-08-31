@@ -34,10 +34,10 @@ Previously, I have also leaned into traditional sketching and illustration class
 
 I intend to keep links to helpful resources here, with plans to move these resources to a separate webpage after passing some threshold:
 
-- Vectors and Matrices: https://www.3blue1brown.com/topics/linear-algebra
-- Blender Python API: https://docs.blender.org/api/current/info_quickstart.html
-- Python in Maya: https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=__CommandsPython_index_html
-- Game Development in C++ and Unreal Engine: https://courses.tomlooman.com/p/unrealengine-cpp
+- Vectors and Matrices - https://www.3blue1brown.com/topics/linear-algebra
+- Blender Python API - https://docs.blender.org/api/current/info_quickstart.html
+- Python in Maya - https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=__CommandsPython_index_html
+- Game Development in C++ and Unreal Engine - https://courses.tomlooman.com/p/unrealengine-cpp
 
 <br><hr><br>
 
@@ -49,4 +49,3 @@ This website was built using [Astro](https://astro.build/), a Javascript web fra
 * [Nano Stores](https://github.com/nanostores/nanostores) for dark theme persistence
 * [Sass](https://sass-lang.com/) for maintainable CSS stylesheets
 * [Fontsource](https://fontsource.org/) for custom fonts
-        

@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/PageLayout.astro';
-import BlogItem from '../../components/BlogItem.astro';
 
 // Blog Posts
 import { getCollection } from 'astro:content';
@@ -32,12 +31,13 @@ const posts = (await getCollection('blog')).sort(
     section {
         display: flex;
 		flex-direction: column;
-        width: 100%;
+        align-self: center;
+        align-items: center;
+        width: min(100%, 800px);
 		gap: 2rem;
-		margin: 0;
-		padding: 0;
     }
     .blog-item {
+        width: 100%;
         a {
             text-decoration: none;
             line-height: 1.5;

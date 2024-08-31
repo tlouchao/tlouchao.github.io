@@ -36,6 +36,7 @@
 	/* body, header, footer */
 	--color-primary: var(--sand);
 	--color-secondary: var(--coffee);
+    --color-tertiary: var(--sand-light);
     --color-gallery: var(--sand);
     --color-header: var(--sand);
 	--color-footer: lavender;
@@ -43,7 +44,7 @@
 	/* navbar */
 	--nav-button-width: 40px;
 	--nav-mobile-wh: 45px;
-	--nav-desktop-width: 250px;
+	--nav-desktop-width: 240px;
     --nav-padding-right: 0.5em;
 	--color-nav: var(--sand-mdrose);
     --color-nav-light: var(--sand-light);
@@ -62,6 +63,9 @@
 	--color-nav-social-hover: crimson;
     --color-divider: var(--sand-light);
 
+    /* aside */
+    --aside-width: 270px;
+    
     /* gallery */
     --gallery-bar-height: 64px;
     --modal-height: 720px;
@@ -116,6 +120,7 @@
 	/* body, header, footer */
 	--color-primary: var(--grey-cool);
 	--color-secondary: var(--white);
+    --color-tertiary: var(--grey-cool-mddark);
     --color-gallery: var(--grey-cool-dark);
     --color-header: var(--white);
 	--color-footer: var(--violet-dark);
@@ -192,7 +197,7 @@ h1, h2, h3, h4, h4, h5, h6 {
     margin: 0;
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: var(--color-heading);
 }
 a:link, a:visited {

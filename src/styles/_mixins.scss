@@ -58,3 +58,15 @@
     grid-gap: $gap;
     padding: $gap;
 }
+
+/* Credits to Lea Verou's CSS3 Patterns Gallery at https://projects.verou.me/css3patterns/ */
+@mixin background-pattern($color : silver, $bgcolor: white) {
+    background-color: $color;
+    background-image:
+        radial-gradient(circle at 100% 150%, $color 24%, $bgcolor 24%, $bgcolor 28%, $color 28%, $color 36%, $bgcolor 36%, $bgcolor 40%, transparent 40%, transparent),
+        radial-gradient(circle at 0    150%, $color 24%, $bgcolor 24%, $bgcolor 28%, $color 28%, $color 36%, $bgcolor 36%, $bgcolor 40%, transparent 40%, transparent),
+        radial-gradient(circle at 50%  100%, $bgcolor 10%, $color 10%, $color 23%, $bgcolor 23%, $bgcolor 30%, $color 30%, $color 43%, $bgcolor 43%, $bgcolor 50%, $color 50%, $color 63%, $bgcolor 63%, $bgcolor 71%, transparent 71%, transparent),
+        radial-gradient(circle at 100% 50%, $bgcolor 5%, $color 5%, $color 15%, $bgcolor 15%, $bgcolor 20%, $color 20%, $color 29%, $bgcolor 29%, $bgcolor 34%, $color 34%, $color 44%, $bgcolor 44%, $bgcolor 49%, transparent 49%, transparent),
+        radial-gradient(circle at 0    50%, $bgcolor 5%, $color 5%, $color 15%, $bgcolor 15%, $bgcolor 20%, $color 20%, $color 29%, $bgcolor 29%, $bgcolor 34%, $color 34%, $color 44%, $bgcolor 44%, $bgcolor 49%, transparent 49%, transparent);
+    background-size: 100px 50px;
+}
