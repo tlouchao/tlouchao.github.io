@@ -1,10 +1,10 @@
 ---
 interface Props {
-    header: string;
-    headerImgSrc: string;
+    header?: string;
+    headerImgSrc?: string;
 }
 
-const { header, headerImgSrc } = Astro.props;
+const { header = "", headerImgSrc = "" } = Astro.props;
 
 ---
 

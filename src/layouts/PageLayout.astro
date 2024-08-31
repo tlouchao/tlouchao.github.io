@@ -1,4 +1,6 @@
 ---
+import path from 'path';
+
 import BaseHead from '../components/BaseHead.astro';
 import NavBar from '../components/NavBar.astro';
 import Header from '../components/Header.astro';
@@ -8,14 +10,18 @@ import '../styles/layouts/pagelayout.scss'
 
 import { ViewTransitions } from "astro:transitions";
 import { SITE_TITLE, SITE_DESCRIPTION} from '../consts';
+import {type FrontmatterProps} from '../interface';
 
 import '@fontsource/oxygen';
 import '@fontsource/roboto';
 
-const {url, frontmatter, headings} = Astro.props;
-
+const {url, frontmatter, headings} = Astro.props as FrontmatterProps;
 const headerImgSrc = '/freljord_splash.jpg';
-const headingsFiltered = headings?.filter((heading : {depth: number}) => heading.depth <= 3);
+
+let headingsFiltered = headings?.filter((heading) => heading.depth <= 3);
+let headingsUrl : string[] = [];
+
+if (url) headingsFiltered?.map((heading : {slug: string}) => headingsUrl.push(path.join(url, '#' + heading.slug)))
 
 ---
 
@@ -41,8 +47,8 @@ const headingsFiltered = headings?.filter((heading : {depth: number}) => heading
                             <!-- <p id="aside-header">On This Page</p> -->
                             <ul>
                                 {
-                                    headingsFiltered?.map((heading : {text: string, slug: string}) => 
-                                        <a href={url + '/#' + heading.slug}>
+                                    headingsFiltered?.map((heading, idx) => 
+                                        <a href={headingsUrl[idx]}>
                                             <li>{heading.text}</li>
                                         </a>
                                     )

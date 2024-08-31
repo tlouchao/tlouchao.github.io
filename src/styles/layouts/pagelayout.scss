@@ -29,12 +29,14 @@ main {
 }
 aside {
     display: none;
+    position: sticky;
+    top: 2em;
+    height: 50%;
     width: var(--aside-width);
-    height: 100vh;
     font-size: large;
     #aside-content {
         border-left: 3px solid var(--color-nav-label);
-        height: 33%;
+        height: var(--aside-width); // TODO: dynamic height based on number of elems
         padding: 0 1em;
     }
     #aside-header {
@@ -74,20 +76,20 @@ hr {
         padding: 2rem;
     }
 }
-@media (min-width: 1280px) {
+@media (min-width: calc(240px + 1080px + 64px)) { // navbar + main + padding
     body {
         overflow-x: hidden;
     }
     #main-layout-content {
         display: grid;
-        grid-template-columns: calc(1280px - var(--nav-desktop-width)) var(--aside-width);
+        grid-template-columns: var(--main-max-width) var(--aside-width);
         gap: 2rem;
     }
     aside {
         display: block;
     }
 }
-@media (min-width: 1640px) {
+@media (min-width: calc(240px + 1080px + 270px + 96px)) { // navbar + main + aside + gap + padding
     #main-layout {
         align-items: center;
     }
