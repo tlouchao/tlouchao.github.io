@@ -36,7 +36,13 @@ const headerImgSrc = frontmatter?.headerImgSrc ?? '/freljord_splash.jpg';
                 <main>
                     <slot />
                 </main>
-                <aside />
+                <aside>
+                    <ul>
+                        <li>Bio</li>
+                        <li>Resources</li>
+                        <li>About This Website</li>
+                    </ul>
+                </aside>
             </div>
             <Footer />
         </div>
@@ -55,14 +61,14 @@ const headerImgSrc = frontmatter?.headerImgSrc ?? '/freljord_splash.jpg';
     }
     #main-layout {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         flex-grow: 1;
         width: 100%;
     }
     main {
+        box-sizing: border-box;
         padding: 1em;
-        min-width: min(100%, var(--main-min-width));
-        max-width: min(100%, var(--main-max-width));
+        width: min(100%, var(--main-max-width));
     }
     aside {
         display: none;
@@ -78,17 +84,29 @@ const headerImgSrc = frontmatter?.headerImgSrc ?? '/freljord_splash.jpg';
             padding: 2em;
         }
     }
-    @media (min-width: 1440px) {
+    @media (min-width: 1280px) {
+        body {
+            overflow-x: hidden;
+        }
         #main-layout {
             display: grid;
-            grid-template-columns: 3fr 1fr;
-        }
-        main {
-            justify-self: center;
+            grid-template-columns: calc(1280px - var(--nav-desktop-width)) 360px;
         }
         aside {
             display: block;
+            width: 360px;
+            padding: 2em 1em;
             border: 1px solid black;
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+    @media (min-width: 1640px) {
+        #main-layout {
+            justify-content: center;
         }
     }
     
