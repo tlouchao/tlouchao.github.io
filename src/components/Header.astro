@@ -1,16 +1,16 @@
 ---
 interface Props {
     header?: string;
-    headerImgSrc?: string;
+    heroImage?: string;
 }
 
-const { header = "", headerImgSrc = "" } = Astro.props;
+const { header = "", heroImage = "" } = Astro.props;
 
 ---
 
 <header>
     <h1>{header}</h1>
-    <img src={headerImgSrc} aria-label="Header Image"/>
+    <img src={heroImage} alt="Header Image"/>
     <div class="header-gradient" />
 </header>
 

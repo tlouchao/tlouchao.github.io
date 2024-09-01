@@ -1,7 +1,7 @@
 ---
-title: 'Markdown Style Guide'
-description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: 'Jul 01 2024'
+title: 'Creating a Blender Add-On to Export FBX Files to Unreal Engine 5'
+description: 'After learning more about the technical artist role in the games industry, I decided to create a Blender add-on to address a common task - automating the transfer of FBX assets between DCCs (digital content creation) tools. In this case, the add-on imports armatures and meshes from Blender 4.x into Unreal Engine 5 as their skeleton and skeletal mesh equivalents.'
+pubDate: 'Sep 01 2024'
 heroImage: '/blog-placeholder-1.jpg'
 ---
 

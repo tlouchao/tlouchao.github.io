@@ -15,13 +15,21 @@ import {type FrontmatterProps} from '../interface';
 import '@fontsource/oxygen';
 import '@fontsource/roboto';
 
-const {url, frontmatter, headings} = Astro.props as FrontmatterProps;
-const headerImgSrc = '/freljord_splash.jpg';
+const {title, url, frontmatter, headings} = Astro.props as FrontmatterProps;
+const heroImage = '/freljord_splash.jpg';
 
 let headingsFiltered = headings?.filter((heading) => heading.depth <= 3);
 let headingsUrl : string[] = [];
 
-if (url) headingsFiltered?.map((heading : {slug: string}) => headingsUrl.push(path.join(url, '#' + heading.slug)))
+let slugFound = false;
+if (url) headingsFiltered?.map((heading : {slug: string}) => {
+    if (heading.slug) {
+        if (!slugFound) slugFound = true;
+        headingsUrl.push(path.join(url, '#' + heading.slug));
+    } else {
+        headingsUrl.push("");
+    }
+});
 
 ---
 
@@ -36,7 +44,7 @@ if (url) headingsFiltered?.map((heading : {slug: string}) => headingsUrl.push(pa
 	<body class="theme-dark">
         <NavBar />
         <div id="header-layout">
-            <Header header={frontmatter?.title} headerImgSrc={headerImgSrc} />
+            <Header header={title ? title : frontmatter?.title} heroImage={heroImage} />
             <div id="main-layout">
                 <div id="main-layout-content">
                     <main>
@@ -44,14 +52,17 @@ if (url) headingsFiltered?.map((heading : {slug: string}) => headingsUrl.push(pa
                     </main>
                     <aside>
                         <div id="aside-content">
-                            <!-- <p id="aside-header">On This Page</p> -->
                             <ul>
                                 {
-                                    headingsFiltered?.map((heading, idx) => 
-                                        <a href={headingsUrl[idx]}>
+                                    slugFound 
+                                        ? headingsFiltered?.map((heading, idx) => 
+                                            <a href={headingsUrl[idx]}>
+                                                <li>{heading.text}</li>
+                                            </a>
+                                        )
+                                        : headingsFiltered?.map((heading) => 
                                             <li>{heading.text}</li>
-                                        </a>
-                                    )
+                                        )
                                 }
                             </ul>
                         </div>

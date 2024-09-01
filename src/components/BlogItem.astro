@@ -1,0 +1,41 @@
+---
+import "../styles/components/blogitem.scss";
+
+interface Props {
+    post: {
+        slug: string,
+        data: {
+            title: string,
+            description: string,
+            pubDate: Date,
+            heroImage?: string,
+        }
+    }
+}
+
+const { post } = Astro.props;
+const data = post.data;
+---
+<div class="blog-item">
+    <div class="blog-item-date">
+        <time class="day" datetime={data.pubDate.toISOString()}>
+            {
+            data.pubDate.toLocaleDateString('en-us', {day: 'numeric'})
+            }
+        </time>
+        <time class="monthyear" datetime={data.pubDate.toISOString()}>
+            {
+            data.pubDate.toLocaleDateString('en-us', {month: 'short', year: 'numeric'})
+            }
+        </time>
+    </div>
+    <a href={`/blog/${post.slug}/`}>
+        <img src={data.heroImage} alt={data.title} />
+    </a>
+    <div class="blog-item-title">
+        <a class="title" href={`/blog/${post.slug}/`}>
+            <h3>{data.title}</h3>
+        </a>
+        <span class="desc">{data.description}</span>
+    </div>
+</div>

@@ -16,17 +16,18 @@ export interface GalleryItemProps {
     tags: string[],
 };
 
-// explicitly define frontmatter props for Typescript type safety? 
-// this should be auto-generated
+export interface HeadingProps {
+    depth: number,
+    text: string,
+    slug: string,
+}
+
+// explicitly define frontmatter props for Typescript type safety? This should be auto-generated
 export interface FrontmatterProps {
     title?: string,
     url?: string,
     frontmatter?: {
         title : string,
     },
-    headings?: {
-        depth: number,
-        text: string,
-        slug: string,
-    }[],
+    headings?: HeadingProps[],
 };

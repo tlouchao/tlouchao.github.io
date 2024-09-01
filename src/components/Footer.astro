@@ -1,12 +1,18 @@
 ---
 import ButtonSocial from './ButtonSocial.astro';
 
+interface Props {
+  isGallery?: boolean;
+}
+
+let { isGallery = false } = Astro.props;
+
 const today = new Date();
 ---
 
-<footer>
+<footer data-gallery={isGallery}>
 	<div id="built-by">
-		&copy; {today.getFullYear()} Built by <a href="https://github.com/tlouchao" target="_blank">tlouchao</a> | All Rights Reserved.
+		&copy; {today.getFullYear()} Built by <a href="https://github.com/tlouchao" target="_blank">tlouchao</a> | All Rights Reserved
 	</div>
 	<div class="nav-social">
 		<ButtonSocial href="/" name="linkedin" />
@@ -36,4 +42,7 @@ const today = new Date();
 			}
 		}
 	}
+    footer[data-gallery] {
+        background-color : var(--color-footer-gallery);
+    }
 </style>

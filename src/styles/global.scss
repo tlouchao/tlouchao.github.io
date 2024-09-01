@@ -5,15 +5,18 @@
 :root {
 	--black: rgb(15, 18, 20);
 	--black-warm: rgb(20, 18, 15);
-	--white: rgb(255, 250, 245);
+	--white: rgb(245, 250, 255);
 	--white-warm: rgb(245, 240, 235);
+    --white-cool: rgb(215, 220, 230);
 	--grey-cool: rgb(40, 45, 60);
 	--grey-cool-light: rgb(32, 37, 52);
-	--grey-cool-mddark: rgb(25, 30, 45);
-	--grey-cool-dark: rgb(10, 15, 30);
+	--grey-cool-mdlight: rgb(25, 30, 45);
+    --grey-cool-mddark: rgb(15, 20, 35);
+	--grey-cool-dark: rgb(5, 10, 25);
 	--grey-warm: rgb(175, 170, 165);
 	--grey-warm-light: rgb(210, 205, 200);
-	--grey-warm-mddark: rgb(155, 150, 145);
+    --grey-warm-mdlight: rgb(150, 145, 140);
+    --grey-warm-mddark: rgb(100, 95, 90);
 	--grey-warm-dark: rgb(50, 45, 40);
 	--header-box-shadow: 0 2px 8px rgba(15, 18, 25, 25%);
     
@@ -39,7 +42,8 @@
     --color-tertiary: var(--sand-light);
     --color-gallery: var(--sand);
     --color-header: var(--sand);
-	--color-footer: lavender;
+	--color-footer: var(--sand-light);
+    --color-footer-gallery: var(--color-gallery);
 
 	/* navbar */
 	--nav-button-width: 40px;
@@ -66,6 +70,12 @@
     /* aside */
     --aside-width: 270px;
     
+    /* blog */
+    --color-blog-item: var(--white-warm);
+    --color-date: var(--black-warm);
+    --bgcolor-date: var(--sand-mdrose);
+    --bgcolor-description: var(--black-warm);
+
     /* gallery */
     --gallery-bar-height: 64px;
     --modal-height: 720px;
@@ -94,6 +104,8 @@
 	/* main */
 	--main-min-width: 720px;
 	--main-max-width: 1080px;
+    --main-padding-mobile: 1rem;
+    --main-padding-desktop: 3rem;
 
     /* fonts */
 	--font-family: 'Oxygen', 'Roboto', Verdana, sans-serif;
@@ -120,15 +132,16 @@
 	/* body, header, footer */
 	--color-primary: var(--grey-cool);
 	--color-secondary: var(--white);
-    --color-tertiary: var(--grey-cool-mddark);
+    --color-tertiary: var(--grey-cool-mdlight);
     --color-gallery: var(--grey-cool-dark);
     --color-header: var(--white);
-	--color-footer: var(--violet-dark);
+	--color-footer: var(--grey-cool-mdlight);
+    --color-footer-gallery: var(--grey-cool-dark);
 
 	/* navbar */
-	--color-nav: var(--grey-cool-mddark);
-    --color-nav-light: var(--grey-cool-light);
-	--color-nav-right: var(--grey-cool-mddark);
+	--color-nav: var(--grey-cool-mdlight);
+    --color-nav-light: var(--grey-cool-mdlight);
+	--color-nav-right: var(--grey-cool-dark);
 	--color-nav-item: var(--grey-cool-mddark);
 	--color-nav-item-hover: darkmagenta;
 	--color-nav-item-active: darkmagenta;
@@ -145,9 +158,15 @@
 	--color-modal-button-hover: lightcyan;
     --color-divider: var(--grey-cool);
 
+    /* blog */
+    --color-blog-item: var(--grey-cool-mddark);
+    --color-date: var(--white);
+    --bgcolor-date: var(--grey-cool-mdlight);
+    --bgcolor-description: var(--white-cool);
+
     /* gallery */
     --color-modal: magenta;
-    --color-modal-button: var(--grey-cool-mddark);
+    --color-modal-button: var(--grey-cool-mdlight);
 	--color-modal-button-hover: lightcyan;
     --color-modal-button-active: magenta;
     --color-gallery-tag: var(--grey-cool);
@@ -197,7 +216,6 @@ h1, h2, h3, h4, h4, h5, h6 {
 	font-weight: 700;
     margin: 0;
 }
-
 h1, h2, h3 {
     color: var(--color-heading);
 }
@@ -216,7 +234,10 @@ button {
 	color: inherit;
 	background-color: inherit;
 }
-
+hr {
+    width: 100%;
+    line-height: 1;
+}
 .nav-social {
     filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.33));
 }

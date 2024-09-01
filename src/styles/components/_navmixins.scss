@@ -184,8 +184,13 @@
 }
 
 @mixin nav-item-tablet {
+    #button-theme {
+        button {
+            background-color: var(--color-nav);
+        }
+    }
     nav-item {
-        @include nav-button(var(--color-nav-link), var(--color-nav-item));
+        @include nav-button(var(--color-nav-link), var(--color-nav));
         button {
             height: 100%;
             border: 1px solid transparent;
