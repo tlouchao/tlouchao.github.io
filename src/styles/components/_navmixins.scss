@@ -151,6 +151,7 @@
 
 @mixin nav-button($color, $bgcolor) {
     button {
+        height: auto;
         padding: 0.5em;
         @include mixins.border-top-bottom(var(--color-divider));
         @include mixins.set-color-bgcolor($color, $bgcolor);
@@ -256,9 +257,10 @@
     .sub-items {
         position: static;
         top: 0;
+        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
         button {
+            height: auto;
             padding: 0.75em;
         }
-        @include nav-button(var(--color-nav-sub-link), var(--color-nav-sub-item));
     }
 }

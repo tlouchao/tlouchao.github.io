@@ -32,13 +32,13 @@ main {
 aside {
     display: none;
     position: sticky;
-    top: var(--main-padding-desktop);
+    top: 0;
     height: fit-content;
     width: min(100%, var(--aside-width));
     padding: var(--main-padding-desktop) 0;
-    font-size: large;
+    font-size: normal;
     #aside-content {
-        border-left: 3px solid var(--color-nav-label);
+        border-left: 3px solid var(--color-nav-theme);
         height: 100%; // TODO: dynamic height based on number of elems
         padding: 0 1em;
     }
@@ -78,7 +78,7 @@ aside {
         padding: var(--main-padding-desktop) 0;
     }
 }
-@media (min-width: calc(240px + 1080px + 48px + 48px)) { // navbar + main + padding-left + gap
+@media (min-width: calc(240px + 960px + 48px + 48px)) { // navbar + main + padding-left + gap
     body {
         overflow-x: hidden;
     }
@@ -91,7 +91,7 @@ aside {
         display: block;
     }
 }
-@media (min-width: calc(240px + 1080px + 270px + 96px + 48px)) { // navbar + main + aside + padding + gap
+@media (min-width: calc(240px + 960px + 270px + 96px + 48px)) { // navbar + main + aside + padding + gap
     aside {
         width: var(--aside-width);
     }

@@ -4,17 +4,22 @@ interface Props {
     heroImage?: string;
 }
 
-const { header = "", heroImage = "" } = Astro.props;
-
+const { header = "", heroImage} = Astro.props;
+let noImage = heroImage ? false : true;
 ---
 
-<header>
-    <h1>{header}</h1>
-    <img src={heroImage} alt="Header Image"/>
-    <div class="header-gradient" />
+<header data-noimage={noImage} >
+    {!noImage ?? 
+        <h1>{header}</h1>
+        <img src={heroImage} alt="Header Image"/>
+        <div class="header-gradient" />
+    }
 </header>
 
 <style>
+    header[data-noimage] {
+        display: none;
+    }
     header {
         position: relative;
         width: 100%;

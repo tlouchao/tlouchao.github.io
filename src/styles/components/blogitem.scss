@@ -4,9 +4,10 @@
 .blog-item {
     display: grid;
     grid-template-columns: [date] 96px [title-start] auto;
-    grid-template-rows: [title-start] 192px [title-end] 128px;
+    grid-template-rows: [title-start] 192px [title-end] 192px;
     width: 100%;
     background-color: var(--bgcolor-date);
+    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
     .blog-item-date {
         @include mixins.flex-col;
         gap: 0.5em;
@@ -60,11 +61,16 @@
     }
 }
 
+@media only screen and (min-width: 600px) {
+    .blog-item {
+        grid-template-columns: [date] 128px [title-start] auto;
+        grid-template-rows: [title-start] 192px [title-end] 160px;
+    }
+}
+
 @media only screen and (min-width: 992px) {
     .blog-item {
-        display: grid;
         grid-template-columns: [date] 128px [title-start] auto;
         grid-template-rows: [title-start] 192px [title-end] 128px;
-        filter: drop-shadow(8px 8px 8px rgba(0, 0, 0, 0.5));
     }
 }

@@ -20,21 +20,28 @@
 	--grey-warm-dark: rgb(50, 45, 40);
 	--header-box-shadow: 0 2px 8px rgba(15, 18, 25, 25%);
     
-    --turquoise: rgb(64, 230, 220);
-    --turquoise-light: rgb(0, 180, 205);
-    --turquoise-mdlight: rgb(0, 130, 170);
-    --turquoise-mddark: rgb(0, 90, 155);
-    --turquoise-dark: rgb(0, 50, 80);
     --sand: rgb(255, 245, 240);
     --sand-light: rgb(245, 230, 225);
     --sand-mdrose: rgb(235, 215, 210);
     --sand-rose: rgb(225, 200, 195);
     --sand-dark: rgb(215, 185, 180);
-    --redwood: rgb(255, 84, 120);
-    --redwood-light: rgb(240, 48, 84);
-    --redwood-dark: rgb(100, 20, 36);
+    --redviolet: rgb(162, 37, 74);
+    --redviolet-light: rgb(225, 56, 120);
+    --redviolet-mdlight: rgb(140, 24, 84);
+    --redviolet-mddark: rgb(100, 15, 55);
+    --redviolet-dark: rgb(72, 8, 30);
     --coffee: rgb(48, 22, 22);
-    --violet-dark: rgb(50, 20, 80);
+    --palegold: rgb(124, 124, 60);
+    --palegold-light: rgb(180, 180, 108);
+    --palegold-mdlight: rgb(132, 132, 72);
+    --palegold-mddark: rgb(72, 72, 32);
+    --palegold-dark: rgb(37, 37, 12);
+    --orange: rgb(255, 187, 0);
+    --duskorange: rgb(210, 140, 0);
+    --duskgold: rgb(148, 111, 54);
+    --duskgold-light: rgb(255, 220, 172);
+    --duskgold-mdlight: rgb(210, 164, 100);
+    --duskgold-dark: rgb(108, 72, 27);
 
 	/* body, header, footer */
 	--color-primary: var(--sand);
@@ -50,22 +57,25 @@
 	--nav-mobile-wh: 45px;
 	--nav-desktop-width: 240px;
     --nav-padding-right: 0.5em;
-	--color-nav: var(--sand-mdrose);
-    --color-nav-light: var(--sand-light);
-	--color-nav-right: var(--sand-mdrose);
-	--color-nav-item: var(--sand-mdrose);
-	--color-nav-item-hover: var(--redwood-light);
-	--color-nav-item-active: var(--redwood-light);
-	--color-nav-item-current: var(--redwood);
-	--color-nav-link: var(--redwood-dark);
-	--color-nav-link-hover: var(--redwood-dark);
-	--color-nav-link-active: var(--sand-light);
-	--color-nav-link-current: var(--sand-light);
-	--color-nav-sub-item: var(--sand-dark);
-	--color-nav-sub-link: var(--coffee);
-	--color-nav-social: maroon;
-	--color-nav-social-hover: crimson;
-    --color-divider: var(--sand-light);
+	--color-nav: var(--redviolet-mdlight);
+    --color-nav-label: var(--white-warm);
+    --color-nav-light: var(--redviolet-mdlight);
+	--color-nav-right: var(--redviolet-mddark);
+	--color-nav-item: var(--redviolet-mddark);
+	--color-nav-item-hover: var(--duskgold-mdlight);
+	--color-nav-item-active: var(--duskgold-mdlight);
+	--color-nav-item-current: var(--duskgold);
+	--color-nav-link: var(--duskgold-light);
+	--color-nav-link-hover: var(--palegold-dark);
+	--color-nav-link-active: var(--white-warm);
+	--color-nav-link-current: var(--palegold-dark);
+	--color-nav-sub-item: var(--redviolet-dark);
+	--color-nav-sub-link: var(--duskgold-mdlight);
+	--color-nav-social: var(--duskgold);
+	--color-nav-social-hover: var(--duskgold-mdlight);
+    --color-nav-theme: var(--orange);
+    --color-nav-theme-hover: var(--white-warm);
+    --color-divider: var(--redviolet-mdlight);
 
     /* aside */
     --aside-width: 270px;
@@ -84,14 +94,13 @@
     --color-modal: lavender;
     --color-modal-button: var(--grey-warm-dark);
 	--color-modal-button-hover: white;
-    --color-modal-button-active: var(--redwood-dark);
+    --color-modal-button-active: var(--redviolet-mddark);
     --color-gallery-tag: var(--sand-mdrose);
-    --color-gallery-tag-hover: var(--redwood-light);
-    --color-gallery-tag-current: var(--redwood);
+    --color-gallery-tag-hover: var(--palegold-mdlight);
+    --color-gallery-tag-current: var(--palegold-light);
     --color-gallery-tag-border: white;
 
 	/* headings */
-	--color-nav-label: maroon;
     --color-heading: maroon;
 
     /* header */
@@ -103,7 +112,7 @@
 
 	/* main */
 	--main-min-width: 720px;
-	--main-max-width: 1080px;
+	--main-max-width: 960px;
     --main-padding-mobile: 1rem;
     --main-padding-desktop: 3rem;
 
@@ -140,6 +149,7 @@
 
 	/* navbar */
 	--color-nav: var(--grey-cool-mdlight);
+    --color-nav-label: magenta;
     --color-nav-light: var(--grey-cool-mdlight);
 	--color-nav-right: var(--grey-cool-dark);
 	--color-nav-item: var(--grey-cool-mddark);
@@ -156,6 +166,8 @@
 	--color-nav-social-hover: lightcyan;
     --color-modal: magenta;
 	--color-modal-button-hover: lightcyan;
+    --color-nav-theme: magenta;
+    --color-nav-theme-hover: lightcyan;
     --color-divider: var(--grey-cool);
 
     /* blog */
@@ -175,7 +187,6 @@
     --color-gallery-tag-border: white;
 
 	/* headings */
-	--color-nav-label: magenta;
     --color-heading: magenta;
 
 	/* links */
@@ -237,9 +248,6 @@ button {
 hr {
     width: 100%;
     line-height: 1;
-}
-.nav-social {
-    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.33));
 }
 
 .sr-only {

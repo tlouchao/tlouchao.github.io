@@ -7,11 +7,11 @@
         padding: 0.5em 0em; /* top, right, bottom, left */
         width: var(--nav-button-width);
         height: var(--nav-mobile-wh);
-        color: var(--color-nav-social);
+        color: var(--color-nav-theme);
         background-color: inherit;
     }
     button:hover {
-        color: var(--color-nav-social-hover);
+        color: var(--color-nav-theme-hover);
     }
     svg {
         width: 100%;
