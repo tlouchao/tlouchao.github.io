@@ -20,7 +20,7 @@
     background-color: var(--color-primary);
 }
 body {
-    @include mixins.background-pattern(var(--color-tertiary), var(--color-primary));
+    @include mixins.background-waves(var(--color-tertiary), var(--color-primary));
 }
 main {
     @include mixins.flex_col;
@@ -38,7 +38,7 @@ aside {
     padding: var(--main-padding-desktop) 0;
     font-size: normal;
     #aside-content {
-        border-left: 3px solid var(--color-nav-theme);
+        border-left: 3px solid var(--color-aside);
         height: 100%; // TODO: dynamic height based on number of elems
         padding: 0 1em;
     }
@@ -96,6 +96,11 @@ aside {
         width: var(--aside-width);
     }
     #main-layout {
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr [content] auto 3fr;
+        // align-items: center;
+    }
+    #main-layout-content {
+        grid-column-start: content;
     }
 }

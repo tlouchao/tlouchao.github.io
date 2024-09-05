@@ -16,7 +16,7 @@ import '@fontsource/oxygen';
 import '@fontsource/roboto';
 
 const {title, url, frontmatter, headings} = Astro.props as FrontmatterProps;
-const heroImage = '/freljord_splash.jpg';
+const heroImage = '/m83.webp'; // Credits: NASA, Hubble's Messier Catalog
 
 let headingsFiltered = headings?.filter((heading) => heading.depth <= 3);
 let headingsUrl : string[] = [];

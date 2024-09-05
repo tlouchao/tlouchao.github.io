@@ -1,8 +1,8 @@
 ---
 title: 'Creating an FBX Exporter from Blender to Unreal Engine 5'
-description: 'After learning more about the technical artist role in the games industry, I created a Blender add-on to address a common task - automating the transfer of FBX assets between DCCs, or digital content creation tools.'
+description: 'After learning more about the technical artist role in the games industry, I created a Blender add-on in order to address a common task - automating the transfer of FBX assets between DCCs, or digital content creation tools.'
 pubDate: 'Sep 01 2024'
-heroImage: '/blog-placeholder-1.jpg'
+heroImage: '/blender2unreal.png'
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

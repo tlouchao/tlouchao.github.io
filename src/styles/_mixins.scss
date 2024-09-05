@@ -60,7 +60,7 @@
 }
 
 /* Credits to Lea Verou's CSS3 Patterns Gallery at https://projects.verou.me/css3patterns/ */
-@mixin background-pattern($color : silver, $bgcolor: white) {
+@mixin background-waves($color : silver, $bgcolor: white) {
     background-color: $color;
     background-image:
         radial-gradient(circle at 100% 150%, $color 24%, $bgcolor 24%, $bgcolor 28%, $color 28%, $color 36%, $bgcolor 36%, $bgcolor 40%, transparent 40%, transparent),

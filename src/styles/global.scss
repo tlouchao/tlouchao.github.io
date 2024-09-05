@@ -16,7 +16,7 @@
 	--grey-warm: rgb(175, 170, 165);
 	--grey-warm-light: rgb(210, 205, 200);
     --grey-warm-mdlight: rgb(150, 145, 140);
-    --grey-warm-mddark: rgb(100, 95, 90);
+    --grey-warm-mddark: rgb(80, 75, 70);
 	--grey-warm-dark: rgb(50, 45, 40);
 	--header-box-shadow: 0 2px 8px rgba(15, 18, 25, 25%);
     
@@ -30,26 +30,30 @@
     --redviolet-mdlight: rgb(140, 24, 84);
     --redviolet-mddark: rgb(100, 15, 55);
     --redviolet-dark: rgb(72, 8, 30);
-    --coffee: rgb(48, 22, 22);
+    --violet: rgb(82, 14, 56);
+    --violet-mddark: rgb(66, 8, 44);
+    --violet-dark: rgb(42, 3, 27);
+    --coffee: rgb(30, 12, 12);
     --palegold: rgb(124, 124, 60);
     --palegold-light: rgb(180, 180, 108);
     --palegold-mdlight: rgb(132, 132, 72);
     --palegold-mddark: rgb(72, 72, 32);
     --palegold-dark: rgb(37, 37, 12);
     --orange: rgb(255, 187, 0);
-    --duskorange: rgb(210, 140, 0);
+    --orange-light: rgb(255, 227, 70);
+    --orange-dark: rgb(210, 140, 0);
     --duskgold: rgb(148, 111, 54);
     --duskgold-light: rgb(255, 220, 172);
     --duskgold-mdlight: rgb(210, 164, 100);
     --duskgold-dark: rgb(108, 72, 27);
 
 	/* body, header, footer */
-	--color-primary: var(--sand);
-	--color-secondary: var(--coffee);
-    --color-tertiary: var(--sand-light);
+	--color-primary: var(--violet-mddark);
+	--color-secondary: var(--white-warm);
+    --color-tertiary: var(--violet);
     --color-gallery: var(--sand);
     --color-header: var(--sand);
-	--color-footer: var(--sand-light);
+	--color-footer: var(--violet-dark);
     --color-footer-gallery: var(--color-gallery);
 
 	/* navbar */
@@ -65,25 +69,26 @@
 	--color-nav-item-hover: var(--duskgold-mdlight);
 	--color-nav-item-active: var(--duskgold-mdlight);
 	--color-nav-item-current: var(--duskgold);
-	--color-nav-link: var(--duskgold-light);
+	--color-nav-link: var(--white-warm);
 	--color-nav-link-hover: var(--palegold-dark);
 	--color-nav-link-active: var(--white-warm);
 	--color-nav-link-current: var(--palegold-dark);
 	--color-nav-sub-item: var(--redviolet-dark);
-	--color-nav-sub-link: var(--duskgold-mdlight);
+	--color-nav-sub-link: var(--duskgold-light);
 	--color-nav-social: var(--duskgold);
 	--color-nav-social-hover: var(--duskgold-mdlight);
-    --color-nav-theme: var(--orange);
+    --color-nav-theme: var(--duskgold-mdlight);
     --color-nav-theme-hover: var(--white-warm);
     --color-divider: var(--redviolet-mdlight);
 
     /* aside */
     --aside-width: 270px;
+    --color-aside: var(--duskgold-mdlight);
     
     /* blog */
-    --color-blog-item: var(--white-warm);
-    --color-date: var(--black-warm);
-    --bgcolor-date: var(--sand-mdrose);
+    --color-blog-item: var(--coffee);
+    --color-date: var(--duskgold-light);
+    --bgcolor-date: var(--duskgold-dark);
     --bgcolor-description: var(--black-warm);
 
     /* gallery */
@@ -94,21 +99,21 @@
     --color-modal: lavender;
     --color-modal-button: var(--grey-warm-dark);
 	--color-modal-button-hover: white;
-    --color-modal-button-active: var(--redviolet-mddark);
+    --color-modal-button-active: var(--duskgold-dark);
     --color-gallery-tag: var(--sand-mdrose);
-    --color-gallery-tag-hover: var(--palegold-mdlight);
-    --color-gallery-tag-current: var(--palegold-light);
+    --color-gallery-tag-hover: var(--duskgold-mdlight);
+    --color-gallery-tag-current: var(--orange-dark);
     --color-gallery-tag-border: white;
 
 	/* headings */
-    --color-heading: maroon;
+    --color-heading: var(--palegold-light);
 
     /* header */
     --header-height: 150px;
 
 	/* links */
-	--anchor-link: maroon;
-	--anchor-active: crimson;
+	--anchor-link: var(--orange);
+	--anchor-active: var(--orange-light);
 
 	/* main */
 	--main-min-width: 720px;
@@ -169,6 +174,9 @@
     --color-nav-theme: magenta;
     --color-nav-theme-hover: lightcyan;
     --color-divider: var(--grey-cool);
+
+    /* aside */
+    --color-aside: magenta;
 
     /* blog */
     --color-blog-item: var(--grey-cool-mddark);
