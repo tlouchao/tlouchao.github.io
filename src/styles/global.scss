@@ -30,7 +30,7 @@
     --redviolet-mdlight: rgb(140, 24, 84);
     --redviolet-mddark: rgb(100, 15, 55);
     --redviolet-dark: rgb(72, 8, 30);
-    --violet: rgb(82, 14, 56);
+    --violet: rgb(82, 8, 56);
     --violet-mddark: rgb(66, 8, 44);
     --violet-dark: rgb(42, 3, 27);
     --coffee: rgb(30, 12, 12);
@@ -42,6 +42,7 @@
     --orange: rgb(255, 187, 0);
     --orange-light: rgb(255, 227, 70);
     --orange-dark: rgb(210, 140, 0);
+    --redorange: rgb(250, 115, 0);
     --duskgold: rgb(148, 111, 54);
     --duskgold-light: rgb(255, 220, 172);
     --duskgold-mdlight: rgb(210, 164, 100);
@@ -83,12 +84,12 @@
 
     /* aside */
     --aside-width: 270px;
-    --color-aside: var(--duskgold-mdlight);
+    --color-aside: var(--orange);
     
     /* blog */
     --color-blog-item: var(--coffee);
-    --color-date: var(--duskgold-light);
-    --bgcolor-date: var(--duskgold-dark);
+    --color-date: var(--color-secondary);
+    --bgcolor-date: var(--redviolet-mddark);
     --bgcolor-description: var(--black-warm);
 
     /* gallery */
@@ -106,7 +107,7 @@
     --color-gallery-tag-border: white;
 
 	/* headings */
-    --color-heading: var(--palegold-light);
+    --color-heading: var(--redorange);
 
     /* header */
     --header-height: 150px;
@@ -180,7 +181,7 @@
 
     /* blog */
     --color-blog-item: var(--grey-cool-mddark);
-    --color-date: var(--white);
+    --color-date: var(--color-secondary);
     --bgcolor-date: var(--grey-cool-mdlight);
     --bgcolor-description: var(--white-cool);
 

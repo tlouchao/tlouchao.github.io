@@ -1,0 +1,20 @@
+@use 'mixins';
+
+body {
+    @include mixins.background-waves(var(--color-tertiary), var(--color-primary));
+}
+div {
+    @include mixins.flex-col;
+    @include mixins.align-center;
+    justify-content: center;
+    height: 100vh;
+}
+h1 {
+    font-family: var(--nav-label-font-family);
+}
+span {
+    color: var(--color-secondary);
+}
+p {
+    font-size: small;
+}
