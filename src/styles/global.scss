@@ -6,14 +6,16 @@
 	--black: rgb(15, 18, 20);
 	--black-warm: rgb(20, 18, 15);
 	--white: rgb(245, 250, 255);
-	--white-warm: rgb(245, 240, 235);
-    --white-cool: rgb(215, 220, 230);
-	--grey-cool: rgb(40, 45, 60);
-	--grey-cool-light: rgb(32, 37, 52);
-	--grey-cool-mdlight: rgb(25, 30, 45);
-    --grey-cool-mddark: rgb(15, 20, 35);
-	--grey-cool-dark: rgb(5, 10, 25);
-	--grey-warm: rgb(175, 170, 165);
+	--white-warm: rgb(235, 230, 225);
+    --white-cool: rgb(225, 230, 235);
+    --grey-cool-6: rgb(40, 45, 60);
+	--grey-cool-5: rgb(35, 40, 55);
+    --grey-cool-4: rgb(30, 35, 50);
+	--grey-cool-3: rgb(25, 30, 45);
+    --grey-cool-2: rgb(20, 25, 40);
+    --grey-cool-1: rgb(15, 20, 35);
+	--grey-cool-0: rgb(5, 10, 25);
+    --grey-warm: rgb(175, 170, 165);
 	--grey-warm-light: rgb(210, 205, 200);
     --grey-warm-mdlight: rgb(150, 145, 140);
     --grey-warm-mddark: rgb(80, 75, 70);
@@ -56,6 +58,8 @@
     --color-header: var(--sand);
 	--color-footer: var(--violet-dark);
     --color-footer-gallery: var(--color-gallery);
+    --color-selection: var(--black-warm);
+    --bgcolor-selection: yellow;
 
 	/* navbar */
 	--nav-button-width: 40px;
@@ -107,7 +111,7 @@
     --color-gallery-tag-border: white;
 
 	/* headings */
-    --color-heading: var(--redorange);
+    --color-heading: white;
 
     /* header */
     --header-height: 150px;
@@ -131,7 +135,7 @@
 
 	font-family: var(--font-family);
 	font-weight: normal;
-	font-size: --font-size;
+	font-size: var(--font-size);
 
 	/* misc */
 	line-height: 1.5;
@@ -145,20 +149,22 @@
 .theme-dark {
 
 	/* body, header, footer */
-	--color-primary: var(--grey-cool);
-	--color-secondary: var(--white);
-    --color-tertiary: var(--grey-cool-mdlight);
-    --color-gallery: var(--grey-cool-dark);
+	--color-primary: var(--grey-cool-4);
+	--color-secondary: var(--white-cool);
+    --color-tertiary: var(--grey-cool-3);
+    --color-gallery: var(--grey-cool-0);
     --color-header: var(--white);
-	--color-footer: var(--grey-cool-mdlight);
-    --color-footer-gallery: var(--grey-cool-dark);
+	--color-footer: var(--grey-cool-2); // todo - rename grey-cool to l5 l4 l3 d2 d1 d0
+    --color-footer-gallery: var(--grey-cool-0);
+    --color-selection: var(--black);
+    --bgcolor-selection: magenta;
 
 	/* navbar */
-	--color-nav: var(--grey-cool-mdlight);
+	--color-nav: var(--grey-cool-6);
     --color-nav-label: magenta;
-    --color-nav-light: var(--grey-cool-mdlight);
-	--color-nav-right: var(--grey-cool-dark);
-	--color-nav-item: var(--grey-cool-mddark);
+    --color-nav-light: var(--grey-cool-3);
+	--color-nav-right: var(--grey-cool-0);
+	--color-nav-item: var(--grey-cool-1);
 	--color-nav-item-hover: darkmagenta;
 	--color-nav-item-active: darkmagenta;
 	--color-nav-item-current: darkviolet;
@@ -166,7 +172,7 @@
 	--color-nav-link-hover: magenta;
 	--color-nav-link-active: lightcyan;
 	--color-nav-link-current: lightcyan;
-	--color-nav-sub-item: var(--grey-cool-dark);
+	--color-nav-sub-item: var(--grey-cool-0);
 	--color-nav-sub-link: chartreuse;
 	--color-nav-social: magenta;
 	--color-nav-social-hover: lightcyan;
@@ -174,29 +180,34 @@
 	--color-modal-button-hover: lightcyan;
     --color-nav-theme: magenta;
     --color-nav-theme-hover: lightcyan;
-    --color-divider: var(--grey-cool);
+    --color-divider: var(--grey-cool-4);
 
     /* aside */
     --color-aside: magenta;
 
     /* blog */
-    --color-blog-item: var(--grey-cool-mddark);
+    --color-blog-item: var(--grey-cool-1);
     --color-date: var(--color-secondary);
-    --bgcolor-date: var(--grey-cool-mdlight);
+    --bgcolor-date: var(--grey-cool-6);
     --bgcolor-description: var(--white-cool);
+
+    /* table */
+    --color-thead: var(--grey-cool-1);
+    --color-tbody-odd: var(--grey-cool-3);
+    --color-tbody-even: var(--grey-cool-6);
 
     /* gallery */
     --color-modal: magenta;
-    --color-modal-button: var(--grey-cool-mdlight);
+    --color-modal-button: var(--grey-cool-3);
 	--color-modal-button-hover: lightcyan;
     --color-modal-button-active: magenta;
-    --color-gallery-tag: var(--grey-cool);
+    --color-gallery-tag: var(--grey-cool-4);
     --color-gallery-tag-hover: darkmagenta;
     --color-gallery-tag-current: darkviolet;
     --color-gallery-tag-border: white;
 
 	/* headings */
-    --color-heading: magenta;
+    --color-heading: white;
 
 	/* links */
 	--anchor-link: cyan;
@@ -257,6 +268,16 @@ button {
 hr {
     width: 100%;
     line-height: 1;
+    border: 1px solid color-mix(in srgb, var(--color-secondary), transparent 66%);
+}
+pre {
+    background-color: var(--grey-cool-1) !important; // override shiki theme CSS
+}
+
+mark, ::selection {
+    font-weight: bold;
+    color: var(--color-selection);
+    background-color: var(--bgcolor-selection);
 }
 
 .sr-only {

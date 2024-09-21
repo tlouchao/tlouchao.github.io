@@ -1,9 +1,41 @@
 ---
-import Intro from '../components/Intro.astro';
-import Layout from '../layouts/PageLayout.astro';
+import PageLayout from '../layouts/PageLayout.astro';
+import BlogItem from '../components/BlogItem.astro';
+import {type HeadingProps} from '../interface';
+
+// Blog Posts
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const headings : HeadingProps[] = [];
+posts.map(post => headings.push({depth: 1, text: post.data.title, slug: ""}));
+
 ---
 
-<Layout>
-	<Intro />
-</Layout>
-	
+<PageLayout title="Blog" headings={headings}>
+	<section>
+        {
+        posts.map((post) => (<BlogItem post={post} /> ))
+        }
+	</section>
+</PageLayout>
+
+<style>
+    section {
+        display: flex;
+		flex-direction: column;
+        align-items: center;
+        align-self: center;
+		gap: 1rem;
+        width: 100%;
+        height: 100%;
+    }
+    @media only screen and (min-width: 992px) {
+        section {
+            gap: 1.5rem;
+        }
+    }
+</style>

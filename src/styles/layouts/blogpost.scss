@@ -1,0 +1,57 @@
+article {
+    .hero-image img {
+        padding-top: 1em;
+		width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: 0% 50%;
+        border-radius: 0.5em;
+		filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
+	}
+    .title-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        padding-top: 0em;
+        .title {
+            text-align: left;
+            font-size: xx-large;
+            line-height: 1;
+        }
+        .date {
+            font-size: small;
+            font-style: italic;
+	    }
+        hr {
+            border: 1px solid color-mix(in srgb, var(--color-secondary), transparent 66%);
+        }
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        th, td {
+            padding: 0.33em;
+        }
+        thead {
+            background-color: var(--color-thead);
+        }
+        tbody tr:nth-child(odd) {
+            background-color: var(--color-tbody-odd);
+        }
+        tbody tr:nth-child(even) {
+            background-color: var(--color-tbody-even);
+        }
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 992px) {
+    article {
+        .hero-image img {
+            padding-top: 0em;
+        }
+        .title-layout {
+            padding-top: 1em;
+        }
+    }
+}

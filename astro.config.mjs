@@ -12,4 +12,15 @@ export default defineConfig({
         remotePatterns: [{ protocol: "https" }],
         domains: ["cloudinary"],
     },
+    markdown: {
+        shikiConfig: {
+            // Choose from Shiki's built-in themes (or add your own)
+            // https://shiki.style/themes
+            themes: { 
+                light: 'andromeeda',
+                dark: 'andromeeda',
+            },
+            defaultColor: 'dark',
+        }
+    },
 });

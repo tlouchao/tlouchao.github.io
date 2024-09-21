@@ -1,87 +1,84 @@
 @use '../mixins';
 
-/* MOBILE */
 .blog-item {
-    display: grid;
-    grid-template-columns: [title-start] auto;
-    grid-template-rows: [title-start] 192px [title-end] 192px;
-    width: 100%;
-    overflow: hidden;
-    background-color: var(--bgcolor-date);
-    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
-    a {
-        display: inherit;
+    a, a:link, a:visited, a:hover, a:active {
+        text-decoration: none;
+        color: var(--color-secondary);
     }
-    .blog-item-date {
-        @include mixins.flex-col;
-        display: none;
-        position: absolute;
-        gap: 0.5em;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        color: var(--color-date);
-        .day {
-            font-size: 36px;
-        }
-    }
-    img {
-        width: 100%;
-        min-height: 100%;
-        position: relative;
-        transform: translate(-50%, -50%);
-        left: 50%;
-        top: 50%;
-        z-index: -1;
-        grid-row-start: title-start;
-        grid-column-start: title-start;
-    }
-    .blog-item-title {
+    .blog-item-grid {
         display: grid;
-        @include mixins.flex-col;
-        grid-column-start: title-start;
-        grid-row-start: title-end;
+        grid-template-columns: [title-start] auto;
+        grid-template-rows: [title-start] 192px [title-end] 192px;
         width: 100%;
-        height: 100%;
-        padding:1.25em;
-        gap: 0.5em;
-        overflow-y: auto;
-        scrollbar-color: var(--color-tertiary) var(--color-primary);
-        scrollbar-width: thin;
-        box-sizing: border-box;
-        background-color: var(--color-blog-item);
-        .title, .desc {
-            line-height: 1.15; /* very sensitive to font-size */
-            margin: 0;
-        }
-        .desc {
-            line-height: 1.35; /* very sensitive to font-size */
-            font-size: 14px;
-            color: var(--color-description);
-        }
-        a {
+        overflow: hidden;
+        background-color: var(--bgcolor-date);
+        filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.5));
+        .blog-item-date {
+            @include mixins.flex-col;
+            display: none;
+            position: absolute;
+            gap: 0.5em;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
+            color: var(--color-date);
+            .day {
+                font-size: 36px;
+            }
         }
-        a:link, a:visited, a:hover, a:active {
-            color: var(--color-secondary);
+        img {
+            width: 100%;
+            min-height: 100%;
+            position: relative;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            z-index: -1;
+            grid-row-start: title-start;
+            grid-column-start: title-start;
         }
-        h1, h2, h3 {
-            color: var(--color-secondary);
+        .blog-item-title {
+            display: grid;
+            @include mixins.flex-col;
+            grid-column-start: title-start;
+            grid-row-start: title-end;
+            width: 100%;
+            height: 100%;
+            padding:1.25em;
+            gap: 0.5em;
+            scrollbar-color: var(--color-tertiary) var(--color-primary);
+            scrollbar-width: thin;
+            box-sizing: border-box;
+            background-color: var(--color-blog-item);
+            .title, .desc {
+                line-height: 1.15; /* very sensitive to font-size */
+                margin: 0;
+            }
+            .title {
+                text-decoration: underline;
+            }
+            .desc {
+                line-height: 1.35; /* very sensitive to font-size */
+                font-size: 14px;
+                color: var(--color-description);
+            }
         }
     }
 }
 
 @media only screen and (min-width: 600px) {
     .blog-item {
-        grid-template-columns: [date] 96px [title-start] auto;
-        grid-template-rows: [title-start] 192px [title-end] 128px;
-        .blog-item-date {
-            display: flex;
-            position: static;
-        }
-        img {
-            grid-row-start: title-start;
-            grid-column-start: title-start;
+        .blog-item-grid {
+            grid-template-columns: [date] 96px [title-start] auto;
+            grid-template-rows: [title-start] 192px [title-end] 128px;
+            .blog-item-date {
+                display: flex;
+                position: static;
+            }
+            img {
+                grid-row-start: title-start;
+                grid-column-start: title-start;
+            }
         }
     }
 }
