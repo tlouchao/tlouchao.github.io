@@ -1,41 +1,44 @@
 ---
-import Layout from './PageLayout.astro';
+import PageLayout from './PageLayout.astro';
 import '../styles/layouts/blogpost.scss'
 
-// Blog Posts
 import type { CollectionEntry } from 'astro:content';
+import type { HeadingProps } from '../interface';
 
-type Props = CollectionEntry<'blog'>['data'];
+interface Props {
+    url: string;
+    headings: HeadingProps[],
+    frontmatter: CollectionEntry<'blog'>['data'];
+}
 
-const { title, description, pubDate, updatedDate, heroImage, heroImageCaption } = Astro.props;
-// TODO: caption
+const { url, headings, frontmatter } = Astro.props;
 ---
 
-<Layout>
-	<article>
-		<div class="hero-image">
-			{heroImage && <img src={heroImage} alt="" />}
-            <div class="hero-image-caption">
-                <p>{heroImageCaption}</p>
+<PageLayout url={url}, headings={headings}>
+    <article>
+        <div class="hero-image">
+            {frontmatter.heroImage && <img src={frontmatter.heroImage} alt="" />}
+            <div>
+                <p class="caption">{frontmatter.heroImageCaption}</p>
             </div> 
-		</div>
-		<div class="prose">
-			<div class="title-layout">
-				<h1 class="title">{title}</h1>
+        </div>
+        <div class="prose">
+            <div class="title-layout">
+                <h1 class="title">{frontmatter.title}</h1>
                 <div class="date">
-					<time datetime={pubDate.toISOString()}>
+                    <time datetime={frontmatter.pubDate.toISOString()}>
                         {
-                            pubDate.toLocaleDateString('en-us', {
+                            frontmatter.pubDate.toLocaleDateString('en-us', {
                                 month: 'long',
                                 day: 'numeric',
                                 year: 'numeric',
                             })
                         }
                     </time>
-				</div>
-				<hr />
-			</div>
-			<slot />
-		</div>
-	</article>
-</Layout>
+                </div>
+                <hr />
+            </div>
+            <slot />
+        </div>
+    </article>
+</PageLayout>

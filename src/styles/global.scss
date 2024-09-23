@@ -190,11 +190,11 @@
     --color-date: var(--color-secondary);
     --bgcolor-date: var(--grey-cool-6);
     --bgcolor-description: var(--white-cool);
+    --color-code: #ff00aa;
 
     /* table */
     --color-thead: var(--grey-cool-1);
-    --color-tbody-odd: var(--grey-cool-3);
-    --color-tbody-even: var(--grey-cool-6);
+    --color-tbody: var(--grey-cool-3);
 
     /* gallery */
     --color-modal: magenta;
@@ -271,15 +271,34 @@ hr {
     border: 1px solid color-mix(in srgb, var(--color-secondary), transparent 66%);
 }
 pre {
-    background-color: var(--grey-cool-1) !important; // override shiki theme CSS
+    padding: 0.5em;
+    background-color: var(--grey-cool-1) !important; // override shiki theme
 }
-
+code {
+    font-size: 13px;
+}
+p code, li code {
+    color: #D5CED9; // shiki andromeeda theme for code blocks
+    background: var(--grey-cool-1);
+    padding: 0.2em;
+}
+a code {
+    color: inherit;
+}
 mark, ::selection {
     font-weight: bold;
     color: var(--color-selection);
     background-color: var(--bgcolor-selection);
 }
-
+.caption {
+    font-size: x-small;
+    font-style: italic;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+}
+.prose .caption {
+    margin-top: -1em;
+}
 .sr-only {
 	position: absolute !important;
 	height: 1px;

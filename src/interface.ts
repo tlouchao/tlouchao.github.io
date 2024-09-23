@@ -28,6 +28,12 @@ export interface FrontmatterProps {
     url?: string,
     frontmatter?: {
         title : string,
+		description: string,
+		// Transform string to Date object
+		pubDate: Date,
+		updatedDate: Date,
+		heroImage: string,
+        heroImageCaption: string,
     },
     headings?: HeadingProps[],
 };
