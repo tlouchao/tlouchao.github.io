@@ -1,12 +1,12 @@
 ---
 title: 'Tech Art Crash Course (Part I): Creating a Batch Renamer with Qt Designer and PyQt'
-description: 'During my initial foray into the field of technical art, I was tasked with building a batch renaming utility with the help of publicly available tools such as Qt Designer and the PyQt GUI toolkit.'
+description: 'During my initial foray into the field of technical art, I built out a batch renaming utility with the help of publicly available tools such as Qt Designer and the PyQt GUI toolkit.'
 pubDate: 'Sep 01 2024'
 heroImage: '/blog/batchrenametex.png'
 heroImageCaption: 'Credits to Poly Haven for the stone and metal textures used in this image.'
 ---
 From February 2024 to April 2024, I had the chance to take a [technical art course through ELVTR](https://elvtr.com/course/technical-art) - 
-I had heard that the tech art role mostly required a degree of proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. Before taking the course, I was acquainted with Python, but not within the context of games. I was also somewhat familiar with Qt and C++, but had not yet tried PyQt/Qt for Python.
+I had heard that the tech art role required some proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. Before taking the course, I was acquainted with Python, but not within the context of games. I was also somewhat familiar with Qt and C++, but had not yet tried PyQt/Qt for Python.
 
 A few weeks into the coursework (from late February to early March), I was given a task - I was to implement a batch renamer utility, 
 firstly as a command line script, and later on as a [PyQt6 application](https://doc.qt.io/qtforpython-6/) built on top of the previous script.
@@ -22,14 +22,14 @@ At the time of taking the course, the renaming utility was expected to do at lea
 
 1. <a class="anchor-nohover" name="requirement-one">Get a valid filepath to the current folder</a>
 2. <a class="anchor-nohover" name="requirement-two">Get a valid filepath to a target folder</a>   
-3. <a class="anchor-nohover" name="requirement-three">Select file(s) in the current folder</a>          
-4. <a class="anchor-nohover" name="requirement-four">Rename the selected file(s) in place, or copy to the target folder</a>
+3. <a class="anchor-nohover" name="requirement-three">Select files in the current folder</a>          
+4. <a class="anchor-nohover" name="requirement-four">Rename the selected files in place, or copy to the target folder</a>
 
 Optionally, the utility could do one or more of the following steps per operation:
-- Filter selected file(s) by file extension
-- Find and replace one or more substrings in the selected file(s)
-- Add a *prefix* and/or *suffix* to the selected file(s)
-- Enable overwriting the selected file(s), if the file(s) already exists in the target folder
+- Filter selected files by file extension
+- Find and replace one or more substrings in the selected files
+- Add a *prefix* and/or *suffix* to the selected files
+- Enable overwriting the selected files, if the files already exist in the target folder
 
 Given the following test files, the output files were to be free of noise such as the version number of the file, 
 or extraneous words such as "file", "final", et cetera. At the same time, each filename was to be wrapped with short, 
@@ -55,7 +55,7 @@ of a Python class named `Ui_MainWindow` when run:
 ``` shell
 python -m PyQt6.uic.pyuic -x batch_renamer.ui -o batch_renamer_ui.py
 ```
-Then, the output file would be included as a dependency in another Python file, which included some starter code that demonstrated how 
+Then, the output file would be included as a dependency in another Python file, which included some starter code. The example code demonstrated how 
 to connect a button click event to an event handler. Or in Qt terms, connecting a `clicked()` [signal](https://doc.qt.io/qt-6/signalsandslots.html) 
 to a [slot](https://doc.qt.io/qt-6/signalsandslots.html):
 
@@ -77,16 +77,16 @@ class BatchRenamerWindow(QMainWindow, Ui_MainWindow):
     def get_filepath(self):
         self.filepath = QFileDialog().getExistingDirectory()
 ```
-*This* Python file, which contained the class definition for the `BatchRenamerWindow`, would become the primary working file 
+This Python file, which contained the class definition for the `BatchRenamerWindow`, would become the primary working file 
 over those next couple of weeks.
 
 ## Implementation ##
 
-As I was unfamiliar with Python bindings for Qt beforehand, note that the following implementation details will primarily cover discoveries made while working with PyQt.
+Since I was unfamiliar with Python bindings for Qt beforehand, note that the following details will primarily cover discoveries made while working with PyQt.
 
-### The GUI ###
+### UI Design ###
 
-After prototyping in Qt Designer and converting my Qt Designer `.ui` file to `.py`, I eventually landed on the GUI shown below, which I styled with a <a href="https://doc.qt.io/qt-6/stylesheet.html" target="_blank">Qt Style Sheet</a> (credits to <a href="https://qss-stock.devsecstudio.com/templates.php" target="_blank">DevSec Studio</a>):
+After prototyping in Qt Designer and converting my `.ui` file to `.py`, I eventually landed on the GUI shown below, which I styled with a <a href="https://doc.qt.io/qt-6/stylesheet.html" target="_blank">Qt Style Sheet</a> (credits to <a href="https://qss-stock.devsecstudio.com/templates.php" target="_blank">DevSec Studio</a>):
 
 <br/>
 <div class=div-center>
@@ -94,12 +94,11 @@ After prototyping in Qt Designer and converting my Qt Designer `.ui` file to `.p
 </div>
 <br/>
 
-Though I had a GUI to interface with, I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets in order 
-to meet the requirements, which leads into: 
+Though I had a GUI (which was nice to look at, but had zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets at minimum, which leads into: 
 
-### The Requirements ###
+### Requirements ###
 
-After perusing the PyQt documentation, I extended the starter code and leaned on the <a href="https://docs.python.org/3/library/os.html" target="_blank">`os`</a> module for file navigation, <a href="https://docs.python.org/3/library/os.path.html#module-os.path" target="_blank">`os.path`</a> for pathname manipulation, and <a href="https://docs.python.org/3/library/re.html#module-re" target="_blank">`re`</a> for regular expression matching in tandem with built-in string methods such as <a href="https://docs.python.org/3/library/stdtypes.html#str.replace" target="_blank">`str.replace()`</a>. 
+After familiarizing myself with the project files, I extended the starter code and leaned on the <a href="https://docs.python.org/3/library/os.html" target="_blank">`os`</a> module for file navigation, <a href="https://docs.python.org/3/library/os.path.html#module-os.path" target="_blank">`os.path`</a> for pathname manipulation, and <a href="https://docs.python.org/3/library/re.html#module-re" target="_blank">`re`</a> for regular expression matching in tandem with built-in string methods such as <a href="https://docs.python.org/3/library/stdtypes.html#str.replace" target="_blank">`str.replace()`</a>. 
 
 To fulfill the <a href="#requirement-one">first</a> requirement, I reused the `browseBtn` in the starter code, 
 which I mapped to a <a href="https://doc.qt.io/qt-6/qpushbutton.html" target="_blank">`QPushButton`</a> to react to the 
@@ -111,70 +110,55 @@ self.lineEditFilepath.setText(self.filepath)
 ```
 
 Since the second requirement was similar to that of the first, I set the second filepath to the target folder
-with some reused code and swapped variable names:
+with some reused code and variable names:
 
 ``` python
 self.lineEditNewFolder.setText(self.new_folder)
 ```
 
-To fulfill the <a href="#requirement-three">third</a> requirement and to check for valid filepaths, I looked at the `QLineEdit` 
+To fulfill the <a href="#requirement-three">third</a> requirement - and to validate incoming filepaths - I looked at the `QLineEdit` 
 widget which held the value for the current folder. I wanted to handle the resulting value after clicking on the `browseBtn`, *and* 
-the resulting value after editing the contents of the `QLineEdit` widget directly. I accomplished this by doing the following:
+the resulting value after editing the contents of the `QLineEdit` widget directly. I decided to:
 
-1. Refactored the `get_filepath()` function; moved the set functionality to a function called `set_filepath()`
-2. Moved the remaining code from `get_filepath()` to a new function called `btn_filepath()`
-3. Connected the `QLineEdit` widget's <a href="https://doc.qt.io/qt-6/qlineedit.html#editingFinished" target="_blank">`editingFinished()`</a> signal 
-  to a new function called `le_filepath()`
+1. Rename `get_filepath()` to `get_filepath_from_filedialog()`
+2. Connect the `QLineEdit` widget's <a href="https://doc.qt.io/qt-6/qlineedit.html#editingFinished" target="_blank">`editingFinished()`</a> signal 
+   to a new slot named `get_filepath_from_lineedit()`
+3. React whenever `self.filepath` was set to some value, with a new function named `check_filepath()`
+
+Steps 2 and 3 are shown below:
 
 ``` python
-self.lineEditFilepath.editingFinished.connect(self.le_filepath)
+self.lineEditFilepath.editingFinished.connect(self.get_filepath_from_lineedit())
+```
+``` python
+def get_filepath_from_lineedit(self):
+    self.filepath = self.lineEditFilepath.text()
+    self.check_filepath()
 ```
 
-Both the `btn_filepath()` and `le_filepath()` functions would pass their value to `set_filepath()`:
+The `check_filepath()` function was responsible for checking if a recently set `filepath` pointed to a valid directory - if so, 
+then the pending list of selected files (displayed via <a href="https://doc.qt.io/qt-6/qlistwidget.html" target="_blank">`QListWidget`</a>) 
+would update with the help of <a href="https://docs.python.org/3/library/os.html#os.walk" target="_blank">`os.walk()`</a>:
 
 ``` python
-def btn_filepath(self):
-    """
-    Open a file dialog and browse to an existing directory
-    """
-    filepath = QFileDialog().getExistingDirectory()
-    self.set_filepath(filepath)
-
-def le_filepath(self):
-    """
-    Get the lineEdit text for filepath
-    """
-    filepath = self.lineEditFilepath.text()
-    self.set_filepath(filepath)
-```
-
-Then, the `set_filepath()` function would be responsible for validating and setting the input; it would check if the incoming `filepath` 
-stood for some valid directory. If so, the pending list of selected files (displayed via <a href="https://doc.qt.io/qt-6/qlistwidget.html" target="_blank">`QListWidget`</a>) would be updated with the help of <a href="https://docs.python.org/3/library/os.html#os.walk" target="_blank">`os.walk()`</a>:
-
-``` python
-def set_filepath(self, filepath):
-    """
-    Set the lineEdit text for filepath
-    """
-    if os.path.isdir(filepath):
-        self.filepath = filepath
-        self.lineEditFilepath.setText(filepath)
+def check_filepath(self):
+    if os.path.isdir(self.filepath):
         self.update_list()
     else:
         # Log error to console
 
 def update_list(self):
-        """
-        Clear listwidget
-        read files in filepath with os.walk
-        Add files as new items
-        """
-        self.listWidget.clear()
-        for root, dirs, files in os.walk(self.filepath):
-            self.listWidget.addItems(files)
+    """
+    Clear listwidget
+    read files in filepath with os.walk
+    Add files as new items
+    """
+    self.listWidget.clear()
+    for root, dirs, files in os.walk(self.filepath):
+        self.listWidget.addItems(files)
 ```
 <p class="caption">*I reused this code for the other widget which held the value for the target folder, 
-once the results were as expected.</p>
+once the results were in.</p>
 
 To fulfill the <a href="#requirement-four">fourth</a> and final requirement, I included two 
 <a href="https://doc.qt.io/qt-6/qradiobutton.html" target="_blank">`QRadioButtons`</a> which were set to exclusive
@@ -198,16 +182,20 @@ def set_copy_files(self):
 
 ### Optional Features ###
 
-As for the optional steps per rename operation, I relied on `os.path.splitext()` to get the extension per filename, in order to
-filter on the `.png`, `.ma`, and `.txt` file extensions. 
+As for the optional steps per operation, I relied on `os.path.splitext()` to get the extension per filename, in order to
+filter on the `.png`, `.ma`, and `.txt` file extensions.
 
 For the string replacement operation, I retrieved a space-delimited string from the corresponding `QLineEdit` widget, and 
-called upon <a href="https://docs.python.org/3/library/stdtypes.html#str.split" target="_blank">`str.split()`</a> to get an array of
+called <a href="https://docs.python.org/3/library/stdtypes.html#str.split" target="_blank">`str.split()`</a> to get an array of
 strings to search for. I retrieved *one* replacement string from the other, corresponding `QLineEdit` widget, and looped over
 the individual array elements in order to <a href="https://docs.python.org/3/library/stdtypes.html#str.replace" target="_blank">`str.replace()`</a>
 with the new string:
 ``` python
 def find_and_replace(files)
+    """
+    If the filename contains the string to find, 
+    then replace with the new string
+    """
     new_files = []
     for file in files:
         fname, ext = os.path.splitext(file)
@@ -217,14 +205,26 @@ def find_and_replace(files)
         new_file = fname + ext
         new_files.append(new_file)
 
-    return files
+    return new_files
 ```
-For adding a prefix and/or suffix to each filename, a `os.path.splitext()` followed by a few string concatenations did the job.
+For adding a prefix and/or suffix to each filename, an `os.path.splitext()` followed by a few string concatenations were sufficient.
 
 For the overwrite flag, I found that the `toggled()` and `isChecked()` methods could be called upon a 
 <a href="https://doc.qt.io/qt-6/qcheckbox.html" target="_blank">`QCheckBox`</a> in addition to the `QRadioButton`, as 
 both Qt widgets inherit from the same <a href="https://doc.qt.io/qt-6/qabstractbutton.html" target="_blank">`QAbstractButton`</a> class. 
-So, I came up with some setup/event handler code that was similar to the pre-existing code for the rename/copy flag. 
+So, I repurposed the existing code around the rename/copy flag, for reuse with the overwrite flag:
+
+``` python
+self.checkBoxOverwrite.toggled.connect(self.set_overwrite)
+```
+
+``` python
+def set_overwrite(self):
+    """
+    Set the overwrite flag
+    """
+    self.overwrite = self.checkBoxOverwrite.isChecked()
+```
 
 ### QoL Improvements ###
 
@@ -235,18 +235,20 @@ I had time to add some additional behavior to the batch renamer utility to make 
 - Support comma-delimited strings to search for and replace
 - Collapse consecutive whitepace in the strings to search for, into a single space
  
-The consecutive whitespace issue was addressed with <a href="https://docs.python.org/3/library/re.html#re.sub" target="_blank">`re.sub()`</a> and a regular expression which described one or more whitespace characters, or `\s+`, as the pattern to match.
+The consecutive whitespace issue was addressed with <a href="https://docs.python.org/3/library/re.html#re.sub" target="_blank">`re.sub()`</a> and a 
+regular expression for one or more whitespace characters, or `\s+`, as the pattern to match.
 
-In time, I also gave the tool the ability to log color-coded <mark style="background: yellow;">errors</mark> and <mark style="background: yellow;">warnings</mark> 
-in the dialog itself, in addition to logging to standard out. It even had the ability to log <mark style="background: lime;">successes</mark>, 
-such as error-free rename operations.
+I also had time to grant the ability to log color-coded <mark style="background: yellow;">errors</mark> and <mark style="background: yellow;">warnings</mark> - as well as
+<mark style="background: lime;">successful</mark> rename operations - in the dialog itself, in addition to logging to standard out.
 
-One issue did arise while I worked on the logger behavior - I noticed that clicking, and then removing focus from a `QLineEdit` widget, would still trigger a warning.
-I decided to address this case by detecting if the `QLineEdit` contents had changed between focus events. 
+However, one issue did arise as I worked on the logger behavior. I noticed that clicking, and then removing focus from a `QLineEdit` widget (by clicking
+outside of the edit field) would trigger an unexpected warning. I decided to address this by detecting if the `QLineEdit` contents had changed between focus events, with 
+help from the <a href="https://doc.qt.io/qt-6/qlineedit.html#textChanged" target="_blank">`textChanged()`</a> signal.
 
-For example, in order to log an <mark style="background: yellow;">invalid filepath</mark> warning under the condition that the current folder value had changed, 
-I connected the corresponding `QLineEdit` widget's <a href="https://doc.qt.io/qt-6/qlineedit.html#textChanged" target="_blank">`textChanged()`</a> signal 
-to a slot, which updated an internal boolean flag to keep track of changes:
+I eventually reworked the logger so that an <mark style="background: yellow;">"invalid filepath"</mark> warning would print 
+under the condition that the current folder had changed. I connected the corresponding `QLineEdit` widget's 
+<a href="https://doc.qt.io/qt-6/qlineedit.html#textChanged" target="_blank">`textChanged()`</a> signal to a new slot 
+which I named `update_filepath()`. Upon activation, the `update_filepath()` function would update an internal boolean flag to keep track of changes:
 
 ``` python
 self.lineEditFilepath.textChanged.connect(self.update_filepath)
@@ -260,4 +262,6 @@ def update_filepath(self):
     if not self.filepath_changed:
         self.filepath_changed = True
 ```
+
+## Demo ##
 

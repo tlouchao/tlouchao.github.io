@@ -1,12 +1,12 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import BlogItem from '../../components/BlogItem.astro';
-import {type HeadingProps} from '../../interface';
 
-// Blog Posts
-import { getCollection } from 'astro:content';
+import {type CollectionEntry, getCollection } from 'astro:content';
+import { type HeadingProps } from '../../interface';
 
-const posts = (await getCollection('blog')).sort(
+let posts = await getCollection('blog') as CollectionEntry<'blog'>[];
+posts = posts.sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 

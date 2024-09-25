@@ -21,6 +21,6 @@ export default defineConfig({
                 dark: 'andromeeda',
             },
             defaultColor: 'dark',
-        }
+        },
     },
 });

@@ -4,94 +4,48 @@ description: 'I wrapped up my initial venture into the field of technical art, b
 pubDate: 'Sep 22 2024'
 heroImage: '/blog/blender2unreal.png'
 ---
-From February 2024 to April 2024, I had the chance to take a [technical art course through ELVTR](https://elvtr.com/course/technical-art) - 
-I had heard that the role mostly required a degree of proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. 
-Before taking the course, I had some understanding of Unreal Engine 5, having downloaded the free game engine and starter assets. 
-I was also familar with Python, but not within the context of games.
+This blog post covers the remainder of the work that I completed for a [technical art course](https://elvtr.com/course/technical-art)
+which ran from February 2024 to April 2024. The previous blog post can be found [here](/blog/batch-renamer).
 
-A few weeks into the coursework (from late February to early March), I was tasked with implementing a batch renamer script, 
-firstly as a command line script, and later on as a [PyQt6 application](https://doc.qt.io/qtforpython-6/) built on top of the previous script. 
+As the final weeks approached, I was given the choice of building either a Python tool, an Unreal Engine 5 
+[Blueprint](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprints-visual-scripting-in-unreal-engine), a shader/material, 
+or a [Niagara](https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine) visual effect. 
+Since I was familiar with Python, and since I had *just* brushed the surface of Unreal Engine 5 and was not yet fully comfortable within the game engine, 
+I opted for the Python tool in order to implement features on time within a short window.
 
-The assignment was meant to introduce a common pain point with game asset management - renaming the hundreds or even thousands 
-of texture exports, 3D renders and configuration files located in some repository, somewhere. A batch renaming utility such as this one would
-be called upon to target files with typos, or files which need to be moved to some other directory, or files in need of an update to a 
-new naming convention ... and so on.
+Within the Python subcategory, I was given some suggestions as to what to build - a skin-weight transfer tool, a file log parser, an FBX settings manager, et cetera.
+I decided to go with the last suggestion, since I knew of the FBX file format from tinkering with 3D computer graphics software such as [Blender](https://www.blender.org/) 
+and [Autodesk Maya](https://www.autodesk.com/products/maya/overview). And since I was better acquainted with Blender at that moment in time, I decided to focus on
+building an <b>FBX exporter</b> specifically for Blender, with Unreal Engine 5 as the target application.
 
-## The Dilemma ##
+## Problem Space ##
 
-At the time of taking the course, the batch renaming utility needed to complete the following steps per rename operation:
+The *most important* issue that I wanted to sort out between Blender and Unreal Engine 5, pertained to the unit system mismatch between the two 3D software packages.
+The implicit unit of measurement in Blender is one *meter*, assuming that the unit system is set to either "None" or "Metric" under the project's [Scene Properties](https://docs.blender.org/manual/en/latest/scene_layout/scene/properties.html) tab. On the other hand, the default unit of measurement in Unreal Engine 5 is one *centimeter*, assuming that the unit system is set to the metric system:
 
-1. Validate if the current filepath points to a folder
-2. Select file(s) in the current folder
-3. Construct a path from the *current* folder and a path to a *destination* folder             
-4. Rename the selected file(s) in place, or copy to the destination folder
+| Software | Unit System | Unit
+|---|---|---|
+|Blender | None (Blender Units), Metric | Meter
+|Unreal Engine 5 | Metric | Centimeter
 
-Optionally, the utility could do one or more of the following steps per operation:
-- Filter file(s) to select by file extension
-- Find and replace one or more substrings in the selected file(s)
-- Add a *prefix* and/or *suffix* to the selected file(s)
-- Enable overwriting the selected file(s), if the file(s) already exists in the destination folder
+<br/>
 
-Given the following test files, the output files were to be free of noise such as the version number of the file, 
-or words such as "file", "final", et cetera. At the same time, the keywords per filename were to be surrounded by short, 
-descriptive text which indicated the type of game asset each file was:
-| Initial Filenames | Target |
-|---|---|
-|texture_metal_diffuse.png | T_metal_C.png
-|grass_file_01.ma          | M_grass.ma
-|hello_world.txt           | NOTE_hello_world_TEMP.txt
+## Proposal ##
 
-For example, a diffuse map could have a <mark>"T"</mark> prefix instead of "texture", and a <mark>"C"</mark> suffix instead of "diffuse" or "color".
+I was granted the go-ahead to build my exporter, under the conditions that it was similar in complexity to the [batch renamer](/blog/batch-renamer) 
+from the previous assignment, and that it had a GUI with three or more meaningful options for the user to select from.
 
-### Tools and Boilerplate ###
-[Qt Designer](https://build-system.fman.io/qt-designer-download) was introduced early on as a free tool for quickly 
-prototyping graphical user interfaces with widgets from the Qt GUI framework (though the possibility remained open to 
-build out a GUI from scratch). 
+At the very minimum, I knew that the exporter had to:
 
-A batch file was also provided to help with translating the `.ui` file produced from Qt Designer to an equivalent `.py` file - 
-the batch file made use of the `pyuic.py` module included with `PyQt6`, and would map Qt widget names directly to the data attributes 
-of a Python class named `Ui_MainWindow` when run:
+1. Get a valid filepath for a target folder - ideally, this would be the top-level folder, or the `Content\` folder of an Unreal project
+2. Apply a scale transform to the output FBX - ideally, this would be a <b>0.01</b> multiplier to handle the conversion from meters to centimeters 
+3. Finally, export and place the FBX in the target folder
 
-``` shell
-python -m PyQt6.uic.pyuic -x batch_renamer.ui -o batch_renamer_ui.py
-```
-The output file was to be included as a dependency in another Python file, which included starter code demonstrating how 
-to connect a button click event to an event handler. Or in Qt terms, connecting a `clicked()` [signal](https://doc.qt.io/qt-6/signalsandslots.html) 
-to a [slot](https://doc.qt.io/qt-6/signalsandslots.html):
+I proposed that the exporter should provide the following options:
 
-``` python
-# Our Qt Designer GUI as a Python class
-from batch_renamer_ui import Ui_MainWindow
-
-class BatchRenamerWindow(QMainWindow, Ui_MainWindow):
-
-    def __init__(self):
-            # UI Setup
-            super().__init__()
-            super(Ui_MainWindow).__init__()
-            self.setupUi(self)
-            # Connect button to a function
-            # Make sure that there is a Qt Widget named "browseBtn"
-            self.browseBtn.clicked.connect(self.get_filepath)
-
-    def get_filepath(self):
-        self.filepath = QFileDialog().getExistingDirectory()
-
-```
-
-## Implementation ##
-I came to appreciate the drag-and-drop functionality provided by Qt Designer while using it to prototype my graphical user interface.
-I extended the starter code and included a QSS stylesheet (with credits to [DevSec Studio stylesheets](https://qss-stock.devsecstudio.com/templates.php)).
-
-### Syntax
-
-```markdown
-![Alt text](./full/or/relative/path/of/image)
-```
-
-### Output
-
-![blog placeholder](/husky.jpg)
+- Allow the user to set the output filename. If not specified, then the name should be set to the `.blend` filename by default 
+- todo
+- todo
 
 ## Blockquotes
 
