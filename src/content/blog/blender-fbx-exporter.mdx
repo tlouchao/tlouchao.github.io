@@ -1,0 +1,237 @@
+---
+title: 'Tech Art Crash Course (Part II): Creating an FBX Exporter from Blender to Unreal Engine 5'
+description: 'I wrapped up my initial venture into the field of technical art, by creating a Blender add-on to address a common task - automating the transfer of FBX assets between DCCs, or digital content creation applications.'
+pubDate: 'Sep 22 2024'
+heroImage: '/blog/blender2unreal.png'
+---
+import BlogImage from '../../components/BlogImage.astro';
+
+This blog post covers the remainder of the work that I completed for a [technical art course](https://elvtr.com/course/technical-art)
+which ran from February 2024 to April 2024. The previous blog post can be found [here](/blog/batch-renamer).
+
+As the final weeks approached, I was given the choice of building either a Python tool, an Unreal Engine 5 
+[Blueprint](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprints-visual-scripting-in-unreal-engine), a shader/material, 
+or a [Niagara](https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine) visual effect. Since I was previously familiar with Python, and because I was not yet fully comfortable with Unreal Engine 5, 
+I opted for the Python tool. 
+
+After narrowing down my choices, I was given some suggestions as to what to build, such as an LOD generator, or a file log parser, or an FBX settings manager ... and the list goes on. I went with the last suggestion, since I knew of the FBX file format from working with software such as Blender and Autodesk Maya. 
+
+Since I was more comfortable with Blender at that point in time, I decided to shift my focus to the former - I was to build an **FBX exporter** specifically for Blender (in the form of a [Blender Add-on](https://docs.blender.org/manual/en/4.1/editors/preferences/addons.html)), with Unreal Engine 5 as the destination for an outbound FBX.
+
+## Unit Conversion ##
+
+One important issue that I wanted to sort out was the <u>unit system mismatch</u> between Blender and Unreal Engine 5. In order for the **FBX exporter** to be effective, I decided that it needed to handle this mismatch, first and foremost, by converting between units in addition to exporting the actual FBX.
+
+I checked the Blender [documentation](https://docs.blender.org/manual/en/latest/scene_layout/scene/properties.html) and recalled that the default unit of measurement in Blender was one *meter*, assuming that the unit system setting under the Scene Properties tab is set to either "None" or "Metric". I also recalled that the default unit of measurement in Unreal Engine 5 was one *centimeter*, assuming that Unreal's unit system settings remain unchanged (should be metric):
+
+| Software | Unit System | Length Unit
+|---|---|---|
+|Blender | None (Blender Units), Metric | Meter (apply a **0.01** multiplier to convert to centimeters) 
+|Unreal Engine 5 | Metric | Centimeter (the target unit)
+
+<br/>
+
+## The Proposal ##
+
+I was granted the go-ahead to build my exporter, under the conditions that it was similar in complexity to the [batch renamer](/blog/batch-renamer) from the previous assignment, and that it had a GUI with three or more meaningful options for the user to select from.
+
+### Requirements ###
+
+It was imperative that the exporter could do at least the following:
+
+1. Get a valid filepath for a target folder - to start things out, this could be the `Content\` folder of an Unreal project
+2. Append the name of the FBX file to the filepath
+3. Apply a scale transform to the output FBX - this should be a **0.01** multiplier to handle conversion from meters to centimeters 
+4. Finally, export and place the FBX in the target folder
+
+### Meaningful Options ###
+
+I anticipated that a Blender user would want the option to:
+
+1. Set a custom FBX filename. If not specified, then the filename should be the `.blend` filename by default
+2. Set a valid subdirectory to send the FBX file to. For example, send a `Suzanne.fbx` to the `Mesh\` subdirectory under the `Content\` folder
+3. Set the scale transform modifier to a number other than **0.01**
+4. Select a **mesh** to export, or an **armature** (for animation), or **both**. I landed on these object types after viewing the default settings in Blender's built-in exporter - I realized that I needed to box in the list of possible types to just the "Mesh" and/or "Armature" to keep things simple:
+
+<BlogImage src={"/blog/preset_objs.png"} alt={"Operator Presets With Selected Object Types"} width={600} caption={"Exporting the Mesh and Armature, instead of all object types."} /><br/>
+
+## Research
+
+Having never written a Blender Add-on before, I did a YouTube search on the topic. I found these videos to be hugely
+useful for initial setup:
+
+- Create a Custom Blender Panel with Less Than 50 Lines of Python Code: https://www.youtube.com/watch?v=Qyy_6N3JV3k
+- How to Install Addons in Blender: https://www.youtube.com/watch?v=vYh1qh9y1MI
+
+I also searched for existing FBX exporters from Blender to Unreal, as I was fairly sure that the unit system mismatch had already been addressed by many - however, I still wanted to meet the specific requirements that I set for my own project. I was able to find a pre-existing Blender Add-on named **Send to Unreal** (maintained by Epic Games):
+
+<ul style="list-style-type: none;">
+    <li>Send To Unreal: <a href="https://epicgamesext.github.io/BlenderTools/send2ue">https://epicgamesext.github.io/BlenderTools/send2ue</a></li>
+</ul>
+
+### Add-on Installation ###
+
+I made sure that I could install and uninstall a Blender Add-on by following along with the first video (credits to Victor Stepanov). I downloaded the
+example [`simple_custom_panel.py`](https://github.com/CGArtPython/blender_plus_python/blob/main/add-ons/simple_custom_panel/simple_custom_panel.py) file,
+navigated to Blender's `Edit > Preferences`, clicked on the `Add-ons` and `Community` tabs, and clicked on the "Install" button to open a file browser and find 
+the Python file. 
+
+Then, I installed and activated the example Add-on:
+
+<BlogImage src={"/blog/simple_custom_panel.png"} alt={"Simple Custom Panel"} width={800} /><br/>
+
+## Week 1: Project Setup ##
+
+I set up the necessary code to add a panel to the sidebar of the 3D viewport:
+``` python
+import bpy
+
+class VIEW3D_PT_FBXExporter(bpy.types.Panel):
+    
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"  
+    bl_label = "Export FBX to Unreal Engine 5"  
+    
+    def draw(self, context):
+        row = self.layout.row()
+        row.operator("mesh.primitive_cube_add", text="Add Cube")
+
+def register():
+    bpy.utils.register_class(VIEW3D_PT_FBXExporter)
+
+
+def unregister():
+    bpy.utils.unregister_class(VIEW3D_PT_FBXExporter)
+
+
+if __name__ == "__main__":
+    register()
+```
+
+### Learning the Blender Python API ###
+
+Todo
+
+## Code Blocks
+
+<br />
+
+### Syntax
+
+we can use 3 backticks ``` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntax, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
+
+````markdown
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Example HTML5 Document</title>
+  </head>
+  <body>
+    <p>Test</p>
+  </body>
+</html>
+```
+````
+
+### Output
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Example HTML5 Document</title>
+  </head>
+  <body>
+    <p>Test</p>
+  </body>
+</html>
+```
+
+## List Types
+
+### Ordered List
+
+#### Syntax
+
+```markdown
+1. First item
+2. Second item
+3. Third item
+```
+
+#### Output
+
+1. First item
+2. Second item
+3. Third item
+
+### Unordered List
+
+#### Syntax
+
+```markdown
+- List item
+- Another item
+- And another item
+```
+
+#### Output
+
+- List item
+- Another item
+- And another item
+
+### Nested list
+
+#### Syntax
+
+```markdown
+- Fruit
+  - Apple
+  - Orange
+  - Banana
+- Dairy
+  - Milk
+  - Cheese
+```
+
+#### Output
+
+- Fruit
+  - Apple
+  - Orange
+  - Banana
+- Dairy
+  - Milk
+  - Cheese
+
+## Other Elements — abbr, sub, sup, kbd, mark
+
+### Syntax
+
+```markdown
+<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
+
+H<sub>2</sub>O
+
+X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
+
+Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
+
+Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+```
+
+### Output
+
+<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
+
+H<sub>2</sub>O
+
+X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
+
+Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
+
+Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.

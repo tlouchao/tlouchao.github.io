@@ -1,0 +1,36 @@
+---
+interface Props {
+    src: string;
+    alt: string;
+    caption?: string;
+    width?: number;
+    height?: number;
+}
+
+const {src, alt, caption, width, height} = Astro.props;
+---
+<div class="blog-image">
+    <div class="blog-image-content" style={width ? "max-width: " + width + "px;" : ""}>
+        <img src={src} alt={alt}/>
+        {caption && <p>*{caption}</p>}
+    </div>
+</div>
+
+<style>
+    .blog-image {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+    .blog-image-content {
+        display: inherit;
+        flex-direction: inherit;
+    }
+    p {
+        font-size: x-small;
+        font-style: italic;
+        margin-block-start: 0.5em;
+        margin-block-end: 0.5em;
+    }
+</style>

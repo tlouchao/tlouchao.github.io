@@ -29,41 +29,7 @@ main {
     width: min(100%, var(--main-max-width));
     padding: var(--main-padding-mobile) 0;
 }
-aside {
-    display: none;
-    position: sticky;
-    top: 0;
-    height: fit-content;
-    width: min(100%, var(--aside-width));
-    padding: var(--main-padding-desktop) 0;
-    font-size: normal;
-    #aside-content {
-        border-left: 3px solid var(--color-aside);
-        height: 100%; // TODO: dynamic height based on number of elems
-        padding: 0 1em;
-    }
-    #aside-header {
-        font-weight: bold;
-        padding: 0.5em 0;
-    }
-    a {
-        text-decoration: none;
-    }
-    a:link, a:visited {
-        color: var(--color-secondary);
-    }
-    a:hover, a:active {
-        color: var(--anchor-active);
-    }
-    ul {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75em;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-}
+
 /* DESKTOP */
 @media (min-width: 992px) {
     #header-layout {
@@ -87,14 +53,8 @@ aside {
         grid-template-columns: var(--main-max-width) auto;
         gap: var(--main-padding-desktop);
     }
-    aside {
-        display: block;
-    }
 }
 @media (min-width: calc(240px + 960px + 270px + 96px + 48px)) { // navbar + main + aside + padding + gap
-    aside {
-        width: var(--aside-width);
-    }
     #main-layout {
         display: grid;
         grid-template-columns: 1fr [content] auto 3fr;

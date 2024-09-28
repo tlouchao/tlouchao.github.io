@@ -12,7 +12,7 @@ let {href, name}  = Astro.props;
 <button-social>
     <span class="sr-only">{name + " Button"}</span>
     <button>
-        <a href={href}>
+        <a href={href ? href : '#'}>
             <Icon name={name} />
         </a>
     </button>

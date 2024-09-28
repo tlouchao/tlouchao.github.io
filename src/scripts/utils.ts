@@ -57,3 +57,7 @@ export const setButtonIcon = function(button: HTMLButtonElement | null,
         svg1?.setAttribute('style', styleHidden)
     }
 }
+
+// ------------- Get the heading depth for Table of Contents -------------- //
+
+// TODO

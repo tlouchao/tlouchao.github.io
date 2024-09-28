@@ -5,6 +5,8 @@ pubDate: 'Sep 01 2024'
 heroImage: '/blog/batchrenametex.png'
 heroImageCaption: 'Credits to Poly Haven for the stone and metal textures used in this image.'
 ---
+import BlogImage from '../../components/BlogImage.astro';
+
 From February 2024 to April 2024, I had the chance to take a [technical art course through ELVTR](https://elvtr.com/course/technical-art) - 
 I had heard that the tech art role required some proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. Before taking the course, I was acquainted with Python, but not within the context of games. I was also somewhat familiar with Qt and C++, but had not yet tried PyQt/Qt for Python.
 
@@ -88,11 +90,7 @@ Since I was unfamiliar with Python bindings for Qt beforehand, note that the fol
 
 After prototyping in Qt Designer and converting my `.ui` file to `.py`, I eventually landed on the GUI shown below, which I styled with a <a href="https://doc.qt.io/qt-6/stylesheet.html" target="_blank">Qt Style Sheet</a> (credits to <a href="https://qss-stock.devsecstudio.com/templates.php" target="_blank">DevSec Studio</a>):
 
-<br/>
-<div class=div-center>
-    <img src="/batch_renamer_screenshot.png" alt="Batch Renamer Utility Screenshot" style="max-width: 720px;"/>
-</div>
-<br/>
+<BlogImage src={"/blog/batch_renamer_screenshot.png"} alt={"Batch Renamer Utility GUI"} width={720}/>
 
 Though I had a GUI (which was nice to look at, but had zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets at minimum, which leads into: 
 
@@ -238,16 +236,14 @@ I had time to add some additional behavior to the batch renamer utility to make 
 The consecutive whitespace issue was addressed with <a href="https://docs.python.org/3/library/re.html#re.sub" target="_blank">`re.sub()`</a> and a 
 regular expression for one or more whitespace characters, or `\s+`, as the pattern to match.
 
-I also had time to grant the ability to log color-coded <mark style="background: yellow;">errors</mark> and <mark style="background: yellow;">warnings</mark> - as well as
-<mark style="background: lime;">successful</mark> rename operations - in the dialog itself, in addition to logging to standard out.
+I also had time to grant the ability to log color-coded <mark style="background: yellow;">errors</mark> and <mark style="background: yellow;">warnings</mark>, as well as <mark style="background: lime;">successful</mark> rename operations, in the dialog itself in addition to logging to standard out.
 
 However, one issue did arise as I worked on the logger behavior. I noticed that clicking, and then removing focus from a `QLineEdit` widget (by clicking
 outside of the edit field) would trigger an unexpected warning. I decided to address this by detecting if the `QLineEdit` contents had changed between focus events, with 
 help from the <a href="https://doc.qt.io/qt-6/qlineedit.html#textChanged" target="_blank">`textChanged()`</a> signal.
 
 I eventually reworked the logger so that an <mark style="background: yellow;">"invalid filepath"</mark> warning would print 
-under the condition that the current folder had changed. I connected the corresponding `QLineEdit` widget's 
-<a href="https://doc.qt.io/qt-6/qlineedit.html#textChanged" target="_blank">`textChanged()`</a> signal to a new slot 
+under the condition that the current folder had changed. I connected the corresponding `QLineEdit` widget's `textChanged()` signal to a new slot 
 which I named `update_filepath()`. Upon activation, the `update_filepath()` function would update an internal boolean flag to keep track of changes:
 
 ``` python

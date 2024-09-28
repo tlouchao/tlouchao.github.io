@@ -1,0 +1,29 @@
+---
+import {type HeadingProps} from '../interface';
+import '../styles/components/tableofcontents.scss'
+
+interface Props {
+    slugFound: boolean;
+    headings?: HeadingProps[];
+    headingsUrl?: string[];
+}
+
+const { slugFound, headings, headingsUrl } = Astro.props;
+---
+<aside>
+    <div id="aside-content">
+        <ul>
+            {
+                slugFound 
+                    ? headings?.map((heading, idx) => 
+                        <a href={headingsUrl?.[idx]}>
+                            <li>{heading.text}</li>
+                        </a>
+                    )
+                    : headings?.map((heading) => 
+                        <li>{heading.text}</li>
+                    )
+            }
+        </ul>
+    </div>
+</aside>
