@@ -1,28 +1,46 @@
 ---
+import path from 'path';
+
 import {type HeadingProps} from '../interface';
 import '../styles/components/tableofcontents.scss'
 
 interface Props {
-    slugFound: boolean;
-    headings?: HeadingProps[];
-    headingsUrl?: string[];
+    url : string;
+    headings: HeadingProps[];
 }
 
-const { slugFound, headings, headingsUrl } = Astro.props;
+const { url, headings } = Astro.props;
+
+let headingsFiltered = headings.filter(heading => heading.depth <= 3);
+let headingsUrl : string[] = [];
+
+const depths = headingsFiltered.map(heading => heading.depth)
+const minDepth = depths.reduce((minAcc, curr) => {
+    let ret = (curr < minAcc) ? curr : minAcc; 
+    return ret; 
+}, Infinity);
+
+headingsFiltered = headingsFiltered.map(heading => {
+    heading.text = '    '.repeat(heading.depth - minDepth) + heading.text; 
+    return heading; 
+});
+
+let slugFound = false;
+if (url) headingsFiltered?.map((heading : {slug: string}) => {
+    if (heading.slug) if (!slugFound) slugFound = true;
+    if (heading.slug) headingsUrl.push(path.join(url, '#' + heading.slug)); else headingsUrl.push("#");
+});
+
 ---
 <aside>
     <div id="aside-content">
         <ul>
             {
-                slugFound 
-                    ? headings?.map((heading, idx) => 
-                        <a href={headingsUrl?.[idx]}>
+                headingsFiltered.map((heading, idx) => 
+                        <a href={headingsUrl[idx]}>
                             <li>{heading.text}</li>
                         </a>
-                    )
-                    : headings?.map((heading) => 
-                        <li>{heading.text}</li>
-                    )
+                )
             }
         </ul>
     </div>

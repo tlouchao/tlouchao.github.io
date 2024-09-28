@@ -1,6 +1,4 @@
 ---
-import path from 'path';
-
 import BaseHead from '../components/BaseHead.astro';
 import NavBar from '../components/NavBar.astro';
 import Header from '../components/Header.astro';
@@ -17,18 +15,6 @@ import '@fontsource/oxygen';
 import '@fontsource/roboto';
 
 const {title, url, frontmatter, headings} = Astro.props as FrontmatterProps;
-const heroImage = '/m83.webp'; // Credits: NASA, Hubble's Messier Catalog
-
-let headingsFiltered = headings?.filter((heading) => heading.depth <= 3);
-let headingsUrl : string[] = [];
-
-let slugFound = false;
-if (url) headingsFiltered?.map((heading : {slug: string}) => {
-    if (heading.slug) {
-        if (!slugFound) slugFound = true;
-    }
-    if (heading.slug) headingsUrl.push(path.join(url, '#' + heading.slug)); else headingsUrl.push("");
-});
 
 ---
 
@@ -38,7 +24,8 @@ if (url) headingsFiltered?.map((heading : {slug: string}) => {
         <ViewTransitions />
 		<BaseHead title={SITE_TITLE}
                   description={SITE_DESCRIPTION}  
-                  transition:persist/>
+                  transition:persist
+        />
 	</head>
 	<body class="theme-dark">
         <NavBar />
@@ -49,9 +36,7 @@ if (url) headingsFiltered?.map((heading : {slug: string}) => {
                     <main>
                         <slot />
                     </main>
-                    <TableOfContents slugFound={slugFound}, 
-                                     headings={headingsFiltered}, 
-                                     headingsUrl={headingsUrl} />
+                    <TableOfContents url={url ? url : ""}, headings={headings ? headings : []} />
                 </div>
             </div>
             <Footer />

@@ -32,6 +32,9 @@ aside {
         margin: 0;
         padding: 0;
     }
+    li {
+        white-space: pre-wrap;
+    }
 }
 
 @media (min-width: calc(240px + 960px + 48px + 48px)) { // navbar + main + padding-left + gap

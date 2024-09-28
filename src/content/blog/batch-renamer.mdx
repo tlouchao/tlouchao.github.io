@@ -2,7 +2,7 @@
 title: 'Tech Art Crash Course (Part I): Creating a Batch Renamer with Qt Designer and PyQt'
 description: 'During my initial foray into the field of technical art, I built out a batch renaming utility with the help of publicly available tools such as Qt Designer and the PyQt GUI toolkit.'
 pubDate: 'Sep 01 2024'
-heroImage: '/blog/batchrenametex.png'
+heroImage: '/blog/2024_09_01_batch_renamer/batchrenametex.png'
 heroImageCaption: 'Credits to Poly Haven for the stone and metal textures used in this image.'
 ---
 import BlogImage from '../../components/BlogImage.astro';
@@ -90,7 +90,7 @@ Since I was unfamiliar with Python bindings for Qt beforehand, note that the fol
 
 After prototyping in Qt Designer and converting my `.ui` file to `.py`, I eventually landed on the GUI shown below, which I styled with a <a href="https://doc.qt.io/qt-6/stylesheet.html" target="_blank">Qt Style Sheet</a> (credits to <a href="https://qss-stock.devsecstudio.com/templates.php" target="_blank">DevSec Studio</a>):
 
-<BlogImage src={"/blog/batch_renamer_screenshot.png"} alt={"Batch Renamer Utility GUI"} width={720}/>
+<BlogImage src={"/blog/2024_09_01_batch_renamer/batch_renamer_gui.png"} alt={"Batch Renamer Utility GUI"} width={720}/>
 
 Though I had a GUI (which was nice to look at, but had zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets at minimum, which leads into: 
 
@@ -239,10 +239,10 @@ regular expression for one or more whitespace characters, or `\s+`, as the patte
 I also had time to grant the ability to log color-coded <mark style="background: yellow;">errors</mark> and <mark style="background: yellow;">warnings</mark>, as well as <mark style="background: lime;">successful</mark> rename operations, in the dialog itself in addition to logging to standard out.
 
 However, one issue did arise as I worked on the logger behavior. I noticed that clicking, and then removing focus from a `QLineEdit` widget (by clicking
-outside of the edit field) would trigger an unexpected warning. I decided to address this by detecting if the `QLineEdit` contents had changed between focus events, with 
+outside of the edit field) would trigger an extra warning. I decided to address this by detecting if the `QLineEdit` contents had changed between focus events, with 
 help from the <a href="https://doc.qt.io/qt-6/qlineedit.html#textChanged" target="_blank">`textChanged()`</a> signal.
 
-I eventually reworked the logger so that an <mark style="background: yellow;">"invalid filepath"</mark> warning would print 
+I reworked the logger so that an <mark style="background: yellow;">"invalid filepath"</mark> warning would print 
 under the condition that the current folder had changed. I connected the corresponding `QLineEdit` widget's `textChanged()` signal to a new slot 
 which I named `update_filepath()`. Upon activation, the `update_filepath()` function would update an internal boolean flag to keep track of changes:
 
