@@ -5,7 +5,7 @@ title: About
 
 ## Bio ##
 
-I am currently working as a software engineer, and have formerly worked as a freelance animator. I've built out this website to document [personal projects](/blog), to bookmark useful [resources](#resources), and to carve out an online space for future notes. I've always been partial to the art side of things, and have been looking for avenues to incorporate a technical background, as well as the visual arts, into a single profession. 
+I am currently working as a software engineer, and have formerly worked as a freelance animator - I've built out this website to document [personal projects](/blog), to bookmark useful [resources](#resources), and to carve out an online space for future notes. Having always been partial to the art side of things, I've been looking for avenues to incorporate a technical background, as well as the visual arts, into my next undertaking.
 
 ## Coursework ##
 
@@ -14,7 +14,7 @@ As of recent, I've ventured into the 3D asset creation / tech art space in the w
 - **Become a Technical Artist** with Aaron Aikman ([ELVTR](https://elvtr.com/))
 - **Introduction to 3D with Maya** with James Schaub ([Gnomon School of Visual Effects](https://www.gnomon.edu/))
  
-I've also leaned into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in the Los Angeles vicinity, as well as at [CG Master Academy](https://www.cgmasteracademy.com/):
+I've also leaned into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in the Los Angeles vicinity, as well as at CG Master Academy:
 
 #### CDA ####
 - **Dynamic Sketching** with Peter Han

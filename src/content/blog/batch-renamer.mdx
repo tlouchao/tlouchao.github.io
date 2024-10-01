@@ -48,7 +48,7 @@ For example, the filename for a diffuse map could have a <mark>"T"</mark> prefix
 ## Tools and Boilerplate ##
 [Qt Designer](https://build-system.fman.io/qt-designer-download) was introduced early on as a free tool for quickly 
 prototyping graphical user interfaces with widgets from the Qt GUI framework (though the possibility remained open to 
-build out a GUI from scratch). 
+build a GUI from scratch). 
 
 A batch file was also provided to help with translating the XML based `.ui` file produced from Qt Designer to an equivalent `.py` file - 
 the batch file made use of the `pyuic.py` module included with `PyQt6`, and would map Qt widget names directly to the data attributes 
@@ -92,7 +92,7 @@ After prototyping in Qt Designer and converting my `.ui` file to `.py`, I eventu
 
 <BlogImage src={"/blog/2024_09_01_batch_renamer/batch_renamer_gui.png"} alt={"Batch Renamer Utility GUI"} width={720}/>
 
-Though I had a GUI (which was nice to look at, but had zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets at minimum, which leads into: 
+Though I had a GUI (nice to look at, but with zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets at minimum, which leads into: 
 
 ### Requirements ###
 

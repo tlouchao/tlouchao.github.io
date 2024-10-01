@@ -277,6 +277,9 @@ pre {
 code {
     font-size: 13px;
 }
+p, li {
+    word-wrap: break-word;
+}
 p code, li code {
     color: #D5CED9; // shiki andromeeda theme for code blocks
     background: var(--grey-cool-1);
