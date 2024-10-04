@@ -1,6 +1,6 @@
 ---
 title: 'Tech Art Crash Course (Part II): Creating an FBX Exporter from Blender to Unreal Engine 5'
-description: 'I wrapped up my initial venture into the field of technical art, by creating a Blender add-on to address a common task - automating the transfer of FBX assets between DCCs, a.k.a. digital content creation tools.'
+description: 'I wrapped up my initial venture into the field of technical art, by creating a Blender add-on to address a common task - automating the transfer of FBX assets between DCCs, or digital content creation tools.'
 pubDate: 'Sep 22 2024'
 heroImage: '/blog/2024_09_22_blender_fbx_exporter/blender2unreal.png'
 ---
@@ -9,24 +9,26 @@ import BlogImage from '../../components/BlogImage.astro';
 This blog post covers the remainder of the work that I completed for a [technical art course](https://elvtr.com/course/technical-art)
 which ran from February 2024 to April 2024. The previous blog post can be found [here](/blog/batch-renamer).
 
+## Background ##
+
 As the final weeks approached, I was given the choice of building either a Python tool, an Unreal Engine 5 
 [Blueprint](https://dev.epicgames.com/documentation/en-us/unreal-engine/blueprints-visual-scripting-in-unreal-engine), a shader/material, 
 or a [Niagara](https://dev.epicgames.com/documentation/en-us/unreal-engine/creating-visual-effects-in-niagara-for-unreal-engine) visual effect. Since I was previously familiar with Python, and because I was not yet fully comfortable with Unreal Engine 5, 
 I decided to opt for the Python tool. 
 
 After narrowing down my choices, I was given some suggestions as to what to build, such as an LOD generator, 
-or a file log parser, or an FBX settings manager ... and the list goes on. I went with the last suggestion, 
+or a file log parser, or an FBX settings manager ... and the list goes on. I went with the final suggestion, 
 since I knew of the FBX file format from working with software such as Blender and Autodesk Maya. 
 
 Since I was more comfortable with Blender at that point in time, I decided to shift my focus to the former - 
 I was to build an **FBX exporter** specifically for Blender (in the form of a [Blender Add-on](https://docs.blender.org/manual/en/4.1/editors/preferences/addons.html)), 
 with Unreal Engine 5 as the destination for an outbound FBX.
 
-## Unit Conversion ##
+### Unit Conversion ###
 
 One important issue that I wanted to sort out was the <u>unit system mismatch</u> between Blender and Unreal Engine 5. 
-In order for the **FBX exporter** to be effective, I decided that it should handle this mismatch by converting 
-between units in addition to exporting the actual FBX.
+In order for the **FBX exporter** to be effective, I decided that it should convert between units in addition to exporting 
+the actual FBX.
 
 I checked the Blender [documentation](https://docs.blender.org/manual/en/latest/scene_layout/scene/properties.html) 
 and recalled that the default unit of measurement in Blender was one meter, assuming that the unit system setting 
@@ -40,7 +42,7 @@ in Unreal Engine 5 was one centimeter, assuming that Unreal's unit system settin
 
 <br/>
 
-### Modeling at Scale ###
+<h3>Modeling at Scale</h3>
 
 Note that this conversion would be applicable under the assumption that a 3D modeler did NOT build an asset to the correct scale. As a 
 somewhat contrived example, a modeler has NOT changed Blender's scene length unit to centimeters OR the unit scale to **0.01** - 
@@ -70,12 +72,12 @@ I anticipated that a Blender user would want the option to:
 3. Apply a scale transform to the output FBX. This would be a **0.01** multiplier by default, unless changed
 4. Select a **mesh** to export, or an **armature** (for animation), or **both**
 
-For the last option, an [explanation](/blog/blender-fbx-exporter/#built-in-exporter) for the **mesh** and **armature** object types 
-can be found further down.
+For the last option, I went with the **mesh** and **armature** object types after looking into a video which covered 
+ideal FBX export settings for Unreal Engine 5. The next section goes over these selections [in further detail](/blog/blender-fbx-exporter/#the-built-in-exporter).
 
 <br/><hr/><br/>
 
-## Research
+## Research ##
 
 Having never written a Blender Add-on before, I did a YouTube search on the topic. I found these videos to be hugely
 useful for initial setup:
@@ -92,7 +94,7 @@ however, I still wanted to meet the specific requirements that I set for my own 
 
 ### Add-on Installation ###
 
-I made sure that I could install and uninstall a Blender Add-on by following along with the first video (credits to Victor Stepanov). I downloaded the
+I made sure that I could install and uninstall a Blender Add-on after following along with the first video (credits to Victor Stepanov). I downloaded the
 example [`simple_custom_panel.py`](https://github.com/CGArtPython/blender_plus_python/blob/main/add-ons/simple_custom_panel/simple_custom_panel.py) file,
 navigated to Blender's `Edit > Preferences` menu, clicked on the `Add-ons` section and `Community` tab, and clicked on the "Install" button to open a file browser and find 
 the Python file. 
@@ -103,51 +105,44 @@ Then, I installed and activated the example Add-on:
 
 ### Blender Python API ###
 
-More importantly, in order to build my Add-on ... I had to become proficient with the [Blender Python API](https://docs.blender.org/api/current/info_quickstart.html) within the span of a few weeks.
-
-Before starting, I needed to understand the basics of how Blender and Python fit together. While referring to the docs, I saw that a option called
-[Python Tooltips](https://docs.blender.org/manual/en/dev/editors/preferences/interface.html#bpy-types-preferencesview-show-tooltips-python) could be 
-enabled via Blender's `Edit > Preferences` menu and under the `Interfaces` section.
-
- After navigating there and enabling **User Tooltips** and **Python Tooltips**, I tried out the feature with a new Blender project and 
- its default cube - I found that I could navigate to the [`Properties`](https://docs.blender.org/manual/en/latest/editors/properties_editor.html) 
- editor and `Object` tab, and then hover over the Scale Transform attributes of the active object (the default cube) to view the two tooltips:
+Continuing on from the `Edit > Preferences` menu and `Interface` section, I enabled a few developer-friendly features such as **User Tooltips** and 
+[**Python Tooltips**](https://docs.blender.org/manual/en/dev/editors/preferences/interface.html#bpy-types-preferencesview-show-tooltips-python). 
+Then, I navigated to the [`Properties`](https://docs.blender.org/manual/en/latest/editors/properties_editor.html) editor and `Object` tab, and 
+hovered over the Scale Transform attributes of the active object (the default cube) to view the two tooltips:
 
 <BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/python_scale_tooltip.png"} alt={"Python Tooltip in Blender"} width={600} caption={'Hovering over the Scale Transform Y attribute to view the user tooltip and Python tooltip.'}/><br/>
 
-I saw that the tooltip display could cut down on time otherwise spent on searching through the Blender documentation
-until I discovered the name for an object's [scale](https://docs.blender.org/api/current/bpy.types.Object.html#bpy.types.Object.scale) attribute. 
-Still, I made sure that I could access the default cube through the [Python console](https://docs.blender.org/manual/en/latest/editors/python_console.html) - 
-I navigated to Blender's *Scripting* workspace tab, opened the built-in text editor and console, and entered the following commands to 
-modify the scale of the default cube:
+I made sure that I could access the [scale](https://docs.blender.org/api/current/bpy.types.Object.html#bpy.types.Object.scale) attribute listed in the Python tooltip,
+by navigating to the [Python console](https://docs.blender.org/manual/en/latest/editors/python_console.html) (under Blender's *Scripting* workspace tab), and then
+entering the following commands to halve the dimensions of the default cube:
 
 ``` python
 c = bpy.data.objects['Cube']
 c.scale = Vector((0.5, 0.5, 0.5))
 ```
-These commands changed the uniform scale of the default cube from **1.0**, to **0.5**, effectively shrinking the entire cube by half. From here, 
-I quickly understood where to begin for the scale transform option on the output FBX, at the very least.
+With this information, I understood where to begin for the scale transform option on the output FBX, at the very least.
 
 ### The Built-in Exporter ###
 
-I needed to try out the default exporter, and then adjust some settings for Unreal. I navigated to the `File > Export > FBX` 
-menu option, brought up the dialog, and clicked "Export FBX" with default settings enabled. I saw that Unreal would show a warning on import:
+I decided to try out the default exporter, to better understand the settings I needed to change for Unreal. First, I navigated to the `File > Export > FBX` menu to open the built-in dialog, 
+and set the target folder to the `Content\` folder of an Unreal Project. Then, I clicked the "Export FBX" button without adjusting the default settings. 
+This caused Unreal to show a warning on FBX import:
 ```
 No smoothing group information was found in this FBX scene.
 ```
 
-Afterwards, I made a few changes with credits to this [video](https://www.youtube.com/watch?v=y51-tXjKEzc), which also covered ideal 
-FBX export settings for Unreal. I checked **Selected Objects**, boxed in the list of possible object types to just the 
-"Mesh" and/or "Armature", and set the Smoothing type to "Face" instead of "Normals Only":
+Afterwards, I made a few changes to the export settings (with help from this video which also covered [ideal FBX export settings](https://www.youtube.com/watch?v=y51-tXjKEzc) 
+for Unreal). I checked **Selected Objects**, boxed in the list of possible object types to just the "Mesh" and/or "Armature", 
+and set the Smoothing type to "Face" instead of "Normals Only". These new settings allowed Unreal to import my default cube without issues:
 
 <BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/selected_objects.png"} alt={"Selected Object Types"} 
-width={800} caption={"Adjusted settings for Blender's built-in FBX Exporter."} />
+width={500} caption={"Adjusted settings for Blender's built-in FBX Exporter."} />
 
-With these adjusted settings, Unreal was able to import my asset without issues or warnings.
+<br/><hr/><br/>
 
-#### Python API ####
+## Implementation ##
 
-Once I had tested out the built-in exporter, I needed to find the all-important Python command which mapped to the export operation. 
+First, I needed the all-important Python command which mapped to the export operation as shown above. 
 A search through the Blender Python API documentation brought up a function named [`bpy.ops.export_scene.fbx`](https://docs.blender.org/api/current/bpy.ops.export_scene.html), 
 with a long list of default arguments. For brevity, I have listed just the arguments which I found to be relevant to the project, over time:
 
@@ -157,14 +152,9 @@ bpy.ops.export_scene.fbx(filepath='', use_selection=False,
                          mesh_smooth_type='OFF', object_types={'ARMATURE', 'CAMERA', 'EMPTY', 'LIGHT', 'MESH', 'OTHER'})
 ```
 
-<br/><hr/><br/>
-
-## Implementation ##
-
 Following the example [code](https://github.com/CGArtPython/blender_plus_python/blob/main/add-ons/simple_custom_panel/simple_custom_panel.py)
-from the first [video](https://www.youtube.com/watch?v=Qyy_6N3JV3k), I set up the necessary code to add a [panel](https://docs.blender.org/api/current/bpy.types.Panel.html) to the sidebar of the 3D viewport.
-
-To start things off, I set up *one* button to execute `export_scene.fbx` when clicked:
+from the first [video](https://www.youtube.com/watch?v=Qyy_6N3JV3k), I set up the necessary code to add a [panel](https://docs.blender.org/api/current/bpy.types.Panel.html) 
+to the sidebar of the 3D viewport. I set up *one* button to execute `export_scene.fbx` when clicked:
 
 ``` python
 import bpy
@@ -174,10 +164,6 @@ bl_info = {
     "category": "Import-Export",
 }
 
-
-'''
-The main panel added to the sidebar of the 3D viewport.
-'''
 class ExportPanel(bpy.types.Panel):
     
     bl_space_type = "VIEW_3D"
@@ -194,6 +180,8 @@ def register():
 def unregister():
     bpy.utils.unregister_class(ExportPanel)
 
+# Run the script directly from Blender's 
+# Text Editor without installing the add-on
 if __name__ == "__main__":
     register()
 ```
@@ -203,20 +191,20 @@ on the "Run" button opened a dialog for the built-in exporter:
 
 <BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/implement1.png"} alt={"Installed Add-on and Minimal GUI"} width={800} caption={"Installed Add-on and Minimal GUI."}/><br/>
 
-### The Export Operator ###
-
 From here, I needed to pass some input arguments, such as the filepath, to `export_scene.fbx`. I referred again to the documentation
 and decided to define a custom [operator](https://docs.blender.org/api/current/bpy.types.Operator.html) in order to handle additional logic. 
 
-To do so, I defined a new subclass of `bpy.types.Operator`, and prepared to override its `execute()` method. I registered my new `Operator` subclass with
+### The Export Operator ###
+
+I defined a new subclass of `bpy.types.Operator`, and prepared to override its `execute()` method. I registered my new `Operator` subclass with
 Blender, moved the text label into the `bl_label` property, and set a unique `bl_idname` so that my `Panel` subclass would be able to discover it:
 
 ``` python
 class ExportOperator(bpy.types.Operator):
-    
-    bl_idname = "bl2ue.export"
+
+    '''Export the FBX'''
+    bl_idname = "export_scene.custom_fbx"
     bl_label = "Run"
-    bl_description = "Export the FBX"
     
     def execute(self, context):
         return {'FINISHED'}
@@ -226,12 +214,12 @@ class ExportOperator(bpy.types.Operator):
 class ExportPanel(bpy.types.Panel):
     ...
     def draw(self, context):
-        self.layout.operator('bl2ue.export')
+        self.layout.operator('export_scene.custom_fbx')
 ```
-For the `execute()` method body, I wanted to start by naming the FBX after the currently opened Blender file.
-I got the filepath with the help of [`bpy.data.filepath`]((https://docs.blender.org/api/latest/bpy.types.BlendData.html#bpy.types.BlendData.filepath)), 
-and essentially replaced the `.blend` extension with an `.fbx` extension to make the current folder and target folder the same, 
-for the time being. Then, I sent the newly constructed filepath to `export_scene.fbx` as the first input argument:
+For the `execute()` method body, I needed to name the FBX after the currently opened Blender file. I extracted the filename 
+with the help of [`bpy.data.filepath`](https://docs.blender.org/api/latest/bpy.types.BlendData.html#bpy.types.BlendData.filepath)
+and [`bpy.path.basename`](https://docs.blender.org/api/current/bpy.path.html#bpy.path.basename). Then, I hardcoded a filepath with 
+the filename and `.fbx` extension, and sent it to `export_scene.fbx` as its first input argument:
 
 ``` python
 class ExportOperator(bpy.types.Operator):
@@ -241,43 +229,90 @@ class ExportOperator(bpy.types.Operator):
         bpath = bpy.data.filepath
         [stem, ext] = os.path.splitext(bpy.path.basename(bpath))
         
-        filepath = os.path.join(os.path.dirname(bpath), stem + '.fbx')
+        filepath = os.path.join('C:\\', 'Unreal Projects', 'MyProject', 'Content', stem + '.fbx')
         bpy.ops.export_scene.fbx(filepath=filepath)
         
         self.report({'INFO'}, f"Export {filepath}")
         return {'FINISHED'}
 ```
-Once the custom operator could be called without error, I moved on to finding some way to pass in a user-defined target directory, 
-from the GUI to the inner `export_scene.fbx`.
+Once the custom operator could be called without issue, I revisited the docs to learn how to pass in a *user-defined* target folder, 
+from the GUI to the inner `export_scene.fbx`. 
 
-### Subpanels and String Props ###
+### User-Defined Filepath ###
 
-todo 
+I eventually landed on [this page](https://docs.blender.org/api/current/bpy.props.html), which covers custom properties in Blender. Shortly afterwards, 
+I attached one [`StringProperty`](https://docs.blender.org/api/current/bpy.types.StringProperty.html#stringproperty-property) named `project_path` to the current
+scene, to hold onto the value for a user-defined target folder:
 
-## Other Elements — abbr, sub, sup, kbd, mark
+``` python
+bpy.types.Scene.project_path = bpy.props.StringProperty(
+    name="Project Folder",
+    description="Unreal Engine 5 project folder", 
+)
+```
+I appended this `StringProperty` to my panel layout in the 3D viewport:
 
-### Syntax
-
-```markdown
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+``` python
+placeholder = os.path.join('C:\\', 'Unreal Projects', 'MyProject', 'Content')
+self.layout.prop(context.scene, "project_path", placeholder=placeholder))
 ```
 
-### Output
+And replaced the hardcoded filepath in my operator with the new value:
 
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
+``` python
+filepath = os.path.join(context.scene.project_path, stem + '.fbx')
+```
 
-H<sub>2</sub>O
+#### The File Select Operator ####
 
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
+Still, I needed some way to open a file browser and assign the resulting filepath to the `project_path`, to make the Blender Add-on *much* easier to use. 
+I registered a second operator to do this:
 
-Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
+``` python
+class ProjectPathOperator(bpy.types.Operator):
+    
+    '''Set the Unreal Engine 5 Project Folder'''
+    bl_idname = 'export_scene.project_path'
+    bl_label = "Add"
+    
+    # select directories
+    directory: bpy.props.StringProperty()
 
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+    # show only directories
+    filter_folder: bpy.props.BoolProperty(
+        default=True,
+        options={"HIDDEN"}
+    )
+    
+    def invoke(self, context, event):
+        context.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+    
+    def execute(self, context):
+        context.scene.project_path = self.directory
+        return {'FINISHED'}
+```
+
+And appended this operator to my panel layout in the 3D viewport:
+
+``` python
+self.layout.operator('export_scene.project_path')
+```
+With both an editable filepath and a file browser, I made some tweaks to group corresponding widgets closely together, 
+under a shared [label](https://docs.blender.org/api/current/bpy.types.UILayout.html#bpy.types.UILayout.label)
+and [sub-layout](https://docs.blender.org/api/current/bpy.types.UILayout.html#bpy.types.UILayout.split):
+
+<BlogImage srcs={["/blog/2024_09_22_blender_fbx_exporter/implement2.png", 
+                  "/blog/2024_09_22_blender_fbx_exporter/implement3.png"]}
+           alts={["Filepath Layout Before",
+                  "Filepath Layout After"]}
+           caption={"Before and after layout adjustments."}
+           width={600}
+>
+</BlogImage>
+
+### Scale Transform ###
+
+### Selected Objects ###
+
+### Apply Modifiers ###

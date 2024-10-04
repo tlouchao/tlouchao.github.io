@@ -1,17 +1,23 @@
 ---
 interface Props {
-    src: string;
-    alt: string;
+    src?: string;
+    alt?: string;
+    srcs?: string[];
+    alts?: string[];
     caption?: string;
     width?: number;
     height?: number;
 }
 
-const {src, alt, caption, width, height} = Astro.props;
+const {src, alt, srcs, alts, caption, width, height} = Astro.props;
 ---
 <div class="blog-image">
     <div class="blog-image-content" style={width ? "max-width: " + width + "px;" : ""}>
-        <img src={src} alt={alt}/>
+        {
+            src
+            ? <img src={src} alt={alt}/>
+            : srcs?.map((_, idx) => (<img src={srcs?.[idx]} alt={alts?.[idx]}/>))
+        }
         {caption && <p>*{caption}</p>}
     </div>
 </div>
@@ -26,11 +32,12 @@ const {src, alt, caption, width, height} = Astro.props;
     .blog-image-content {
         display: inherit;
         flex-direction: inherit;
+        gap: 1em;
     }
     p {
         font-size: x-small;
         font-style: italic;
-        margin-block-start: 0.5em;
+        margin-block-start: -1em;
         margin-block-end: 0.5em;
     }
 </style>

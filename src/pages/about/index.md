@@ -5,7 +5,7 @@ title: About
 
 ## Bio ##
 
-I am currently working as a software engineer, and have formerly worked as a freelance animator - I've built out this website to document [personal projects](/blog), to bookmark useful [resources](#resources), and to carve out an online space for future notes. Having always been partial to the art side of things, I've been looking for avenues to incorporate a technical background, as well as the visual arts, into my next undertaking.
+I am currently working as a software engineer, and have formerly worked as a freelance animator - I've built out this website to document [personal projects](/blog), to bookmark useful [resources](#resources), and to carve out an online space for future notes. Having been partial to the art side of things for quite some time, I've been looking for avenues to incorporate a technical background, as well as a penchant for CG art, into my next undertaking.
 
 ## Coursework ##
 
