@@ -51,12 +51,12 @@
     --duskgold-dark: rgb(108, 72, 27);
 
 	/* body, header, footer */
-	--color-primary: var(--violet-mddark);
-	--color-secondary: var(--white-warm);
-    --color-tertiary: var(--violet);
+	--color-primary: var(--white-warm);
+	--color-secondary: var(--black-warm);
+    --color-tertiary: rgb(225, 220, 215);
     --color-gallery: var(--sand);
     --color-header: var(--sand);
-	--color-footer: var(--violet-dark);
+	--color-footer: rgb(215, 210, 205);
     --color-footer-gallery: var(--color-gallery);
     --color-selection: var(--black-warm);
     --bgcolor-selection: yellow;
@@ -66,59 +66,73 @@
 	--nav-mobile-wh: 45px;
 	--nav-desktop-width: 240px;
     --nav-padding-right: 0.5em;
-	--color-nav: var(--redviolet-mdlight);
-    --color-nav-label: var(--white-warm);
-    --color-nav-light: var(--redviolet-mdlight);
-	--color-nav-right: var(--redviolet-mddark);
-	--color-nav-item: var(--redviolet-mddark);
-	--color-nav-item-hover: var(--duskgold-mdlight);
-	--color-nav-item-active: var(--duskgold-mdlight);
-	--color-nav-item-current: var(--duskgold);
-	--color-nav-link: var(--white-warm);
-	--color-nav-link-hover: var(--palegold-dark);
-	--color-nav-link-active: var(--white-warm);
-	--color-nav-link-current: var(--palegold-dark);
-	--color-nav-sub-item: var(--redviolet-dark);
-	--color-nav-sub-link: var(--duskgold-light);
-	--color-nav-social: var(--duskgold);
-	--color-nav-social-hover: var(--duskgold-mdlight);
-    --color-nav-theme: var(--duskgold-mdlight);
-    --color-nav-theme-hover: var(--white-warm);
-    --color-divider: var(--redviolet-mdlight);
+	--color-nav: var(--grey-cool-6);
+    --color-nav-label: magenta;
+    --color-nav-light: var(--grey-cool-3);
+	--color-nav-right: var(--grey-cool-0);
+	--color-nav-item: var(--grey-cool-1);
+	--color-nav-item-hover: darkmagenta;
+	--color-nav-item-active: darkmagenta;
+	--color-nav-item-current: darkviolet;
+	--color-nav-link: turquoise;
+	--color-nav-link-hover: magenta;
+	--color-nav-link-active: lightcyan;
+	--color-nav-link-current: lightcyan;
+	--color-nav-sub-item: var(--grey-cool-0);
+	--color-nav-sub-link: chartreuse;
+    --color-nav-social: magenta;
+	--color-nav-social-hover: lightcyan;
+    --color-social: maroon;
+	--color-social-hover: crimson;
+    --color-modal: maroon;
+	--color-modal-button-hover: crimson;
+    --color-nav-theme: magenta;
+    --color-nav-theme-hover: lightcyan;
+    --color-divider: var(--grey-cool-4);
 
     /* aside */
-    --aside-width: 270px;
-    --color-aside: var(--orange);
-    
+    --color-aside: maroon;
+
     /* blog */
-    --color-blog-item: var(--coffee);
-    --color-date: var(--color-secondary);
-    --bgcolor-date: var(--redviolet-mddark);
-    --bgcolor-description: var(--black-warm);
+    --color-blog-heading: var(--color-secondary);
+    --color-date: var(--white-warm);
+    --bgcolor-date: var(--grey-warm-dark);
+    --color-description: var(--color-secondary);
+    --bgcolor-description: rgb(225, 220, 215);
+
+    /* table */
+    --color-thead: rgb(225, 220, 215);
+    --color-tbody: rgb(235, 230, 225);
 
     /* gallery */
     --gallery-bar-height: 64px;
     --modal-height: 720px;
     --modal-width: 960px;
     --modal-arrow-width: 80px;
-    --color-modal: lavender;
-    --color-modal-button: var(--grey-warm-dark);
-	--color-modal-button-hover: white;
-    --color-modal-button-active: var(--duskgold-dark);
-    --color-gallery-tag: var(--sand-mdrose);
-    --color-gallery-tag-hover: var(--duskgold-mdlight);
-    --color-gallery-tag-current: var(--orange-dark);
+    --color-modal: magenta;
+    --color-modal-button: var(--grey-cool-3);
+    --color-modal-button-hover: lightcyan;
+    --color-modal-button-active: magenta;
+    --color-gallery-tag: var(--white-warm);
+    --bgcolor-gallery-tag: var(--grey-warm-dark);
+    --color-gallery-tag-hover: darkmagenta;
+    --color-gallery-tag-current: darkviolet;
     --color-gallery-tag-border: white;
 
 	/* headings */
-    --color-heading: white;
+    --color-heading: var(--coffee);
 
     /* header */
     --header-height: 150px;
 
-	/* links */
-	--anchor-link: var(--orange);
-	--anchor-active: var(--orange-light);
+    /* links */
+    --anchor-link: maroon;
+    --anchor-active: crimson;
+
+    /* code */
+    --color-code: var(--black-warm); // shiki andromeeda theme for code blocks
+    --bgcolor-code: var(--grey-warm-light);
+    --bgcolor-pre: var(--grey-cool-1);
 
 	/* main */
 	--main-min-width: 720px;
@@ -176,6 +190,8 @@
 	--color-nav-sub-link: chartreuse;
 	--color-nav-social: magenta;
 	--color-nav-social-hover: lightcyan;
+    --color-social: magenta;
+	--color-social-hover: lightcyan;
     --color-modal: magenta;
 	--color-modal-button-hover: lightcyan;
     --color-nav-theme: magenta;
@@ -186,11 +202,11 @@
     --color-aside: magenta;
 
     /* blog */
-    --color-blog-item: var(--grey-cool-1);
+    --color-blog-heading: var(--color-secondary);
     --color-date: var(--color-secondary);
     --bgcolor-date: var(--grey-cool-6);
-    --bgcolor-description: var(--white-cool);
-    --color-code: #ff00aa;
+    --color-description: var(--white-cool);
+    --bgcolor-description: var(--grey-cool-1);
 
     /* table */
     --color-thead: var(--grey-cool-1);
@@ -201,7 +217,8 @@
     --color-modal-button: var(--grey-cool-3);
 	--color-modal-button-hover: lightcyan;
     --color-modal-button-active: magenta;
-    --color-gallery-tag: var(--grey-cool-4);
+    --color-gallery-tag: var(--white-warm);
+    --bgcolor-gallery-tag: var(--grey-cool-4);
     --color-gallery-tag-hover: darkmagenta;
     --color-gallery-tag-current: darkviolet;
     --color-gallery-tag-border: white;
@@ -212,6 +229,10 @@
 	/* links */
 	--anchor-link: cyan;
 	--anchor-active: magenta;
+
+    /* code */
+    --color-code: #D5CED9; // shiki andromeeda theme for code blocks
+    --bgcolor-code: var(--grey-cool-1);
 }
 
 .visible {
@@ -272,7 +293,7 @@ hr {
 }
 pre {
     padding: 0.5em;
-    background-color: var(--grey-cool-1) !important; // override shiki theme
+    background-color: var(--bgcolor-pre) !important; // override shiki theme
 }
 code {
     font-size: 13px;
@@ -281,8 +302,8 @@ p, li {
     word-wrap: break-word;
 }
 p code, li code {
-    color: #D5CED9; // shiki andromeeda theme for code blocks
-    background: var(--grey-cool-1);
+    color: var(--color-code);
+    background: var(--bgcolor-code);
     padding: 0.2em;
 }
 a code {

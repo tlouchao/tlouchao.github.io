@@ -30,8 +30,8 @@ gallery-bar {
                 font-size: 13.5px;
                 border: none;
                 border-radius: 1.5em;
-                color: inherit;
-                background-color: var(--color-gallery-tag);
+                color: var(--color-gallery-tag);
+                background-color: var(--bgcolor-gallery-tag);
             }
             button:hover {
                 transition: 0.1s ease;

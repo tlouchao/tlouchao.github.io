@@ -1,6 +1,9 @@
 @use '../mixins';
 
 .blog-item {
+    h1, h2, h3 {
+        color: var(--color-blog-heading);
+    }
     a, a:link, a:visited, a:hover, a:active {
         text-decoration: none;
         color: var(--color-secondary);
@@ -49,7 +52,7 @@
             scrollbar-color: var(--color-tertiary) var(--color-primary);
             scrollbar-width: thin;
             box-sizing: border-box;
-            background-color: var(--color-blog-item);
+            background-color: var(--bgcolor-description);
             .title, .desc {
                 line-height: 1.15; /* very sensitive to font-size */
                 margin: 0;

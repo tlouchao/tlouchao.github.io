@@ -88,6 +88,10 @@
                     background-color: inherit;
                     button-social {
                         display: inherit;
+                        color: var(--color-nav-social);
+                    }
+                    button-social:hover {
+                        color: var(--color-nav-social-hover);
                     }
                 }
             }
