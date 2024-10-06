@@ -53,7 +53,8 @@ at a height of about 10 meters:
 
 ## The Proposal ##
 
-I was granted the go-ahead to build my exporter, under the conditions that it was similar in complexity to the [batch renamer](/blog/batch-renamer) from the previous assignment, and that it had a GUI with three or more meaningful options for the user to select from.
+I was granted the go-ahead to build my exporter, under the conditions that it was similar in complexity to the [batch renamer](/blog/batch-renamer) 
+from the previous assignment, and that it had a GUI with three or more meaningful options for the user to configure.
 
 ### Requirements ###
 
@@ -86,7 +87,7 @@ useful for initial setup:
 - How to Install Addons in Blender: https://www.youtube.com/watch?v=vYh1qh9y1MI
 
 I also searched for existing exporters from Blender to Unreal, as I was fairly sure that the unit system mismatch issue had already been addressed by many - 
-however, I still wanted to meet the specific requirements that I set for my own project. I was able to find a Blender Add-on named 
+however, I still wanted to meet the requirements that I set for my own project. I was able to find a Blender Add-on named 
 **Send to Unreal** (maintained by Epic Games), as well as a video describing the difference between it and the built-in exporter:
 
 - Send to Unreal: https://epicgamesext.github.io/BlenderTools/send2ue
@@ -120,7 +121,6 @@ entering the following commands to halve the dimensions of the default cube:
 c = bpy.data.objects['Cube']
 c.scale = Vector((0.5, 0.5, 0.5))
 ```
-With this information, I understood where to begin for the scale transform option on the output FBX, at the very least.
 
 ### The Built-in Exporter ###
 
@@ -147,9 +147,9 @@ A search through the Blender Python API documentation brought up a function name
 with a long list of default arguments. For brevity, I have listed just the arguments which I found to be relevant to the project, over time:
 
 ``` python
-bpy.ops.export_scene.fbx(filepath='', use_selection=False, 
-                         global_scale=1.0, apply_unit_scale=True, apply_scale_options='FBX_SCALE_NONE',
-                         mesh_smooth_type='OFF', object_types={'ARMATURE', 'CAMERA', 'EMPTY', 'LIGHT', 'MESH', 'OTHER'})
+bpy.ops.export_scene.fbx(filepath='', global_scale=1.0, apply_unit_scale=True, apply_scale_options='FBX_SCALE_NONE',
+                         use_selection=False, object_types={'ARMATURE', 'CAMERA', 'EMPTY', 'LIGHT', 'MESH', 'OTHER'},
+                         mesh_smooth_type='OFF')
 ```
 
 Following the example [code](https://github.com/CGArtPython/blender_plus_python/blob/main/add-ons/simple_custom_panel/simple_custom_panel.py)
@@ -164,7 +164,7 @@ bl_info = {
     "category": "Import-Export",
 }
 
-class ExportPanel(bpy.types.Panel):
+class MainPanel(bpy.types.Panel):
     
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -175,10 +175,10 @@ class ExportPanel(bpy.types.Panel):
         self.layout.operator('export_scene.fbx', text='Run')
 
 def register():
-    bpy.utils.register_class(ExportPanel)
+    bpy.utils.register_class(MainPanel)
 
 def unregister():
-    bpy.utils.unregister_class(ExportPanel)
+    bpy.utils.unregister_class(MainPanel)
 
 # Run the script directly from Blender's 
 # Text Editor without installing the add-on
@@ -211,7 +211,7 @@ class ExportOperator(bpy.types.Operator):
 ```
 
 ``` python
-class ExportPanel(bpy.types.Panel):
+class MainPanel(bpy.types.Panel):
     ...
     def draw(self, context):
         self.layout.operator('export_scene.custom_fbx')
@@ -241,11 +241,11 @@ from the GUI to the inner `export_scene.fbx`.
 ### User-Defined Filepath ###
 
 I eventually landed on [this page](https://docs.blender.org/api/current/bpy.props.html), which covers custom properties in Blender. Shortly afterwards, 
-I attached one [`StringProperty`](https://docs.blender.org/api/current/bpy.types.StringProperty.html#stringproperty-property) named `project_path` to the current
+I attached one [`StringProperty`](https://docs.blender.org/api/current/bpy.types.StringProperty.html#stringproperty-property) named `project_dir` to the current
 scene, to hold onto the value for a user-defined target folder:
 
 ``` python
-bpy.types.Scene.project_path = bpy.props.StringProperty(
+bpy.types.Scene.project_dir = bpy.props.StringProperty(
     name="Project Folder",
     description="Unreal Engine 5 project folder", 
 )
@@ -254,25 +254,25 @@ I appended this `StringProperty` to my panel layout in the 3D viewport:
 
 ``` python
 placeholder = os.path.join('C:\\', 'Unreal Projects', 'MyProject', 'Content')
-self.layout.prop(context.scene, "project_path", placeholder=placeholder))
+self.layout.prop(context.scene, "project_dir", placeholder=placeholder)
 ```
 
 And replaced the hardcoded filepath in my operator with the new value:
 
 ``` python
-filepath = os.path.join(context.scene.project_path, stem + '.fbx')
+filepath = os.path.join(context.scene.project_dir, stem + '.fbx')
 ```
 
 #### The File Select Operator ####
 
-Still, I needed some way to open a file browser and assign the resulting filepath to the `project_path`, to make the Blender Add-on *much* easier to use. 
+Still, I needed some way to open a file browser and assign the resulting filepath to the `project_dir`, to make the Blender Add-on *much* easier to use. 
 I registered a second operator to do this:
 
 ``` python
 class ProjectPathOperator(bpy.types.Operator):
     
     '''Set the Unreal Engine 5 Project Folder'''
-    bl_idname = 'export_scene.project_path'
+    bl_idname = 'export_scene.project_dir'
     bl_label = "Add"
     
     # select directories
@@ -289,14 +289,14 @@ class ProjectPathOperator(bpy.types.Operator):
         return {'RUNNING_MODAL'}
     
     def execute(self, context):
-        context.scene.project_path = self.directory
+        context.scene.project_dir = self.directory
         return {'FINISHED'}
 ```
 
 And appended this operator to my panel layout in the 3D viewport:
 
 ``` python
-self.layout.operator('export_scene.project_path')
+self.layout.operator('export_scene.project_dir')
 ```
 With both an editable filepath and a file browser, I made some tweaks to group corresponding widgets closely together, 
 under a shared [label](https://docs.blender.org/api/current/bpy.types.UILayout.html#bpy.types.UILayout.label)
@@ -307,12 +307,275 @@ and [sub-layout](https://docs.blender.org/api/current/bpy.types.UILayout.html#bp
            alts={["Filepath Layout Before",
                   "Filepath Layout After"]}
            caption={"Before and after layout adjustments."}
-           width={600}
+           width={500}
 >
-</BlogImage>
+</BlogImage><br/>
+
+#### Subdirectory and Filename ####
+
+I wrapped up the rest of the pathname-related tasks by repeating the steps above - I added two additional instances of `StringProperty`, 
+and made sure that the export operator could append a subdirectory and filename to the existing filepath. I decided to display the subdirectory 
+in particular as a relative path:
+
+``` python
+class ProjectSubPathOperator(bpy.types.Operator):
+    
+    '''Set the Unreal Engine 5 Project Subdirectory'''
+    bl_idname = 'export_scene.project_subdir'
+    bl_label = "Add"
+    ...
+    def execute(self, context):
+
+        commonpath = os.path.commonpath(
+            [context.scene.project_dir, self.directory]) + os.sep
+
+        # display relative directory
+        rel_project_subdir = self.directory.replace(commonpath, '')
+        context.scene.project_subdir = rel_project_subdir
+
+        return {'FINISHED'}
+```
+And, I updated the panel layout with the new fields:
+
+<BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/implement5.png"} alt={"Panel with Directory and Filename Edit Fields"} width={500}></BlogImage>
+
+<br/><hr/><br/>
+
+### Dynamic Property Group ###
+
+To keep things organized for later changes, I moved the `StringProperty` instances into a 
+[`PropertyGroup`](https://docs.blender.org/api/current/bpy.types.PropertyGroup.html) - I registered my new class, and attached a 
+[`PointerProperty`](https://docs.blender.org/api/current/bpy.types.PointerProperty.html#pointerproperty-property) to the current scene 
+to maintain a reference to the `PropertyGroup`:
+
+``` python
+class ExportPropertyGroup(bpy.types.PropertyGroup):
+    project_dir: bpy.props.StringProperty(
+        name="Project Folder",
+        description="Unreal Engine 5 project folder", 
+    )
+    ...
+    # subdirectory and filename properties
+```
+``` python
+def register():
+    ...
+    bpy.utils.register_class(ExportPropertyGroup)
+    bpy.types.Scene.io_ue5_fbx = bpy.props.PointerProperty(type=ExportPropertyGroup)
+
+def unregister():
+    ...
+    bpy.utils.unregister_class(ExportPropertyGroup)
+    del bpy.types.Scene.io_ue5_fbx # cleanup
+```
+
+I also made sure to update `StringProperty` access throughout my script, now that the `PropertyGroup` maintained ownership:
+
+``` python
+class ExportOperator(bpy.types.Operator):
+    ...
+    def execute(self, context):
+        io_ue5_fbx = context.scene.io_ue5_fbx
+        project_dir = io_ue5_fbx.project_dir
+        project_subdir = io_ue5_fbx.project_subdir
+        stem = io_ue5_fbx.filename
+        ...
+        filepath = os.path.join(project_dir, project_subdir, stem + '.fbx')
+```
+``` python
+class MainPanel(bpy.types.Panel):
+    ...
+    def draw(self, context):
+        placeholder = os.path.join('C:\\', 'Unreal Projects', 'MyProject', 'Content')
+        self.layout.prop(context.scene.io_ue5_fbx, "project_dir", placeholder=placeholder)
+        ...
+```
 
 ### Scale Transform ###
 
+For the scale transform factor, I added a [`FloatProperty`](https://docs.blender.org/api/current/bpy.types.FloatProperty.html#floatproperty-property)
+to my `PropertyGroup` to hold a numerical value, with **0.01** as the stated default:
+
+``` python
+class ExportPropertyGroup(bpy.types.PropertyGroup):
+    scale: bpy.props.FloatProperty(
+        name="Scale",
+        description="Scale Factor",
+        precision=2,
+        default=0.01,
+        soft_min=0,
+        soft_max=10,
+    )
+    ...
+    # previously defined properties
+```
 ### Selected Objects ###
 
-### Apply Modifiers ###
+For the selected object types, I added two instances of [`BoolProperty`](https://docs.blender.org/api/current/bpy.types.BoolProperty.html#boolproperty-property)
+to keep track of whether or not to export a **mesh**, an **armature**, or **both**:
+``` python
+class ExportPropertyGroup(bpy.types.PropertyGroup):
+    mesh: bpy.props.BoolProperty(
+        name="Mesh",
+        description="Export the selected mesh",
+        default=False,
+    )
+    armature: bpy.props.BoolProperty(
+        name="Armature",
+        description="Export the selected armature",
+        default=False,
+    )
+    ...
+    # previously defined properties
+```
+
+### Smoothing Type ###
+
+For the smoothing information, I created an [`EnumProperty`](https://docs.blender.org/api/current/bpy.types.EnumProperty.html#enumproperty-property) 
+to stand in for one of three separate options. And, I set the default option to "Face":
+``` python
+class ExportPropertyGroup(bpy.types.PropertyGroup):
+    smoothing: bpy.props.EnumProperty(
+        name="Smoothing",
+        description="Export smoothing information",
+        default="FACE",
+        items=[
+            ("FACE", "Face (Recommended)", "Write face smoothing"),
+            ("EDGE", "Edge", "Write edge smoothing"),
+            ("OFF", "Normals Only", "Export only normals instead of writing edge or face smoothing data"),
+        ],
+    )
+    ...
+    # previously defined properties
+```
+
+### Panel Layout ###
+
+I added one more operator to my panel labeled "Reset to Recommended Defaults" to allow for reverting the filename, selected object types, 
+scale factor, and smoothing options to their default values. 
+
+Then, I finalized the overall layout by moving properties/operators related to filepath configuration and export settings under a 
+"Settings" subpanel, and kept the remaining operators under an "Export" subpanel:
+
+<BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/implement6.png"} alt={"Panel and Subpanels"} width={600}></BlogImage><br/>
+
+### Validation ###
+
+To enable my Add-on under the conditions that the [selected objects](https://docs.blender.org/manual/en/latest/scene_layout/object/selecting.html) 
+in the current scene included at least one **mesh** and/or **armature**, I decided to monitor the state of the selected objects with help from
+[`bpy.types.Panel.poll`](https://docs.blender.org/api/current/bpy.types.Panel.html#bpy.types.Panel.poll) and 
+[`bpy.context.selected_objects`](https://docs.blender.org/api/current/bpy.context.html#bpy.context.selected_objects):
+
+``` python
+class MainPanel(bpy.types.Panel):
+    ...
+    @classmethod
+    def poll(cls, context):
+        '''
+        Decide whether or not to show the tool based on context
+        '''
+        obj_types = ['MESH', 'ARMATURE']
+        found = False
+
+        # check selected objects
+        for obj in context.selected_objects
+            if (obj.type in obj_types):
+                found = True
+                break
+
+        return found
+    ...
+```
+
+I also made sure to enable the "Run" button, given a valid filepath. In all other cases, I decided to 
+[grey out](https://docs.blender.org/api/current/bpy.types.UILayout.html#bpy.types.UILayout.enabled) the button:
+
+``` python
+def update_project_dir(self, context):
+    if (not os.path.isdir(self.project_dir)):
+        print(f"Invalid filepath: {self.project_dir}")
+    
+class ExportPropertyGroup(bpy.types.PropertyGroup):
+    project_dir: StringProperty(
+        name="Project Folder",
+        description="Unreal Engine 5 project folder",
+        update=update_project_dir
+    )
+    ...
+    # previously defined properties
+```
+``` python  
+class ExportPanel(bpy.types.Panel):
+    ...
+    def draw(self, context):
+        ...
+        row = self.layout.row()
+        row.operator('export_scene.custom_fbx')
+        if (not os.path.isdir(context.scene.io_ue5_fbx.project_dir)):
+            row.enabled = False
+```
+
+### Export to Unreal ###
+
+*Finally*, I passed the user-defined arguments from the GUI into Blender's [`export_scene.fbx()`](https://docs.blender.org/api/current/bpy.ops.export_scene.html):
+
+``` python
+class ExportOperator(bpy.types.Operator):
+    
+    '''Export the FBX'''
+    bl_idname = "export_scene.custom_fbx"
+    bl_label = "Run"
+
+    def execute(self, context):
+
+        io_ue5_fbx = context.scene.io_ue5_fbx
+      
+        # filepath ------------------------------------------- #
+
+        project_dir = io_ue5_fbx.project_dir
+        project_subdir = io_ue5_fbx.project_subdir
+
+        if (io_ue5_fbx.filename):
+            stem = io_ue5_fbx.filename
+        else:
+            bpath = bpy.data.filepath
+            [stem, _] = os.path.splitext(bpy.path.basename(bpath))
+        
+        filepath = os.path.join(project_dir, project_subdir, stem + '.fbx')
+        
+        # rest of the settings ------------------------------- #
+        
+        global_scale = io_ue5_fbx.scale
+        apply_unit_scale = True
+        apply_scale_options = 'FBX_SCALE_NONE'
+
+        use_selection = True
+        object_types = set()
+        
+        if (io_ue5_fbx.mesh):
+            object_types.add('MESH')
+        if (io_ue5_fbx.armature):
+            object_types.add('ARMATURE')
+        
+        mesh_smooth_type = io_ue5_fbx.smoothing
+        
+        # export ---------------------------------------------- #
+        
+        bpy.ops.export_scene.fbx(filepath=filepath,
+                                 global_scale=global_scale,
+                                 apply_unit_scale=apply_unit_scale,
+                                 apply_scale_options=apply_scale_options,
+                                 use_selection=use_selection,
+                                 object_types=object_types,
+                                 mesh_smooth_type=mesh_smooth_type)
+        
+        self.report({'INFO'}, f"Export {filepath}")
+            
+        return {'FINISHED'}
+```
+
+## Demo ##
+
+Below is a recording of the completed **FBX Exporter** Blender Add-on, with a free 3D model from [CGTrader](https://www.cgtrader.com/) as the test subject:
+
+TODO

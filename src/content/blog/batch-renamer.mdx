@@ -8,19 +8,26 @@ heroImageCaption: 'Credits to Poly Haven for the stone and metal textures used i
 import BlogImage from '../../components/BlogImage.astro';
 
 From February 2024 to April 2024, I had the chance to take a [technical art course through ELVTR](https://elvtr.com/course/technical-art) - 
-I had heard that the tech art role required some proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. Before taking the course, I was acquainted with Python, but not within the context of games. I was also somewhat familiar with Qt and C++, but had not yet tried PyQt/Qt for Python.
+I had heard that the tech art role required some proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. 
+
+Before taking the course, I was acquainted with Python, but not within the context of games. I was also somewhat familiar with Qt and C++, 
+but had not yet tried PyQt/Qt for Python.
+
+## Background ##
 
 A few weeks into the coursework (from late February to early March), I was given a task - I was to implement a batch renamer utility, 
 firstly as a command line script, and later on as a [PyQt6 application](https://doc.qt.io/qtforpython-6/) built on top of the previous script.
 
 The assignment was meant to introduce a common pain point with game asset management - finding a way to quickly rename hundreds (or thousands) 
 of texture exports, 3D renders and configuration files located in a repository somewhere, while retaining some flexibility in configuring said
-operation. A utility such as this would be called upon to target files with typos, or files which needed to be moved to some other directory, 
+operation. 
+
+This utility would then be called upon to target files with typos, or files which needed to be moved to some other directory, 
 or files in need of an update to a new naming convention ... and so on.
 
 ## The Dilemma ##
 
-At the time of taking the course, the renaming utility was expected to do at least the following per rename operation:
+At the time of taking the course, the utility was expected to do at least the following per rename operation:
 
 1. <a class="anchor-nohover" name="requirement-one">Get a valid filepath to the current folder</a>
 2. <a class="anchor-nohover" name="requirement-two">Get a valid filepath to a target folder</a>   
@@ -34,8 +41,8 @@ Optionally, the utility could do one or more of the following steps per operatio
 - Enable overwriting the selected files, if the files already exist in the target folder
 
 Given the following test files, the output files were to be free of noise such as the version number of the file, 
-or extraneous words such as "file", "final", et cetera. At the same time, each filename was to be wrapped with short, 
-descriptive text indicating the type of game asset the file represented:
+or extraneous words such as "file", "final", et cetera. At the same time, each filename was to be surrounded with short, 
+descriptive text indicating the type of game asset that the file represented:
 | Initial Filenames | Target |
 |---|---|
 |texture_metal_diffuse.png | T_metal_C.png
@@ -51,13 +58,13 @@ prototyping graphical user interfaces with widgets from the Qt GUI framework (th
 build a GUI from scratch). 
 
 A batch file was also provided to help with translating the XML based `.ui` file produced from Qt Designer to an equivalent `.py` file - 
-the batch file made use of the `pyuic.py` module included with `PyQt6`, and would map Qt widget names directly to the data attributes 
+the batch file made use of the `pyuic.py` module included with `PyQt6`, and mapped Qt widget names directly to the data attributes 
 of a Python class named `Ui_MainWindow` when run:
 
 ``` shell
 python -m PyQt6.uic.pyuic -x batch_renamer.ui -o batch_renamer_ui.py
 ```
-Then, the output file would be included as a dependency in another Python file, which included some starter code. The example code demonstrated how 
+The resulting output file would be included as a dependency in another Python file, which included some starter code. The example code demonstrated how 
 to connect a button click event to an event handler. Or in Qt terms, connecting a `clicked()` [signal](https://doc.qt.io/qt-6/signalsandslots.html) 
 to a [slot](https://doc.qt.io/qt-6/signalsandslots.html):
 
@@ -92,7 +99,7 @@ After prototyping in Qt Designer and converting my `.ui` file to `.py`, I eventu
 
 <BlogImage src={"/blog/2024_09_01_batch_renamer/batch_renamer_gui.png"} alt={"Batch Renamer Utility GUI"} width={720}/>
 
-Though I had a GUI (nice to look at, but with zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets at minimum, which leads into: 
+Though I had a GUI (nice to look at, but with zero functionality), I still needed to handle user interaction with Qt's edit fields, buttons, and other clickable widgets. 
 
 ### Requirements ###
 
@@ -155,8 +162,7 @@ def update_list(self):
     for root, dirs, files in os.walk(self.filepath):
         self.listWidget.addItems(files)
 ```
-<p class="caption">*I reused this code for the other widget which held the value for the target folder, 
-once the results were in.</p>
+<p class="caption">*Code reused for the second widget which held the value for the target folder.</p>
 
 To fulfill the <a href="#requirement-four">fourth</a> and final requirement, I included two 
 <a href="https://doc.qt.io/qt-6/qradiobutton.html" target="_blank">`QRadioButtons`</a> which were set to exclusive
