@@ -7,7 +7,8 @@ heroImage: '/blog/2024_09_22_blender_fbx_exporter/blender2unreal.png'
 import BlogImage from '../../components/BlogImage.astro';
 
 This blog post covers the remainder of the work that I completed for a [technical art course](https://elvtr.com/course/technical-art)
-which ran from February 2024 to April 2024. The previous blog post can be found [here](/blog/batch-renamer).
+which ran from February 2024 to April 2024. The previous blog post can be found [here](/blog/batch-renamer). To skip to the 
+demo video, click [here](/blog/blender-fbx-exporter#demo).
 
 ## Background ##
 
@@ -432,7 +433,7 @@ class ExportPropertyGroup(bpy.types.PropertyGroup):
 ### Smoothing Type ###
 
 For the smoothing information, I created an [`EnumProperty`](https://docs.blender.org/api/current/bpy.types.EnumProperty.html#enumproperty-property) 
-to stand in for one of three separate options. And, I set the default option to "Face":
+to stand in for one of three separate options, and set the default option to "Face":
 ``` python
 class ExportPropertyGroup(bpy.types.PropertyGroup):
     smoothing: bpy.props.EnumProperty(
@@ -461,7 +462,7 @@ Then, I finalized the overall layout by moving properties/operators related to f
 
 ### Validation ###
 
-To enable my Add-on under the conditions that the [selected objects](https://docs.blender.org/manual/en/latest/scene_layout/object/selecting.html) 
+To show my Add-on under the conditions that the [selected objects](https://docs.blender.org/manual/en/latest/scene_layout/object/selecting.html) 
 in the current scene included at least one **mesh** and/or **armature**, I decided to monitor the state of the selected objects with help from
 [`bpy.types.Panel.poll`](https://docs.blender.org/api/current/bpy.types.Panel.html#bpy.types.Panel.poll) and 
 [`bpy.context.selected_objects`](https://docs.blender.org/api/current/bpy.context.html#bpy.context.selected_objects):
@@ -576,6 +577,26 @@ class ExportOperator(bpy.types.Operator):
 
 ## Demo ##
 
-Below is a recording of the completed **FBX Exporter** Blender Add-on, with a free 3D model from [CGTrader](https://www.cgtrader.com/) as the test subject:
+Below are some screen recordings of the completed **FBX Exporter** Blender Add-on, with a free 3D model from [CGTrader](https://www.cgtrader.com/).
 
-TODO
+Since the 3D model did not come with a rig, I made a quick character rig to test out the Blender Armature:
+
+<div style="text-align: center;">
+    <iframe style="max-width: 720px; height: 405px;" width="100%"
+        src="https://www.youtube.com/embed/jXg__8ecZZ0?si=btAOxvmybG-am-Kz" 
+        title="Blender FBX Export Addon and Character Rig" 
+        referrerpolicy="strict-origin-when-cross-origin"
+        frameborder="0" 
+        allowfullscreen>
+    </iframe>
+</div>
+
+<div style="text-align: center;">
+    <iframe style="max-width: 720px; height: 405px;" width="100%"
+        src="https://www.youtube.com/embed/epX0gYCtsoQ?si=Zhh52SbbZYXV0OO_" 
+        title="Blender FBX Export to Unreal Engine 5 Addon"
+        referrerpolicy="strict-origin-when-cross-origin"
+        frameborder="0" 
+        allowfullscreen>
+    </iframe>
+</div>

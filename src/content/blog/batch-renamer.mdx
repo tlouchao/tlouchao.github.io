@@ -7,13 +7,17 @@ heroImageCaption: 'Credits to Poly Haven for the stone and metal textures used i
 ---
 import BlogImage from '../../components/BlogImage.astro';
 
+To skip to the demo video, click [here](/blog/batch-renamer#demo).
+
+## Background ##
+
 From February 2024 to April 2024, I had the chance to take a [technical art course through ELVTR](https://elvtr.com/course/technical-art) - 
 I had heard that the tech art role required some proficiency in Python programming, in addition to art sensibilities in the case of shaders and VFX. 
 
 Before taking the course, I was acquainted with Python, but not within the context of games. I was also somewhat familiar with Qt and C++, 
 but had not yet tried PyQt/Qt for Python.
 
-## Background ##
+### Batch Renamer Utility ###
 
 A few weeks into the coursework (from late February to early March), I was given a task - I was to implement a batch renamer utility, 
 firstly as a command line script, and later on as a [PyQt6 application](https://doc.qt.io/qtforpython-6/) built on top of the previous script.
@@ -52,7 +56,7 @@ descriptive text indicating the type of game asset that the file represented:
 For example, the filename for a diffuse map could have a <mark>"T"</mark> prefix instead of "texture", and a 
 <mark>"C"</mark> suffix instead of "diffuse" or "color".
 
-## Tools and Boilerplate ##
+## Tools and Setup ##
 [Qt Designer](https://build-system.fman.io/qt-designer-download) was introduced early on as a free tool for quickly 
 prototyping graphical user interfaces with widgets from the Qt GUI framework (though the possibility remained open to 
 build a GUI from scratch). 
@@ -267,3 +271,14 @@ def update_filepath(self):
 
 ## Demo ##
 
+Below is a screen recording of the batch renamer utility:
+
+<div style="text-align: center;">
+    <iframe style="max-width: 720px; height: 405px;" width="100%"
+            src="https://www.youtube.com/embed/moO-mwxx5-4?si=Fwv1rpgev2bk8Vye" 
+            title="Batch Renamer Utility"
+            referrerpolicy="strict-origin-when-cross-origin"
+            frameborder="0" 
+            allowfullscreen>
+    </iframe>
+</div>
