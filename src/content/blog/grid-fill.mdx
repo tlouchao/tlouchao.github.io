@@ -6,4 +6,40 @@ heroImage: '/blog/2024_10_16_grid_fill/gridfill_splash.png'
 ---
 import BlogImage from '../../components/BlogImage.astro';
 
-Todo
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/group1_recording.gif"} alt={"Grid Fill Simple Polygons GIF"} width={600}/>
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/group2_recording.gif"} alt={"Grid Fill Cylinders GIF"} width={600} caption={"Grid Fill operation with cylinder polygon primitives."}/>
+<br/>
+
+## Background ##
+I built a grid fill utility for Autodesk Maya, after learning that the option was not readily available by default. 
+
+To provide some context, I had recently tried out 3D modeling with Autodesk Maya over at [Gnomon](https://www.gnomon.edu/) Online, and had caught on 
+that having MEL/Python scripts on hand, such as a [hard edge script](https://www.playcreative.io/blog/automatic-hard-edge-script-in-maya) for beveling edges, 
+or a script to [generate leaves along the vertices of a surface](https://animprops.com/product/leaves-script/), made the tasks delegated to a modeler **much** easier
+to complete. I had blocked out some cylindrical furniture and props in 3D (bottles, table legs, lamps ... et cetera), and wanted to find out if a grid fill option -
+similar to that [found in Blender](https://docs.blender.org/manual/en/latest/modeling/meshes/editing/face/grid_fill.html) - was available for use in Maya.
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/bottles.png"} alt={"Bottles Preview"} width={600} caption={"Glass bottle with wireframe on shaded mode enabled, through Maya's 3D viewport."}/>
+<br/>
+
+I soon found that Maya 2025 did *not* have this functionality built in (as of yet). Therefore, a 3D artist would have the following options to quad fill a
+polygon face with a large number of surrounding edges:
+    1. Find an existing script somewhere on the Internet in order to extend Maya's capabilities
+    2. Bug someone, such as a colleague, to write the script
+    3. Resort to writing the script themselves
+
+If all else failed, then a 3D artist was to fall back on something such as the [Multi-Cut Tool](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-93324AE7-5B19-4D74-B41B-74934B4AD20C)
+to manually complete such a task.  
+
+## Research ##
+
+### Maya Python API ###
+
+## Implementation ##
+
+### Qt Designer GUI ###
+
+### Future Work ###
