@@ -370,7 +370,7 @@ def unregister():
     del bpy.types.Scene.io_ue5_fbx # cleanup
 ```
 
-I also made sure to update `StringProperty` access throughout my script, now that the `PropertyGroup` maintained ownership:
+I also made sure to update `StringProperty` access throughout my script, now that the `PropertyGroup` had ownership:
 
 ``` python
 class ExportOperator(bpy.types.Operator):

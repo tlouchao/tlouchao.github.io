@@ -12,34 +12,306 @@ import BlogImage from '../../components/BlogImage.astro';
 <BlogImage src={"/blog/2024_10_16_grid_fill/group2_recording.gif"} alt={"Grid Fill Cylinders GIF"} width={600} caption={"Grid Fill operation with cylinder polygon primitives."}/>
 <br/>
 
-## Background ##
-I built a grid fill utility for Autodesk Maya, after learning that the option was not readily available by default. 
+# Background
+I built a grid fill utility for Autodesk Maya, after learning that the option was not available by default. 
 
-To provide some context, I had recently tried out 3D modeling with Autodesk Maya over at [Gnomon](https://www.gnomon.edu/) Online, and had caught on 
-that having MEL/Python scripts on hand, such as a [hard edge script](https://www.playcreative.io/blog/automatic-hard-edge-script-in-maya) for beveling edges, 
-or a script to [generate leaves along the vertices of a surface](https://animprops.com/product/leaves-script/), made the tasks delegated to a modeler **much** easier
-to complete. I had blocked out some cylindrical furniture and props in 3D (bottles, table legs, lamps ... et cetera), and wanted to find out if a grid fill option -
-similar to that [found in Blender](https://docs.blender.org/manual/en/latest/modeling/meshes/editing/face/grid_fill.html) - was available for use in Maya.
+I had recently tried out 3D modeling with Autodesk Maya over at [Gnomon](https://www.gnomon.edu/) Online, and came to appreciate having a few [MEL](https://en.wikipedia.org/wiki/Maya_Embedded_Language)/Python scripts on hand, 
+such as a [hard edge script](https://www.playcreative.io/blog/automatic-hard-edge-script-in-maya) for beveling edges, or a script to 
+[generate leaves along the vertices of a surface](https://animprops.com/product/leaves-script/), in order to make repetitive modeling tasks **much** easier
+to complete. After blocking out some cylindrical props in 3D (bottles, table legs, lamps ... et cetera), I wanted to find out if a grid fill utility,
+similar to that found [in Blender](https://docs.blender.org/manual/en/latest/modeling/meshes/editing/face/grid_fill.html), was available for use in Maya. 
 
+I was previously aware of this [document](https://graphics.pixar.com/opensubdiv/docs/mod_notes.html) (with credits to [Pixar](https://graphics.pixar.com/opensubdiv/docs/mod_notes.html)) 
+which provided some modeling tips when working with the [Catmull-Clark subdivision surface](https://en.wikipedia.org/wiki/Catmull%E2%80%93Clark_subdivision_surface) modifer. As per the document, 
+placing a *high valence vertex*, or a vertex connected to more than 4 adjacent edges, should be avoided in case a problem occurs in which a circular shape produces "wavy" surfaces with the modifier applied:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/subdiv_cylinder.png"} alt={"Subdivision Wavy Surface"} width={600} caption={"Subdivision surface modifier applied to a vertex surrounded by triangles."}/>
+
+Instead, circular shapes and cylinder caps should be modeled using quad-based topology:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/mod_notes.png"} alt={"Cap Revolution Shapes"} width={600} caption={"Cylinder caps with quad-based topology. Vertices are connected to no more than 4 adjacent edges. (Credits to Pixar)"}/>
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/bottles.png"} alt={"Bottles Preview"} width={600} caption={"Glass bottle with wireframe on shaded mode enabled, through Maya's 3D viewport."}/>
 <br/>
 
-I soon found that Maya 2025 did *not* have this functionality built in (as of yet). Therefore, a 3D artist would have the following options to quad fill a
-polygon face with a large number of surrounding edges:
-    1. Find an existing script somewhere on the Internet in order to extend Maya's capabilities
-    2. Bug someone, such as a colleague, to write the script
+... a process which was normally done by hand, as I eventually found that Maya did not have this functionality built in (as of yet). It seemed to me that a 3D artist who needed to (hypothetically) fill a large number of 
+n-gon faces with quads, would have to go with the following options to replicate Blender's grid fill operator:
+    1. Find an existing script somewhere on the Internet in order to extend Maya's capabilities and fill the n-gon faces
+    2. Find someone, such as a colleague, to write a script to fill the n-gon faces
     3. Resort to writing the script themselves
 
-If all else failed, then a 3D artist was to fall back on something such as the [Multi-Cut Tool](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-93324AE7-5B19-4D74-B41B-74934B4AD20C)
-to manually complete such a task.  
+If all else failed, then a 3D artist was to fall back on something such as the [Multi-Cut Tool](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-93324AE7-5B19-4D74-B41B-74934B4AD20C),
+to manually cut edges into each n-gon face.  
 
-## Research ##
+# Research
 
-### Maya Python API ###
+I looked for existing grid fill scripts for Maya, and found a [Quad Fill Hole script](https://www.artstation.com/marketplace/p/dRAM/maya-gn-quad-fill-hole) published by Gabriel Nadeau on the ArtStation marketplace.
+From the [demo](https://polycount.com/discussion/216450/maya-gn-quad-fill-hole) and [documentation](https://gabrielnadeau.com/pages/gn-quadfillhole), I saw that the script enabled the quad fill operation by default, 
+and provided alternate actions such as the standard fill hole operation - in case the quad fill operation could not be fulfilled. 
 
-## Implementation ##
+Additionally, the script provided the option to add an inset around the hole, to support additional operations such as edge loop selection and bevels. If enabled, then the width and direction of the inset could also be adjusted.
 
-### Qt Designer GUI ###
+## Grid Fill in Blender
 
-### Future Work ###
+I tested out the grid fill option in Blender, and found that adjusting the **span** changed the number of divisions along the grid fill. And, adjusting the **offset** changed the 
+starting position and angle of the grid fill.
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/blender_span_offset.gif"} alt={"Blender Grid Fill"} width={600} caption={"Blender Grid Fill with adjustable Span and Offset parameters."}/>
+<br/>
+
+## Maya Python API
+
+I bookmarked the official homepage for the [Maya API](https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=__CommandsPython_index_html), as well as the following sites:
+    - Maya: MEL & API by Bryan Ewert https://danielfaust.github.io/ewertb/maya.html
+
+
+I eventually opened the Script Editor to test out a few key commands in MEL ([Maya Embedded Language](https://en.wikipedia.org/wiki/Maya_Embedded_Language)) and in Python, to list the currently selected object(s) in the scene:
+
+**MEL**
+```
+ls -selection;
+```
+**Python**
+``` python
+from maya import cmds
+cmds.ls(selection=True)
+```
+With the [Maya devkit for Windows](https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=Maya_SDK_Setting_up_your_build_Windows_environment_64_bit_html), I navigated to the `devkit\pythonScripts`
+subdirectory to try out the example scripts included with the devkit. For example, the `createNodeUI.py` script, which relies on a
+`createNode.ui` file in the same directory, opens a [PySide](https://wiki.qt.io/Qt_for_Python) dialog when executed, and allows a user to create a named node at the scene origin:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/createNodeUI.png"} alt={"Create Node UI"} width={400} caption={""}/>
+<br/>
+
+
+# Implementation
+
+I decided to implement the core grid fill functionality first, before introducing a GUI later down the line.
+
+I first created a cylinder primitive with an even number of edges, and completed the grid fill process by hand. I kept Maya's Script Editor
+open and took note of the MEL commands printed to the history pane per operation. 
+
+Note that the MEL commands listed in the table below should be interpreted as Python-like formatted string literals, and are invalid unless the 
+variable names denoted between `{` and `}` are replaced with actual strings:
+
+| Operation | MEL | Additional Notes
+|---|---|---|
+| Click on a polygon edge | `select {objNode}.e[{id}];` | <ul><li>`objNode` is the cylinder *transform* node</li><li>`id` is the edge component ID</li></ul>
+| Double click on edge to select edge loop | `select -add {objNode}.e[{id}];` | Add to existing selection
+| Fill hole | `polyCloseBorder;` |
+| Select Multi-Cut tool | `MultiCutTool;` | 
+| Create new edge | `polySplit -ep {e1} 1 -ep {e2} 1` |  <ul><li>`e1` is the first edge component ID</li><li>`e2` is the second edge component ID</li></ul>
+
+From the MEL commands listed in the history pane, I was able to get the documentation for the
+[`select`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/select.html),
+[`polyCloseBorder`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/polyCloseBorder.html),
+and [`polySplit`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/polySplit.html) Python wrapper functions. 
+
+## Core Functionality
+
+From testing out the edge loop selection on cylinder primitives in Maya, I found that the edge/vertex component indices were returned in ascending order, 
+and happened to be consecutive:
+
+``` python
+from maya import cmds
+sl = cmds.ls(selection=True, flatten=True)
+# Result: [objNode.e[0], objNode.e[1]. objNode.e[2] ... ]
+```
+``` python
+v = cmds.polyListComponentConversion(sl, toVertex=True)
+cmds.select(v)
+slv = cmds.ls(selection=True, flatten=True)
+# Result: [objNode.vtx[0], objNode.vtx[1]. objNode.vtx[2] ... ]
+```
+
+Since the edge/vertex indices were consecutive, I assumed that selecting the vertex at the **start** of the list (*lowest index*), followed by 
+the vertex in the **middle** of the list (*number of selected edges divided by 2*), would translate to the endpoints of an edge that bisected/roughly bisected 
+the inner face:
+``` python
+sledge = cmds.polyEvaluate(sl[0], edgeComponent=True)
+```
+``` python
+i = 0
+j = sledge // 2
+```
+``` python
+cmds.polyConnectComponents(f'{objNode}.vtx[{i}]', f'{objNode}.vtx[{j}]')
+```
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/implement1.png"} alt={"Poly Connect Components"} width={500} caption={"Connect two vertices. Component IDs (vertices) are displayed."}/>
+<br/>
+
+Adding some number, or the **offset**, to both the starting endpoint `i` and opposite endpoint `j`, would also rotate the edge by that number. 
+I needed the **modulo** operator to help resolve to the actual indices, in case the adjusted indices wrapped around 
+to the other end of the list of selected vertices:
+
+``` python
+def getIdx(idx, n):
+    ret = idx
+    if idx < 0:
+        ret = (n + idx) % n
+    elif idx >= n:
+        ret = idx % n
+    return ret
+```
+``` python
+i = getIdx(0 + offset, sledge)
+j = getIdx((sledge // 2) + offset, sledge)
+```
+
+To create the edges on either side, I concluded that there were two ways to get the adjacent endpoints:
+    1. **Increase** the starting index `i` by 1, and **decrease** the opposite index `j` by 1
+    2. **Decrease** the starting index `i` by 1, and **increase** the opposite index `j` by 1
+
+For example, to implement the first option and to add a parallel edge:
+``` python
+i = getIdx(i + 1, sledge)
+j = getIdx(j - 1, sledge)
+```
+``` python
+cmds.polyConnectComponents(f'{objNode}.vtx[{i}]', f'{objNode}.vtx[{j}]')
+```
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/implement2.png"} alt={"Parallel Edges"} width={500} caption={""}/>
+<br/>
+
+### Determining the Span
+
+I needed to find a stopping point for creating the edges on either side, as adding or subtracting from the starting and opposite indices `i` and `j` 
+would eventually lead to an out of bounds error (where the upper bound was equal to the total number of selected edges). 
+
+I eventually found that if I wanted a roughly equal number of "rows" and "columns" in the grid, I could set the upper limit for the number of existing edges, 
+or "rows", to the **number of selected edges** in the edge loop, **divided by 4**. This number would correspond to the **span** value from earlier experiments with the 
+Blender grid fill operator.
+
+Meanwhile, the number of perpendicular edges, or "columns", would be related to the number of remaining, unconnected vertices. The corner vertices,
+or the vertices between the "rows" and "columns", would need to be excluded to maintain the final quad topology of the cylinder cap.
+
+And, the existing edges would need to be subdivided to provide vertices for future `polySplit` / `polyConnectComponents` operations to connect to. 
+In short, the next few steps would need to create new edges/vertices along certain guidelines (labeled in blue), while excluding the corner vertices (labeled in red):
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/implement2a.png"} alt={"Setup Perpendicular Edges"} width={500} caption={""}/>
+<br/>
+
+With these limitations in mind, I set the `span`, as well as the `rows` (# of rows) and `cols` (# of columns) to the following:
+
+``` python
+span = sledge // 4
+rows = span if span % 2 == 1 else span - 1
+cols = sledge // 2 - rows - 2
+```
+
+### Iterating over Rows
+
+I subdivided the parallel edges by the number of "columns", while iterating over the number of "rows" to connect the starting and opposite vertices.
+To select the parallel edges, I needed the total number of edges in the polygon mesh at the very beginning of the grid fill operation, to determine the 
+starting index: 
+
+``` python
+rowBeginEdge = cmds.polyEvaluate(sl[0], edge=True)
+```
+``` python
+i = getIdx(i - ((span - 1) // 2), sledge)
+j = getIdx(j + ((span - 1) // 2), sledge)
+k = rowBeginEdge
+ii = i # save begin index
+```
+``` python
+p = 0
+while p < rows:
+    # create edge
+    cmds.polyConnectComponents(f'{objNode}.vtx[{i}]', f'{objNode}.vtx[{j}]')
+    # subdivide edge
+    cmds.select(f'{objNode}.e[{k}]')
+    cmds.polySubdivideEdge(divisions=cols)
+    # increment
+    p += 1
+    if p != rows:
+        i = getIdx(i + 1, sledge)
+        j = getIdx(j - 1, sledge)
+        k += cols + 1
+```
+
+### Iterating over Columns
+With the intermediate vertices in place, I created the edges perpendicular to the starting edge. For the starting and opposite "column" vertices,
+I offset the outermost "row" vertices by 2, in order to skip over the corners:
+
+``` python
+colBeginEdge = cmds.polyEvaluate(sl[0], edge=True)
+```
+``` python
+i = getIdx(i + 2, sledge)
+j = getIdx(ii - 2, sledge)
+k = rowBeginEdge + 1
+```
+``` python
+q = 0
+while q < cols:
+    d = k
+    # loop from j to i
+    orig = j; dest = d
+    for _ in range(rows):
+        # create edge
+        cmds.polyConnectComponents(f'{objNode}.vtx[{orig}]', f'{objNode}.vtx[{dest}]')
+        d += cols + 1
+        orig = dest; dest = d
+    # create the last edge
+    cmds.polyConnectComponents(f'{objNode}.vtx[{orig}]', f'{objNode}.vtx[{i}]')
+    # increment
+    q += 1 
+    if q != cols:
+        i = getIdx(i + 1, sledge)
+        j = getIdx(j - 1, sledge)
+        k += 1
+```
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/implement3.png"} alt={"Perpendicular Edges"} width={500} caption={""}/>
+<br/>
+
+### Adjust Edge Flow  
+
+Finally, I edited the [edge flow](https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=GUID-190E49D9-0D04-4F55-A54A-285A85258DD4) of the newly
+created inner edges, to even out the distribution:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/implement4.png"} alt={"Adjust Edge Flow"} width={500} caption={""}/>
+<br/>
+
+## Validation
+
+I revisited the beginning of the script in order to add a few safeguards. To exit the script early, given no selection at all:
+
+``` python
+errStr = "Please select an edge loop."
+...
+if not sl:
+    cmds.error("Nothing selected. " + errStr)
+```
+To check that the selected object corresponded to a polygon mesh:
+``` python
+if not cmds.objectType(sl[0], isType="mesh"):
+    typeErrStr = f"Type \"{cmds.objectType(sl)}\" selected. "
+    cmds.error(typeErrStr + errStr)
+```
+And to check for an even number of selected edges:
+``` python
+if (sledge % 2 == 1):
+    cmds.warning("Please select an even number of edges.")
+```
+
+# User Interface
+
+Once again, I relied on [Qt Designer](https://build-system.fman.io/qt-designer-download) to prototype the GUI to interact with.
+
+## Signals and Slots
+
+todo
+
+# Future Work
+
+todo
