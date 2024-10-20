@@ -295,7 +295,7 @@ if not sl:
 To check that the selected object corresponded to a polygon mesh:
 ``` python
 if not cmds.objectType(sl[0], isType="mesh"):
-    typeErrStr = f"Type \"{cmds.objectType(sl)}\" selected. "
+    typeErrStr = f"Type \"{cmds.objectType(sl[0])}\" selected. "
     cmds.error(typeErrStr + errStr)
 ```
 And to check for an even number of selected edges:
@@ -307,8 +307,6 @@ if (sledge % 2 == 1):
 # User Interface
 
 Once again, I relied on [Qt Designer](https://build-system.fman.io/qt-designer-download) to prototype the GUI to interact with.
-
-## Signals and Slots
 
 todo
 
