@@ -112,8 +112,8 @@ and [`polySplit`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/Co
 
 ## Core Functionality
 
-From testing out the edge loop selection on cylinder primitives in Maya, I found that the edge/vertex component indices were returned in ascending order, 
-and happened to be consecutive:
+From testing out the edge loop selection on cylinder primitives, I found that the edge/vertex component indices were returned in ascending order, 
+and *happened to be consecutive*:
 
 ``` python
 from maya import cmds
@@ -144,9 +144,10 @@ cmds.polyConnectComponents(f'{objNode}.vtx[{i}]', f'{objNode}.vtx[{j}]')
 <BlogImage src={"/blog/2024_10_16_grid_fill/implement1.png"} alt={"Poly Connect Components"} width={500} caption={"Connect two vertices. Component IDs (vertices) are displayed."}/>
 <br/>
 
-Adding some number, or the **offset**, to both the starting endpoint `i` and opposite endpoint `j`, would also rotate the edge by that number. 
-I needed the **modulo** operator to help resolve to the actual indices, in case the adjusted indices wrapped around 
-to the other end of the list of selected vertices:
+### Adding the Offset
+
+Adding some number, or the **offset**, to both the starting endpoint `i` and opposite endpoint `j`, would rotate the edge by that number. 
+I needed the **modulo** operator to help resolve to the actual indices, in case the adjusted indices wrapped to the opposite end of the list of selected vertices:
 
 ``` python
 def getIdx(idx, n):
@@ -162,7 +163,7 @@ i = getIdx(0 + offset, sledge)
 j = getIdx((sledge // 2) + offset, sledge)
 ```
 
-To create the edges on either side, I concluded that there were two ways to get the adjacent endpoints:
+To create the edges on either side, I saw that there were two ways to get the adjacent endpoints:
     1. **Increase** the starting index `i` by 1, and **decrease** the opposite index `j` by 1
     2. **Decrease** the starting index `i` by 1, and **increase** the opposite index `j` by 1
 
@@ -191,7 +192,7 @@ Blender grid fill operator.
 Meanwhile, the number of perpendicular edges, or "columns", would be related to the number of remaining, unconnected vertices. The corner vertices,
 or the vertices between the "rows" and "columns", would need to be excluded to maintain the final quad topology of the cylinder cap.
 
-And, the existing edges would need to be subdivided to provide vertices for future `polySplit` / `polyConnectComponents` operations to connect to. 
+The existing edges would need to be subdivided to provide vertices for future `polySplit` / `polyConnectComponents` operations to connect to. 
 In short, the next few steps would need to create new edges/vertices along certain guidelines (labeled in blue), while excluding the corner vertices (labeled in red):
 
 <br/>
@@ -239,7 +240,7 @@ while p < rows:
 
 ### Iterating over Columns
 With the intermediate vertices in place, I created the edges perpendicular to the starting edge. For the starting and opposite "column" vertices,
-I offset the outermost "row" vertices by 2, in order to skip over the corners:
+I offset the outermost "row" vertices by 2, in order to exclude the corners:
 
 ``` python
 colBeginEdge = cmds.polyEvaluate(sl[0], edge=True)
@@ -304,12 +305,89 @@ if (sledge % 2 == 1):
     cmds.warning("Please select an even number of edges.")
 ```
 
+## Adding the Inset
+
+For the inset, I relied on the [`polyExtrudeEdge`](https://help.autodesk.com/cloudhelp/2024/CHS/Maya-Tech-Docs/CommandsPython/polyExtrudeEdge.html) command - 
+I matched the **Local Translate Z**, **Offset**, and **Divisions** arguments to those passed to `polyExtrudeEdge`:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/implement5.png"} alt={"Add Inset"} width={600} caption={"Extrude the selected edge loop to add an inset."}/>
+
+``` python
+if (doInset):
+    cmds.polyExtrudeEdge(*sl, offset=yInset, localTranslateZ=zInset, divisions=divInset)
+    sl = cmds.ls(selection=True, flatten=True) # reselect edge loop
+```
+
+## Alternate Actions
+
+For the alternate n-gon fill, I simply called the [`polyCloseBorder`](https://help.autodesk.com/cloudhelp/2024/CHS/Maya-Tech-Docs/CommandsPython/polyCloseBorder.html) command:
+
+``` python
+cmds.polyCloseBorder()
+```
+And if both *grid fill* and *n-gon* options are ignored, then the script simply does nothing. 
+
 # User Interface
 
-Once again, I relied on [Qt Designer](https://build-system.fman.io/qt-designer-download) to prototype the GUI to interact with.
+<br/>
+<BlogImage srcs={["/blog/2024_10_16_grid_fill/qt_gridfill.png", 
+                  "/blog/2024_10_16_grid_fill/ui_gridfill.png"]}
+           alts={["Qt Designer Grid Fill Tool Layout",
+                  "Grid Fill Tool in Autodesk Maya"]}
+           caption={"Qt Designer and Autodesk Maya GUIs."}
+           width={400}
+           dir="row"
+>
+</BlogImage><br/>
 
-todo
+Once again, I relied on [Qt Designer](https://build-system.fman.io/qt-designer-download) to setup the user interface.
+
+From the [example code in the devkit](/blog/grid-fill/#maya-python-api), I made sure that my `ui` file and Python file were placed in the 
+same `scripts` subdirectory, under my project folder. Then, I employed the [QUiLoader](https://doc.qt.io/qt-6/quiloader.html) class to dynamically
+create the grid fill tool UI at run-time, using the information stored in the `ui` file:
+
+``` python
+def initUI(self):
+
+    """Initialize the UI"""
+
+    # load the QT Designer File
+    loader = QUiLoader()
+    ws = cmds.workspace(q=True, rd=True)
+    file = QFile(ws + "/scripts/gridfill.ui")
+    file.open(QFile.ReadOnly)
+
+    self.ui = loader.load(file, parentWidget=self)
+    file.close()
+```
+I also added a shortcut to the grid fill tool to a custom shelf, to access the tool outside of the Script Editor:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/shelf.png"} alt={"Custom Shelf"} width={600} caption={"Tool added to a custom shelf and outlined in green."}/>
+<br/>
+
 
 # Future Work
 
-todo
+The default value returned from an [`ls`](https://help.autodesk.com/cloudhelp/ENU/MayaCRE-Tech-Docs/CommandsPython/ls.html) command (applied to a selected edge loop), is a
+list of selected edges ordered by **component ID ascending**. This ordering currently breaks the script when given an edge loop with non-consecutive IDs:
+
+<br/>
+<BlogImage src={"/blog/2024_10_16_grid_fill/cornerbevel.png"} alt={"Cube with Beveled Edges"} width={700} caption={"A cube with beveled edges. Component IDs are non-consecutive."}/>
+<br/>
+
+The next version of the grid fill tool should reorder the list of selected edges by **adjacency**, with possible help from [`polySelectConstraint`](https://help.autodesk.com/cloudhelp/2024/CHS/Maya-Tech-Docs/CommandsPython/polySelectConstraint.html)
+and its optional `propagate` argument to grow an existing selection. Then, it should map the index of each edge in the revised list 
+of edges, to its underlying edge component ID:
+
+``` python
+mapEdges = dict()
+```
+``` python
+# TODO: get the edges ordered by adjacency, and not by component ID
+for idx, val in enumerate(orderedEdges):
+    mapEdges[idx] = getComponentId(val)
+```
+
+

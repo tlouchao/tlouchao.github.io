@@ -7,37 +7,59 @@ interface Props {
     caption?: string;
     width?: number;
     height?: number;
+    dir?: string;
 }
 
-const {src, alt, srcs, alts, caption, width, height} = Astro.props;
+const {src, alt, srcs, alts, caption, width, height, dir} = Astro.props;
+let strWidth = width?.toString() + 'px';
 ---
-<div class="blog-image">
-    <div class="blog-image-content" style={width ? "max-width: " + width + "px;" : ""}>
-        {
-            src
-            ? <img src={src} alt={alt}/>
-            : srcs?.map((_, idx) => (<img src={srcs?.[idx]} alt={alts?.[idx]}/>))
-        }
-        {caption && <p>*{caption}</p>}
+<div class="blog-image" data-dir={dir}>
+    <div class="blog-image-align">
+        <div class="blog-image-content">
+            {
+                src
+                ? <img src={src} alt={alt}/>
+                : srcs?.map((_, idx) => (<img src={srcs?.[idx]} alt={alts?.[idx]}/>))
+            }
+        </div>
+        <div class="blog-image-caption">
+            {caption && <p>*{caption}</p>}
+        </div>
     </div>
 </div>
 
-<style>
+<style define:vars={{strWidth}}>
     .blog-image {
         display: flex;
         flex-direction: column;
         width: 100%;
         align-items: center;
+        .blog-image-align {
+            width: fit-content;
+        }
+        .blog-image-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            img {
+                max-width: var(--strWidth);
+            }
+        }
+        .blog-image-caption {
+            display: flex;
+            align-self: flex-start;
+            p {
+                font-size: x-small;
+                font-style: italic;
+                margin-block-start: 0.5em;
+            }
+        }
     }
-    .blog-image-content {
-        display: inherit;
-        flex-direction: inherit;
-        gap: 1em;
-    }
-    p {
-        font-size: x-small;
-        font-style: italic;
-        margin-block-start: -1em;
-        margin-block-end: 0.5em;
+    @media (min-width: 992px) {
+        .blog-image[data-dir="row"] {
+            .blog-image-content {
+                flex-direction: row;
+            }
+        }
     }
 </style>
