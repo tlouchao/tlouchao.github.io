@@ -375,7 +375,6 @@ list of selected edges ordered by **component ID ascending**. This ordering curr
 
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/cornerbevel.png"} alt={"Cube with Beveled Edges"} width={700} caption={"A cube with beveled edges. Component IDs are non-consecutive."}/>
-<br/>
 
 The next version of the grid fill tool should reorder the list of selected edges by **adjacency**, with possible help from [`polySelectConstraint`](https://help.autodesk.com/cloudhelp/2024/CHS/Maya-Tech-Docs/CommandsPython/polySelectConstraint.html)
 and its optional `propagate` argument to grow an existing selection. Then, it should map the index of each edge in the revised list 
