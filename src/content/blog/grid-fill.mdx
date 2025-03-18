@@ -1,5 +1,5 @@
 ---
-title: 'Grid Fill Tool for Maya (2025)'
+title: 'Grid Fill Tool for Autodesk Maya 2025'
 description: "Borrowing from Blender's modeling toolkit, I created a grid fill tool for Autodesk Maya (2025) with the help of Qt Designer, PySide, Python and MEL."
 pubDate: 'Oct 16 2024'
 heroImage: '/blog/2024_10_16_grid_fill/gridfill_splash.png'
@@ -15,15 +15,15 @@ import BlogImage from '../../components/BlogImage.astro';
 # Background
 I built a grid fill utility for Autodesk Maya, after learning that the option was not available by default. 
 
-I had recently tried out 3D modeling with Autodesk Maya over at [Gnomon](https://www.gnomon.edu/) Online, and came to appreciate having a few [MEL](https://en.wikipedia.org/wiki/Maya_Embedded_Language)/Python scripts on hand, 
+I had tried out 3D modeling using Autodesk Maya at [Gnomon](https://www.gnomon.edu/) Online, and came to appreciate having a few [MEL](https://en.wikipedia.org/wiki/Maya_Embedded_Language)/Python scripts on hand, 
 such as a [hard edge script](https://www.playcreative.io/blog/automatic-hard-edge-script-in-maya) for beveling edges, or a script to 
-[generate leaves along the vertices of a surface](https://animprops.com/product/leaves-script/), in order to make repetitive modeling tasks **much** easier
-to complete. After blocking out some cylindrical props in 3D (bottles, table legs, lamps ... et cetera), I wanted to find out if a grid fill utility,
+[generate leaves along the vertices of a surface](https://animprops.com/product/leaves-script/), in order to make repetitive modeling tasks easier
+to complete. After blocking out some cylindrical props in 3D (bottles, table legs, lamps ... et cetera), I wanted to find out if a grid fill function,
 similar to that found [in Blender](https://docs.blender.org/manual/en/latest/modeling/meshes/editing/face/grid_fill.html), was available for use in Maya. 
 
 I was previously aware of this [document](https://graphics.pixar.com/opensubdiv/docs/mod_notes.html) (with credits to [Pixar](https://graphics.pixar.com/opensubdiv/docs/mod_notes.html)) 
-which provided some modeling tips when working with the [Catmull-Clark subdivision surface](https://en.wikipedia.org/wiki/Catmull%E2%80%93Clark_subdivision_surface) modifer. As per the document, 
-placing a *high valence vertex*, or a vertex connected to more than 4 adjacent edges, should be avoided in case a problem occurs in which a circular shape produces "wavy" surfaces with the modifier applied:
+which provided some modeling tips when working with the [Catmull-Clark subdivision surface](https://en.wikipedia.org/wiki/Catmull%E2%80%93Clark_subdivision_surface) modifer. The document mentions that 
+placing a *high valence vertex*, or a vertex connected to more than 4 adjacent edges, should be avoided in case a problem occurs in which "wavy" surfaces are produced with the modifier active:
 
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/subdiv_cylinder.png"} alt={"Subdivision Wavy Surface"} width={600} caption={"Subdivision surface modifier applied to a vertex surrounded by triangles."}/>
@@ -36,27 +36,28 @@ Instead, circular shapes and cylinder caps should be modeled using quad-based to
 <BlogImage src={"/blog/2024_10_16_grid_fill/bottles.png"} alt={"Bottles Preview"} width={600} caption={"Glass bottle with wireframe on shaded mode enabled, through Maya's 3D viewport."}/>
 <br/>
 
-... a process which was normally done by hand, as I eventually found that Maya did not have this functionality built in (as of yet). It seemed to me that a 3D artist who needed to (hypothetically) fill a large number of 
-n-gon faces with quads, would have to go with the following options to replicate Blender's grid fill operator:
-    1. Find an existing script somewhere on the Internet in order to extend Maya's capabilities and fill the n-gon faces
-    2. Find someone, such as a colleague, to write a script to fill the n-gon faces
-    3. Resort to writing the script themselves
+I eventually found that Maya did not have this functionality built in (as of yet). It seemed to me that a 3D artist who needed to split a large number of 
+n-gon faces into quads, would have to go with one of the following options to replicate Blender's grid fill functionality:
+    1. Find an existing script to extend Maya's capabilities and fill the n-gon faces
+    2. Find a colleague to write the script, or write the script themselves
+    3. Simply complete the task by hand
 
-If all else failed, then a 3D artist was to fall back on something such as the [Multi-Cut Tool](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-93324AE7-5B19-4D74-B41B-74934B4AD20C),
-to manually cut edges into each n-gon face.  
+Normally, a 3D artist could use the [Multi-Cut Tool](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-93324AE7-5B19-4D74-B41B-74934B4AD20C)
+to manually cut edges into an n-gon face.  
 
 # Research
 
 I looked for existing grid fill scripts for Maya, and found a [Quad Fill Hole script](https://www.artstation.com/marketplace/p/dRAM/maya-gn-quad-fill-hole) published by Gabriel Nadeau on the ArtStation marketplace.
 From the [demo](https://polycount.com/discussion/216450/maya-gn-quad-fill-hole) and [documentation](https://gabrielnadeau.com/pages/gn-quadfillhole), I saw that the script enabled the quad fill operation by default, 
-and provided alternate actions such as the standard fill hole operation - in case the quad fill operation could not be fulfilled. 
+and provided alternate actions such as the standard fill hole operation (in case the quad fill operation could not be fulfilled). 
 
-Additionally, the script provided the option to add an inset around the hole, to support additional operations such as edge loop selection and bevels. If enabled, then the width and direction of the inset could also be adjusted.
+Additionally, the script provided the option to add an inset around the hole, which made future operations on the outer edge (edge loop selection, beveling) easier to complete. 
+The width and direction of the inset could also be adjusted.
 
 ## Grid Fill in Blender
 
-I tested out the grid fill option in Blender, and found that adjusting the **span** changed the number of divisions along the grid fill. And, adjusting the **offset** changed the 
-starting position and angle of the grid fill.
+I tested out the grid fill option in Blender, and found that adjusting the **span** changed the number of divisions along the grid fill. Additionally, adjusting the **offset** changed the 
+starting position and angle of the grid fill:
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/blender_span_offset.gif"} alt={"Blender Grid Fill"} width={600} caption={"Blender Grid Fill with adjustable Span and Offset parameters."}/>
 <br/>
@@ -67,7 +68,7 @@ I bookmarked the official homepage for the [Maya API](https://help.autodesk.com/
     - Maya: MEL & API by Bryan Ewert https://danielfaust.github.io/ewertb/maya.html
 
 
-I eventually opened the Script Editor to test out a few key commands in MEL ([Maya Embedded Language](https://en.wikipedia.org/wiki/Maya_Embedded_Language)) and in Python, to list the currently selected object(s) in the scene:
+I opened the Script Editor to test out a few key commands in MEL ([Maya Embedded Language](https://en.wikipedia.org/wiki/Maya_Embedded_Language)) and in Python, to list the currently selected object(s) in the scene:
 
 **MEL**
 ```
@@ -91,29 +92,26 @@ subdirectory to try out the example scripts included with the devkit. For exampl
 
 I decided to implement the core grid fill functionality first, before introducing a GUI later down the line.
 
-I first created a cylinder primitive with an even number of edges, and completed the grid fill process by hand. I kept Maya's Script Editor
+First, I created a cylinder primitive with an even number of edges and completed the grid fill process by hand. I kept Maya's Script Editor
 open and took note of the MEL commands printed to the history pane per operation. 
 
-Note that the MEL commands listed in the table below should be interpreted as Python-like formatted string literals, and are invalid unless the 
-variable names denoted between `{` and `}` are replaced with actual strings:
+Note that the MEL commands listed in the table below should be interpreted as Python-like format strings 
+(variable names between `{` and `}` should be replaced with object names):
 
 | Operation | MEL | Additional Notes
 |---|---|---|
-| Click on a polygon edge | `select {objNode}.e[{id}];` | <ul><li>`objNode` is the cylinder *transform* node</li><li>`id` is the edge component ID</li></ul>
+| Click on a polygon edge | [`select`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/select.html) `{objNode}.e[{id}];` | <ul><li>`objNode` is the cylinder *transform* node</li><li>`id` is the edge component ID</li></ul>
 | Double click on edge to select edge loop | `select -add {objNode}.e[{id}];` | Add to existing selection
-| Fill hole | `polyCloseBorder;` |
+| Fill hole | [`polyCloseBorder`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/polyCloseBorder.html)`;` |
 | Select Multi-Cut tool | `MultiCutTool;` | 
-| Create new edge | `polySplit -ep {e1} 1 -ep {e2} 1` |  <ul><li>`e1` is the first edge component ID</li><li>`e2` is the second edge component ID</li></ul>
+| Create new edge | [`polySplit`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/polySplit.html) `-ep {e1} 1 -ep {e2} 1` |  <ul><li>`e1` is the first edge component ID</li><li>`e2` is the second edge component ID</li></ul>
 
-From the MEL commands listed in the history pane, I was able to get the documentation for the
-[`select`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/select.html),
-[`polyCloseBorder`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/polyCloseBorder.html),
-and [`polySplit`](https://help.autodesk.com/cloudhelp/2024/ENU/Maya-Tech-Docs/CommandsPython/polySplit.html) Python wrapper functions. 
+<br></br>
 
 ## Core Functionality
 
 From testing out the edge loop selection on cylinder primitives, I found that the edge/vertex component indices were returned in ascending order, 
-and *happened to be consecutive*:
+and happened to be *consecutive*:
 
 ``` python
 from maya import cmds
@@ -127,9 +125,9 @@ slv = cmds.ls(selection=True, flatten=True)
 # Result: [objNode.vtx[0], objNode.vtx[1]. objNode.vtx[2] ... ]
 ```
 
-Since the edge/vertex indices were consecutive, I assumed that selecting the vertex at the **start** of the list (*lowest index*), followed by 
-the vertex in the **middle** of the list (*number of selected edges divided by 2*), would translate to the endpoints of an edge that bisected/roughly bisected 
-the inner face:
+Since the edge/vertex indices were consecutive, I assumed that the vertex at the **start** of the list (*lowest index*), followed by 
+the vertex in the **middle** of the list (*number of selected edges divided by 2*), would make up the endpoints of an edge that bisected/roughly bisected 
+the n-gon face:
 ``` python
 sledge = cmds.polyEvaluate(sl[0], edgeComponent=True)
 ```
@@ -146,16 +144,15 @@ cmds.polyConnectComponents(f'{objNode}.vtx[{i}]', f'{objNode}.vtx[{j}]')
 
 ### Adding the Offset
 
-Adding some number, or the **offset**, to both the starting endpoint `i` and opposite endpoint `j`, would rotate the edge by that number. 
-I needed the **modulo** operator to help resolve to the actual indices, in case the adjusted indices wrapped to the opposite end of the list of selected vertices:
+Adding some number, or the **offset**, to both the starting endpoint `i` and opposite endpoint `j`, would rotate the edge by that number:
 
 ``` python
 def getIdx(idx, n):
     ret = idx
     if idx < 0:
-        ret = (n + idx) % n
+        ret = (n + idx) % n # wrap around
     elif idx >= n:
-        ret = idx % n
+        ret = idx % n # wrap around
     return ret
 ```
 ``` python
@@ -163,11 +160,10 @@ i = getIdx(0 + offset, sledge)
 j = getIdx((sledge // 2) + offset, sledge)
 ```
 
-To create the edges on either side, I saw that there were two ways to get the adjacent endpoints:
-    1. **Increase** the starting index `i` by 1, and **decrease** the opposite index `j` by 1
-    2. **Decrease** the starting index `i` by 1, and **increase** the opposite index `j` by 1
+To create the edges on either side of the bisecting edge, I saw two ways to get the adjacent endpoints:
+    1. **Increase** the starting index `i` by one, and **decrease** the opposite index `j` by one
+    2. **Decrease** the starting index `i` by one, and **increase** the opposite index `j` by one
 
-For example, to implement the first option and to add a parallel edge:
 ``` python
 i = getIdx(i + 1, sledge)
 j = getIdx(j - 1, sledge)
@@ -182,24 +178,22 @@ cmds.polyConnectComponents(f'{objNode}.vtx[{i}]', f'{objNode}.vtx[{j}]')
 
 ### Determining the Span
 
-I needed to find a stopping point for creating the edges on either side, as adding or subtracting from the starting and opposite indices `i` and `j` 
-would eventually lead to an out of bounds error (where the upper bound was equal to the total number of selected edges). 
+I needed to find a cutoff point for creating edges on either side of the bisecting edge, as adding/subtracting from the starting and opposite indices `i` and `j` 
+would lead to an out of bounds error (where the upper bound was equal to the total number of selected edges). 
 
-I eventually found that if I wanted a roughly equal number of "rows" and "columns" in the grid, I could set the upper limit for the number of existing edges, 
-or "rows", to the **number of selected edges** in the edge loop, **divided by 4**. This number would correspond to the **span** value from earlier experiments with the 
-Blender grid fill operator.
+I found that if I wanted a roughly equal number of **rows** and **columns** in the grid, I could set the upper limit for the number of **rows** to the number of selected edges in the edge loop, divided by four.
+The same upper limit could also be applied to the **columns**.
 
-Meanwhile, the number of perpendicular edges, or "columns", would be related to the number of remaining, unconnected vertices. The corner vertices,
-or the vertices between the "rows" and "columns", would need to be excluded to maintain the final quad topology of the cylinder cap.
+The number of corner vertices, or the vertices between the **rows** and **columns**, would need to be subtracted from the number of selected edges to maintain the final quad topology of the cylinder cap.
 
-The existing edges would need to be subdivided to provide vertices for future `polySplit` / `polyConnectComponents` operations to connect to. 
-In short, the next few steps would need to create new edges/vertices along certain guidelines (labeled in blue), while excluding the corner vertices (labeled in red):
+The existing edges (**rows**) would be subdivided to provide vertices for future `polySplit` / `polyConnectComponents` operations to connect to (**columns**). 
+In the following image, the new edges (**columns**) are labeled in blue, and the corner vertices (to exclude) are labeled in red:
 
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/implement2a.png"} alt={"Setup Perpendicular Edges"} width={500} caption={""}/>
 <br/>
 
-With these limitations in mind, I set the `span`, as well as the `rows` (# of rows) and `cols` (# of columns) to the following:
+With these rules in mind, I set the `span`, as well as the `rows` (# of rows) and `cols` (# of columns) to the following:
 
 ``` python
 span = sledge // 4
@@ -209,9 +203,8 @@ cols = sledge // 2 - rows - 2
 
 ### Iterating over Rows
 
-I subdivided the parallel edges by the number of "columns", while iterating over the number of "rows" to connect the starting and opposite vertices.
-To select the parallel edges, I needed the total number of edges in the polygon mesh at the very beginning of the grid fill operation, to determine the 
-starting index: 
+I subdivided the existing edges (**rows**) by the number of **columns** using `polySubdivideEdge`, and looped over the number of **rows** 
+to connect the starting and opposite vertices using `polyConnectComponents`:
 
 ``` python
 rowBeginEdge = cmds.polyEvaluate(sl[0], edge=True)
@@ -239,8 +232,8 @@ while p < rows:
 ```
 
 ### Iterating over Columns
-With the intermediate vertices in place, I created the edges perpendicular to the starting edge. For the starting and opposite "column" vertices,
-I offset the outermost "row" vertices by 2, in order to exclude the corners:
+With the intermediate vertices in place, I created the edges (**columns**) perpendicular to the initial bisecting edge. For the starting and opposite **column** vertices,
+I offset the outermost **row** vertices by two to exclude the corners:
 
 ``` python
 colBeginEdge = cmds.polyEvaluate(sl[0], edge=True)
@@ -277,7 +270,7 @@ while q < cols:
 ### Adjust Edge Flow  
 
 Finally, I edited the [edge flow](https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=GUID-190E49D9-0D04-4F55-A54A-285A85258DD4) of the newly
-created inner edges, to even out the distribution:
+created edges, to even out the distribution:
 
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/implement4.png"} alt={"Adjust Edge Flow"} width={500} caption={""}/>
@@ -285,7 +278,7 @@ created inner edges, to even out the distribution:
 
 ## Validation
 
-I revisited the beginning of the script in order to add a few safeguards. To exit the script early, given no selection at all:
+I revisited the start of the script to add a few safeguards. To exit the script early, given no selection at all:
 
 ``` python
 errStr = "Please select an edge loop."
@@ -326,7 +319,7 @@ For the alternate n-gon fill, I simply called the [`polyCloseBorder`](https://he
 ``` python
 cmds.polyCloseBorder()
 ```
-And if both *grid fill* and *n-gon* options are ignored, then the script simply does nothing. 
+If both *grid fill* and *n-gon* options are ignored, then the script simply does not fill the hole. 
 
 # User Interface
 
@@ -344,8 +337,8 @@ And if both *grid fill* and *n-gon* options are ignored, then the script simply 
 Once again, I relied on [Qt Designer](https://build-system.fman.io/qt-designer-download) to setup the user interface.
 
 From the [example code in the devkit](/blog/grid-fill/#maya-python-api), I made sure that my `ui` file and Python file were placed in the 
-same `scripts` subdirectory, under my project folder. Then, I employed the [QUiLoader](https://doc.qt.io/qt-6/quiloader.html) class to dynamically
-create the grid fill tool UI at run-time, using the information stored in the `ui` file:
+same `scripts` subdirectory, under my project folder. Then, I employed the [QUiLoader](https://doc.qt.io/qt-6/quiloader.html) class to create 
+the grid fill tool UI at run-time, using the information stored in the `ui` file:
 
 ``` python
 def initUI(self):
@@ -361,7 +354,7 @@ def initUI(self):
     self.ui = loader.load(file, parentWidget=self)
     file.close()
 ```
-I also added a shortcut to the grid fill tool to a custom shelf, to access the tool outside of the Script Editor:
+I also added the grid fill tool to a custom shelf for quick access outside of the Script Editor:
 
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/shelf.png"} alt={"Custom Shelf"} width={600} caption={"Tool added to a custom shelf and outlined in green."}/>
@@ -370,13 +363,13 @@ I also added a shortcut to the grid fill tool to a custom shelf, to access the t
 
 # Future Work
 
-The default value returned from an [`ls`](https://help.autodesk.com/cloudhelp/ENU/MayaCRE-Tech-Docs/CommandsPython/ls.html) command (applied to a selected edge loop), is a
-list of selected edges ordered by **component ID ascending**. This ordering currently breaks the script when given an edge loop with non-consecutive IDs:
+The return value from an [`ls`](https://help.autodesk.com/cloudhelp/ENU/MayaCRE-Tech-Docs/CommandsPython/ls.html) command (selected edge loop) is 
+currently a list of selected edges ordered by **component ID ascending**. And so, a selected edge loop with non-consecutive IDs will break the script:
 
 <br/>
 <BlogImage src={"/blog/2024_10_16_grid_fill/cornerbevel.png"} alt={"Cube with Beveled Edges"} width={700} caption={"A cube with beveled edges. Component IDs are non-consecutive."}/>
 
-The next version of the grid fill tool should reorder the list of selected edges by **adjacency**, with possible help from [`polySelectConstraint`](https://help.autodesk.com/cloudhelp/2024/CHS/Maya-Tech-Docs/CommandsPython/polySelectConstraint.html)
+A future version of the grid fill tool should reorder the list of selected edges by **adjacency**, with possible help from [`polySelectConstraint`](https://help.autodesk.com/cloudhelp/2024/CHS/Maya-Tech-Docs/CommandsPython/polySelectConstraint.html)
 and its optional `propagate` argument to grow an existing selection. Then, it should map the index of each edge in the revised list 
 of edges, to its underlying edge component ID:
 

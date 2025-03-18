@@ -5,7 +5,7 @@ title: About
 
 ## Bio ##
 
-I am currently working as a software engineer, and have formerly worked as a freelance animator - I've built out this website to document [personal projects](/blog), to bookmark useful [resources](#resources), and to carve out an online space for future notes. As of recent, I've been on the lookout for avenues to incorporate a technical background, as well as a longtime interest in CG art, into my next undertaking.
+I am currently working as a software engineer, and have formerly worked as a freelance animator - I've built out this website to document [personal projects](/blog), to bookmark useful [resources](#resources), and to carve out an online space for future notes. Recently, I have been on the lookout for avenues to incorporate a technical background, as well as a longtime interest in CG art, into my next undertaking.
 
 ## Coursework ##
 
@@ -13,6 +13,7 @@ I've ventured into the 3D asset creation / tech art space in the wake of complet
 
 - **Become a Technical Artist** with Aaron Aikman ([ELVTR](https://elvtr.com/))
 - **Introduction to 3D with Maya** with James Schaub ([Gnomon School of Visual Effects](https://www.gnomon.edu/))
+- **Rigging 101** with Brad Clark ([Rigging Dojo](https://www.riggingdojo.com/))
  
 I've also leaned into traditional sketching and illustration classes, primarily at [Concept Design Academy](http://www.conceptdesignacad.com/) in the Los Angeles vicinity, as well as at CG Master Academy:
 

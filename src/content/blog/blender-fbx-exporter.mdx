@@ -10,6 +10,8 @@ This blog post covers the remainder of the work that I completed for a [technica
 which ran from February 2024 to April 2024. The previous blog post can be found [here](/blog/batch-renamer). To skip to the 
 demo video, click [here](/blog/blender-fbx-exporter/#demo).
 
+<BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/FBXExporter.gif"} alt={"FBX Exporter"} caption={"FBX Exporter Blender Add-on demo."} /><br/>
+
 ## Background ##
 
 As the final weeks approached, I was given the choice of building either a Python tool, an Unreal Engine 5 
@@ -18,7 +20,7 @@ or a [Niagara](https://dev.epicgames.com/documentation/en-us/unreal-engine/creat
 Since I was familiar with Python, and because I was not yet fully comfortable with Unreal Engine 5, I decided to opt for the Python tool. 
 
 After narrowing down my choices, I was given some suggestions as to what to build, such as an LOD generator, 
-or a file log parser, or an FBX settings manager ... et cetera. 
+or a file log parser, or an FBX settings manager, et cetera et cetera. 
 
 Since I was learning more about Blender at that point in time, I decided to build an **FBX exporter** for Blender 
 (in the form of a [Blender Add-on](https://docs.blender.org/manual/en/4.1/editors/preferences/addons.html)), 
@@ -30,9 +32,9 @@ One important issue that I wanted to address was the <u>unit system mismatch</u>
 In order for the **FBX exporter** to be effective, it needed to convert between units in addition to exporting 
 the actual FBX.
 
-I recalled that the default unit of measurement in Blender (see the [Blender documentation](https://docs.blender.org/manual/en/latest/scene_layout/scene/properties.html))
-is one meter, assuming that the unit system setting under the Scene Properties tab is set to either "None" or "Metric". I also recalled 
-that the default unit of measurement in Unreal Engine 5 is one centimeter, assuming that Unreal's unit system settings remain unchanged (should be metric):
+The default unit of measurement in Blender (see the [Blender documentation](https://docs.blender.org/manual/en/latest/scene_layout/scene/properties.html))
+is one meter, assuming that the unit system setting under the Scene Properties tab is set to either "None" or "Metric". Meanwhile, 
+the default unit of measurement in Unreal Engine 5 is one centimeter, assuming that Unreal's unit system settings remain unchanged (should be metric):
 
 | Software | Unit System | Length Unit
 |---|---|---|
@@ -43,8 +45,8 @@ that the default unit of measurement in Unreal Engine 5 is one centimeter, assum
 
 <h3>Modeling at Scale</h3>
 
-Assuming that Blender's scene length unit has not been changed to centimeters, or assuming that the unit scale has not been changed to **0.01** - 
-an asset (such as a coffee mug) from Blender could appear in Unreal Engine at 100 times the intended scale:
+Assuming that Blender's scene length unit has not been changed to centimeters, and assuming that the unit scale has not been changed to **0.01**, 
+an asset (such as a coffee mug) from Blender could appear in Unreal Engine at **100** times the intended scale:
 
 <BlogImage src={"/blog/2024_09_22_blender_fbx_exporter/coffee_mug.png"} alt={"Coffee Mug at Scale"} width={800} caption={"Coffee mug imported into Unreal at the correct scale (left) and incorrect scale (right)."} /><br/>
 
@@ -68,14 +70,14 @@ A Blender user should be able to:
 3. Apply a scale transform to the output FBX. This would be a **0.01** multiplier by default, unless changed
 4. Select a **mesh** to export, or an **armature** (for animation), or **both**
 
-Regarding the fourth option, I wanted to support the **mesh** and **armature** object types after looking into a video which covered 
+For the fourth option, I wanted to support the **mesh** and **armature** object types after looking into a video which covered 
 ideal FBX export settings for Unreal Engine 5. The next section goes over these object types [in further detail](/blog/blender-fbx-exporter/#the-built-in-exporter).
 
 <br/><hr/><br/>
 
 ## Research ##
 
-I had not written Blender Add-on before, and so did a YouTube search on the topic. I found the following videos to be hugely useful for initial setup:
+I had not written a Blender Add-on before, and so did a YouTube search on the topic. I found the following videos to be hugely useful for initial setup:
 
 - Create a Custom Blender Panel with Less Than 50 Lines of Python Code: https://www.youtube.com/watch?v=Qyy_6N3JV3k
 - How to Install Addons in Blender: https://www.youtube.com/watch?v=vYh1qh9y1MI
@@ -145,7 +147,7 @@ bpy.ops.export_scene.fbx(filepath='', global_scale=1.0, apply_unit_scale=True, a
 
 Following the example [code](https://github.com/CGArtPython/blender_plus_python/blob/main/add-ons/simple_custom_panel/simple_custom_panel.py)
 from the first [video](https://www.youtube.com/watch?v=Qyy_6N3JV3k), I set up the necessary code to add a [panel](https://docs.blender.org/api/current/bpy.types.Panel.html) 
-to the sidebar of the 3D viewport. I set up *one* button to execute `export_scene.fbx` when clicked:
+to the sidebar of the 3D viewport: 
 
 ``` python
 import bpy
@@ -161,9 +163,6 @@ class MainPanel(bpy.types.Panel):
     bl_region_type = "UI"
     bl_category = "Export FBX"
     bl_label = "Export FBX"
-    
-    def draw(self, context):
-        self.layout.operator('export_scene.fbx', text='Run')
 
 def register():
     bpy.utils.register_class(MainPanel)
@@ -177,6 +176,14 @@ if __name__ == "__main__":
     register()
 ```
 
+I modified the `MainPanel` class definition, and set up *one* button labeled "Run" to execute `export_scene.fbx` when clicked:
+``` python
+class MainPanel(bpy.types.Panel):
+    ...
+    def draw(self, context):
+        self.layout.operator('export_scene.fbx', text='Run')
+```
+
 I made sure that I could install this Python file as a Blender Add-on, and that the panel was visible. I confirmed that clicking
 on the "Run" button opened a dialog for the built-in exporter:
 
@@ -188,7 +195,7 @@ perform additional steps before executing `export_scene.fbx` on click.
 
 ### The Export Operator ###
 
-I defined a new subclass of `bpy.types.Operator`, and prepared to override its `execute()` method. I registered my new `Operator` subclass with
+I defined a new subclass of `bpy.types.Operator`, and overrode its `execute()` method. I registered my new `Operator` subclass with
 Blender, moved the text label into the `bl_label` property, and set a unique `bl_idname` so that my `Panel` subclass would be able to discover it:
 
 ``` python
@@ -381,7 +388,7 @@ class MainPanel(bpy.types.Panel):
 ### Scale Transform ###
 
 For the scale transform factor, I added a [`FloatProperty`](https://docs.blender.org/api/current/bpy.types.FloatProperty.html#floatproperty-property)
-to my `PropertyGroup` to hold a numerical value, with **0.01** as the stated default:
+to my `PropertyGroup` to hold a numerical value, with **0.01** as the default:
 
 ``` python
 class ExportPropertyGroup(bpy.types.PropertyGroup):
@@ -438,7 +445,7 @@ class ExportPropertyGroup(bpy.types.PropertyGroup):
 
 ### Panel Layout ###
 
-I added one more operator to my panel labeled "Reset to Recommended Defaults" to allow users to revert the filename, selected object types, 
+I added one more operator to my panel labeled "Reset to Recommended Defaults" to allow a user to revert the filename, selected object types, 
 scale factor, and smoothing options to their default values. 
 
 Then, I finalized the overall layout by moving properties/operators related to filepath configuration and export settings under a 
