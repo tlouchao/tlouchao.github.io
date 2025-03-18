@@ -1,0 +1,109 @@
+---
+title: 'Scripts for Character Rigging in Autodesk Maya 2025'
+description: 'While picking up character rigging in Autodesk Maya, I wrote some helper scripts in MEL to cut down on time spent completing repetitive and organizational tasks in the Outliner.'
+pubDate: 'Mar 18 2025'
+heroImage: '/blog/2025_03_18_character_rig/asari_hero.png'
+heroImageCaption: 'Character rig and script editor. Credits to Laura Peltomäki for the character rig.'
+---
+
+This page is under construction.
+
+Below are some [MEL](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-60178D44-9990-45B4-8B43-9429D54DF70E) scripts written for a character rigging 101 workshop hosted by <a href="https://www.riggingdojo.com/">Rigging Dojo.</a>. 
+
+## Rename Offset Groups ##
+
+To automate the creation of parent offset groups to place [NURBS control curves](https://help.autodesk.com/view/MAYAUL/2025/ENU/?guid=GUID-2B521AD9-1CB2-43C9-8385-388D118A5AF3) under, I wrote the following MEL 
+script to do the following:
+
+1. Get the name of the currently selected joint
+2. Replace the "\_JNT\_" substring with "\_GRP\_" to follow project naming conventions
+3. Create a null group under the new name (transform will be at the scene origin)
+4. Make the group a child of the currently selected joint
+5. Zero out translate and rotate values
+
+``` perl
+    # name the group
+    string $ls[] = `ls -sl`;
+    string $jname = $ls[0];
+    string $jregex = "_JNT_";
+    string $gname = `substitute $jregex $jname "_GRP_"`;
+ ```
+ ``` perl
+    # create the group
+    string $grp = `group -empty -name $gname`;
+    parent $grp $jname;
+```
+``` perl
+    # zero translate and rotate values
+    string $t = $jname + "|" + $gname + ".translate";
+    setAttr $t -type "double3" 0 0 0;
+    string $r = $jname + "|" + $gname + ".rotate";
+    setAttr $r -type "double3" 0 0 0;
+```
+
+## Parent a NURBS Curve Under an Offset Group ##
+
+Below is a similar script to rename a NURBS curve, parent it under a correctly named offset group, and zero out its translate and rotate values:
+
+``` perl
+    string $ls[] = `ls -sl`;
+    
+    # validate selected
+    if (size($ls) != 2) {
+        error "Please select a nurbs curve and a group transform";
+        
+    } else {
+        string $crel[] = `listRelatives -shapes $ls[0]`;
+        string $grel[] = `listRelatives -shapes $ls[1]`;
+        if (`size($crel)` != 1 || `objectType $crel[0]` != "nurbsCurve") {
+            error "First selected object should be a nurbs curve";
+            
+        } else if (`size($grel)` != 0 || `objectType $ls[1]` != "transform") {
+            error "Second selected object should be a group";
+            
+        } else {
+            # rename curve
+            string $gname = $ls[1];
+            string $gregex = "_GRP_";
+            string $cname = `substitute $gregex $gname "_CTRL_"`;
+            rename $ls[0] $cname;
+            
+            # parent ctrl under group
+            parent $cname $gname;
+            reorder -front $cname;
+            
+            # zero translate and rotate values
+            string $t = $gname + "|" + $cname + ".translate";
+            setAttr $t -type "double3" 0 0 0;
+            string $t = $gname + "|" + $cname + ".rotate";
+            setAttr $t -type "double3" 0 0 0;
+        }
+    }
+```
+
+## Automate Parent Constraints
+
+Given the following objects:
+1. one or more correctly named (and selected) NURBS control curves
+2. one or more correctly named corresponding joints
+
+The below script automates creating [parent constraints](https://help.autodesk.com/view/MAYAUL/2024/ENU/?guid=GUID-2FC0EE9E-A8D5-4B2A-A751-8B926389497A) 
+in which the translation and rotation values of the NURBs control curve(s) drives those of the corresponding joint(s):
+
+``` perl
+    # find the corresponding joint
+    string $objs[] = `ls -sl`;
+    string $obj;
+    for($obj in $objs) {
+        string $shapes[] = `listRelatives -shapes $obj`;
+        if (`size($shapes)` > 0 && `objectType $shapes[0]` == "nurbsCurve") {
+            string $cname = $obj;
+            string $cregex = "_CTRL_";
+            string $jname = `substitute $cregex $cname "_JNT_"`;
+            
+            # add parent constraint
+            parentConstraint -maintainOffset $cname $jname;
+            print("Added parent constraint from " + $cname + " to " + $jname + "\n");
+        }
+    }
+```
